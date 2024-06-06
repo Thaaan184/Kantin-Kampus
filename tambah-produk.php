@@ -17,7 +17,7 @@ include("foradmin.php");
 
 <body>
     <header>
-        <a href="index.php" class="logo">Beauty Basics</a>
+        <a href="index.php" class="logo">Kantin Online</a>
         <ul class="navigasi">
             <li><a class="nav-item nav-link active" href="output-menu.php">Edit Produk</a></li>
             <li><a class="nav-item nav-link active" href="tambah-produk.php" style="color: white; font-weight: 600;">Tambah Produk</a></li>
@@ -25,7 +25,6 @@ include("foradmin.php");
             <li><a class="nav-item nav-link active" href="user-edit.php">Edit user</a></li>
             <li><a class="nav-item nav-link active" href="logout.php">Logout</a></li>
         </ul>
-
     </header>
     <div class="banner">
         <div class="mx-auto">
@@ -55,20 +54,20 @@ include("foradmin.php");
                         ?>
                     <?php endif; ?>
                     <form action="proses-input.php" method="POST" enctype="multipart/form-data">
-                        <div class=" mb-3 row">
-                            <label for="nim" class="col-sm-2 col-form-label">Nama Produk</label>
+                        <div class="mb-3 row">
+                            <label for="nama" class="col-sm-2 col-form-label">Nama Produk</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" id="nama" name="nama_produk" placeholder="Masukkan nama..">
                             </div>
                         </div>
                         <div class="mb-3 row">
-                            <label for="jurusan" class="col-sm-2 col-form-label">Kategori</label>
+                            <label for="kategori" class="col-sm-2 col-form-label">Kategori</label>
                             <div class="col-sm-10">
                                 <select class="form-control" id="kategori" name="kategori">
                                     <option value="">- Kategori -</option>
-                                    <option value="skincare" name="makanan">Skincare</option>
-                                    <option value="makeup" name="minuman">Alat Make Up</option>
-                                    <option value="lainnya" name="minuman">Lainnya</option>
+                                    <option value="makanan_berat">Makanan Berat</option>
+                                    <option value="makanan_ringan">Makanan Ringan</option>
+                                    <option value="minuman">Minuman</option>
                                 </select>
                             </div>
                         </div>
@@ -85,13 +84,13 @@ include("foradmin.php");
                             </div>
                         </div>
                         <div class="mb-3 row">
-                            <label for="jurusan" class="col-sm-2 col-form-label">Stok</label>
+                            <label for="stok" class="col-sm-2 col-form-label">Stok</label>
                             <div class="col-sm-10">
                                 <input type="number" class="form-control" id="stok" name="stok" placeholder="Masukkan stok..">
                             </div>
                         </div>
                         <div class="mb-3 row">
-                            <label for="jurusan" class="col-sm-2 col-form-label">Gambar</label>
+                            <label for="gambar" class="col-sm-2 col-form-label">Gambar</label>
                             <div class="col-sm-10">
                                 <input type="file" class="form-control" name="gambar">
                             </div>
@@ -104,10 +103,8 @@ include("foradmin.php");
                     </form>
                 </div>
             </div>
-
         </div>
     </div>
-
 </body>
 
 </html>

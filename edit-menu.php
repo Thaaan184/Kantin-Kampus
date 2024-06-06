@@ -2,14 +2,12 @@
 
 include("config.php");
 
-//ambil id dari query string
+// ambil id dari query string
 $id = $_GET['id'];
 
 $sql = "SELECT * FROM menu WHERE id=$id";
 $query = mysqli_query($koneksi, $sql);
 $menu = mysqli_fetch_assoc($query);
-
-// buat query untuk ambil data dari database
 
 ?>
 
@@ -28,15 +26,14 @@ $menu = mysqli_fetch_assoc($query);
 
 <body>
     <header>
-        <a href="index.php" class="logo">kantinSekul</a>
+        <a href="index.php" class="logo">Kantin Online</a>
         <ul class="navigasi">
             <li><a class="nav-item nav-link active" href="output-menu.php">Edit Produk</a></li>
             <li><a class="nav-item nav-link active" href="tambah-produk.php">Tambah Produk</a></li>
             <li><a class="nav-item nav-link active" href="tambah-user.php">Tambah User</a></li>
-            <li><a class="nav-item nav-link active" href="user-edit.php">Edit user</a></li>
+            <li><a class="nav-item nav-link active" href="user-edit.php">Edit User</a></li>
             <li><a class="nav-item nav-link active" href="logout.php">Logout</a></li>
         </ul>
-
     </header>
     <div class="banner">
         <div class="mx-auto" style="width: 1000px;">
@@ -65,21 +62,22 @@ $menu = mysqli_fetch_assoc($query);
                         }
                         ?>
                     <?php endif; ?>
-                    <form action="proses-edit-produk.php" method="POST">
+                    <form action="proses-edit-produk.php" method="POST" enctype="multipart/form-data">
                         <input type="hidden" name="id" value="<?php echo $menu['id'] ?>">
 
                         <div class="mb-3 row">
-                            <label for="nim" class="col-sm-2 col-form-label">Nama Menu</label>
+                            <label for="nama" class="col-sm-2 col-form-label">Nama Menu</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" id="nama" name="nama_produk" value="<?php echo $menu['nama_produk'] ?>">
                             </div>
                         </div>
 
                         <div class="mb-3 row">
-                            <label for="nama" class="col-sm-2 col-form-label">Kategori</label>
+                            <label for="kategori" class="col-sm-2 col-form-label">Kategori</label>
                             <div class="col-sm-10">
                                 <select class="form-control" id="kategori" name="kategori">
-                                    <option value="makanan" <?php if ($menu['kategori'] == "makanan") echo "selected" ?>>Makanan</option>
+                                    <option value="makanan_berat" <?php if ($menu['kategori'] == "makanan_berat") echo "selected" ?>>Makanan Berat</option>
+                                    <option value="makanan_ringan" <?php if ($menu['kategori'] == "makanan_ringan") echo "selected" ?>>Makanan Ringan</option>
                                     <option value="minuman" <?php if ($menu['kategori'] == "minuman") echo "selected" ?>>Minuman</option>
                                 </select>
                             </div>
@@ -93,36 +91,33 @@ $menu = mysqli_fetch_assoc($query);
                         </div>
 
                         <div class="mb-3 row">
-                            <label for="alamat" class="col-sm-2 col-form-label">Harga</label>
+                            <label for="harga" class="col-sm-2 col-form-label">Harga</label>
                             <div class="col-sm-10">
                                 <input type="number" class="form-control" id="harga" name="harga_produk" value="<?php echo $menu['harga_produk'] ?>">
                             </div>
                         </div>
 
                         <div class="mb-3 row">
-                            <label for="alamat" class="col-sm-2 col-form-label">Stok</label>
+                            <label for="stok" class="col-sm-2 col-form-label">Stok</label>
                             <div class="col-sm-10">
                                 <input type="number" class="form-control" id="stok" name="stok" value="<?php echo $menu['stok'] ?>">
                             </div>
                         </div>
 
                         <div class="mb-3 row">
-                            <label for="alamat" class="col-sm-2 col-form-label">Gambar</label>
+                            <label for="gambar" class="col-sm-2 col-form-label">Gambar</label>
                             <div class="col-sm-10">
                                 <img src="uploads/<?php echo $menu['gambar'] ?>" style="width: 100px;" class="mb-2">
                                 <input type="file" class="form-control" id="gambar" name="gambar">
                             </div>
                         </div>
-                        <button type="submit" name="simpan" id="simpan" class="btn btn-primary px-4 py-2 me-3 ">Simpan</button>
+                        <button type="submit" name="simpan" id="simpan" class="btn btn-primary px-4 py-2 me-3">Simpan</button>
                         <a href="output-menu.php"><button class="btn btn-outline-secondary me-2 my-3 px-4" type="button">Batal</button></a>
                     </form>
                 </div>
             </div>
         </div>
-
     </div>
-
-
 </body>
 
 </html>

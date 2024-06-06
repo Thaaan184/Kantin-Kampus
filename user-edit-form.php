@@ -34,7 +34,7 @@ if ($user['role'] == 'admin') {
 
 <body>
     <header>
-        <a href="index.php" class="logo">kantinSekul</a>
+        <a href="index.php" class="logo">Kantin Online</a>
         <ul class="navigasi">
             <li><a class="nav-item nav-link active" href="output-menu.php">Edit Menu</a></li>
             <li><a class="nav-item nav-link active" href="tambah-produk.php">Tambah menu</a></li>

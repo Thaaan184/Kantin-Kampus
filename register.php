@@ -1,93 +1,90 @@
 <?php
-
 require('config.php');
-
 session_start();
-
 $error = '';
 $sukses = '';
 
 if (isset($_POST['submit'])) {
-
     $username = stripslashes($_POST['username']);
-
     $username = mysqli_real_escape_string($koneksi, $username);
-    $name     = stripslashes($_POST['name']);
-    $name     = mysqli_real_escape_string($koneksi, $name);
-    $email    = stripslashes($_POST['email']);
-    $email    = mysqli_real_escape_string($koneksi, $email);
+    $name = stripslashes($_POST['name']);
+    $name = mysqli_real_escape_string($koneksi, $name);
+    $email = stripslashes($_POST['email']);
+    $email = mysqli_real_escape_string($koneksi, $email);
     $password = stripslashes($_POST['password']);
     $password = mysqli_real_escape_string($koneksi, $password);
-    $role     = 'user';
+    $role = 'user';
 
-    if (!empty(trim($name)) && !empty(trim($username)) && !empty(trim($email)) && !empty(trim($password))) {
+    // Validate email format
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $error = 'Format email tidak valid';
+    }
+
+    // Check password length
+    if (strlen($password) < 8) {
+        $error = 'Password harus lebih dari 8 karakter';
+    }
+
+    if (!$error && !empty(trim($name)) && !empty(trim($username)) && !empty(trim($email)) && !empty(trim($password))) {
         if (cek_nama($username, $koneksi) == 0) {
-            $pass  = password_hash($password, PASSWORD_DEFAULT);
-            $query = "INSERT INTO users (username,name,email, password, role) VALUES ('$username','$name','$email','$pass', '$role')";
-            $result   = mysqli_query($koneksi, $query);
+            $pass = password_hash($password, PASSWORD_DEFAULT);
+            $query = "INSERT INTO users (username, name, email, password, role) VALUES ('$username', '$name', '$email', '$pass', '$role')";
+            $result = mysqli_query($koneksi, $query);
             if ($result) {
                 header('Location: register.php?status=sukses');
+                exit();
             } else {
-                $error =  'Registrasi Gagal !!';
+                $error = 'Registrasi Gagal !!';
             }
         } else {
-            $error =  'Username sudah terdaftar !!';
+            $error = 'Username sudah terdaftar !!';
         }
     } else {
-        $error =  'Data tidak boleh kosong !!';
+        if (!$error) {
+            $error = 'Data tidak boleh kosong !!';
+        }
     }
 }
 
-function cek_nama($username, $koneksi)
-{
+function cek_nama($username, $koneksi) {
     $username = mysqli_real_escape_string($koneksi, $username);
     $query = "SELECT * FROM users WHERE username = '$username'";
-    if ($result = mysqli_query($koneksi, $query)) return mysqli_num_rows($result);
+    $result = mysqli_query($koneksi, $query);
+    return mysqli_num_rows($result);
 }
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Register Page</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
     <link rel="stylesheet" href="style2.css">
+    <link href="https://fonts.googleapis.com/css2?family=Palanquin+Dark&display=swap" rel="stylesheet">
 </head>
-
 <body>
     <header>
-        <a href="login.php" class="logo">Beauty Basics</a>
+        <a href="login.php" class="logo">Kantin Online</a>
     </header>
     <div class="banner">
-        <div class="mx-auto" style="width : 500px;">
+        <div class="mx-auto" style="width: 500px;">
             <div class="card">
                 <div class="card-body">
-
                     <div class="justify-content-center">
                         <form class="form-container" action="register.php" method="POST">
                             <h4 class="text-center font-weight-bold"> Registrasi </h4>
-                            <?php
-                            if ($error) {
-                            ?>
+                            <?php if ($error): ?>
                                 <div class="alert alert-danger" role="alert">
-                                    <?php echo $error ?>
+                                    <?= $error ?>
                                 </div>
-                            <?php
-                                header("refresh:3;url=register.php");
-                            }
-                            ?>
-                            <?php if (isset($_GET['status'])) : ?>
-                                <?php
-                                if ($_GET['status'] == 'sukses') {
-                                ?>
-                                    <div class="alert alert-success" role="alert">Registrasi Berhasil</div>
-                                <?php
-                                    header("refresh:3;url=login.php");
-                                }
-                                ?>
+                            <?php endif; ?>
+                            <?php if (isset($_GET['status']) && $_GET['status'] == 'sukses'): ?>
+                                <div class="alert alert-success" role="alert">
+                                    Registrasi Berhasil
+                                </div>
+                                <?php header("refresh:3;url=login.php"); ?>
                             <?php endif; ?>
                             <div class="form-group">
                                 <label for="name">Nama</label>
@@ -95,7 +92,7 @@ function cek_nama($username, $koneksi)
                             </div>
                             <div class="form-group">
                                 <label for="InputEmail">Alamat Email</label>
-                                <input type="email" class="form-control" id="InputEmail" name="email" aria-describeby="emailHelp" placeholder="Masukkan email">
+                                <input type="email" class="form-control" id="InputEmail" name="email" placeholder="Masukkan email">
                             </div>
                             <div class="form-group">
                                 <label for="username">Username</label>
@@ -112,10 +109,8 @@ function cek_nama($username, $koneksi)
                         </form>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
 </body>
-
 </html>

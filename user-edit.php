@@ -22,7 +22,7 @@ $suksesedit = "Berhasil Mengedit Data";
 
 <body>
     <header>
-        <a href="index.php" class="logo">Beauty Basics</a>
+        <a href="index.php" class="logo">Kantin Online</a>
         <ul class="navigasi">
             <li><a class="nav-item nav-link active" href="output-menu.php">Edit Produk</a></li>
             <li><a class="nav-item nav-link active" href="tambah-produk.php">Tambah Produk</a></li>

@@ -15,7 +15,7 @@ $suksesedit = "Berhasil Mengedit Data";
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daftar Produk</title>
+    <title>Daftar Produk | Kantin Online</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel="stylesheet" href="style2.css">
     <link href="https://fonts.googleapis.com/css2?family=Palanquin+Dark&display=swap" rel="stylesheet">
@@ -23,15 +23,14 @@ $suksesedit = "Berhasil Mengedit Data";
 
 <body>
     <header>
-        <a href="index.php" class="logo">Beauty Basics</a>
+        <a href="index.php" class="logo">Kantin Online</a>
         <ul class="navigasi">
             <li><a class="nav-item nav-link active" href="output-menu.php" style="color: white; font-weight: 600;">Edit Produk</a></li>
             <li><a class="nav-item nav-link active" href="tambah-produk.php">Tambah Produk</a></li>
             <li><a class="nav-item nav-link active" href="tambah-user.php">Tambah User</a></li>
-            <li><a class="nav-item nav-link active" href="user-edit.php">Edit user</a></li>
+            <li><a class="nav-item nav-link active" href="user-edit.php">Edit User</a></li>
             <li><a class="nav-item nav-link active" href="logout.php">Logout</a></li>
         </ul>
-
     </header>
     <div class="banner">
         <div class="mx-auto" style="width: 1100px;">
@@ -97,7 +96,7 @@ $suksesedit = "Berhasil Mengedit Data";
                             </tr>
                         <tbody>
                             <?php
-                            $sql        = "SELECT *FROM menu";
+                            $sql        = "SELECT * FROM menu";
                             $query      = mysqli_query($koneksi, $sql);
                             $urut       = 1;
                             while ($menu = mysqli_fetch_assoc($query)) {
@@ -114,7 +113,7 @@ $suksesedit = "Berhasil Mengedit Data";
                                     <td scope="row"><?php echo $nama_produk ?></td>
                                     <td scope="row"><?php echo $kategori ?></td>
                                     <td scope="row"><?php echo $deskripsi_produk ?></td>
-                                    <td scope="row"><?php echo $harga_produk ?></td>
+                                    <td scope="row">Rp. <?php echo number_format($harga_produk, 0, ',', '.'); ?></td>
                                     <td scope="row"><?php echo $stok ?></td>
                                     <td style="text-align: center;"><img src="uploads/<?php echo $gambar ?>" style="width: 90px;"></td>
                                     <td scope="row">

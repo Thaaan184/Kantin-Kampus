@@ -1,0 +1,99 @@
+.mx-auto {
+    width: 1000px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Palanquin Dark', sans-serif;
+}
+
+header {
+    position: absolute;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10 px 100px;
+    z-index: 10;
+    background: #04344c;
+}
+
+.logo {
+    position: relative;
+    right: 60px;
+    font-size: 2em;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+    padding-left: 100px;
+}
+
+.logo:hover {
+    color: #c4cfd4;
+}
+
+.navigasi {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 10px 0;
+}
+
+.navigasi li {
+    list-style: none;
+    margin: 0 10px;
+}
+
+.navigasi li a {
+    color: #b5b8d1;
+    font-size: 1.1em;
+    text-decoration: none;
+    font-weight: 500;
+    letter-spacing: 1px;
+}
+
+.navigasi li a:hover {
+    color: #ffffff;
+    font-weight: 600;
+}
+
+#hoper {
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.banner {
+    background: #c4cfd4;
+    padding: 100px 100px 50px;
+    min-height: 100vh;
+}
+
+.content {
+    max-width: 700px;
+}
+
+.content p {
+    font-size: 1em;
+    color: rgb(0, 0, 0);
+}
+
+.image {
+    max-width: 275px;
+    margin-bottom: 30px;
+}
+
+h3 {
+    text-align: center;
+}
+
+#body_card {
+    position: relative;
+    width: 60vw;
+    min-height: 450px;
+    border-radius: 8px;
+    padding: 15px;
+    background-color: #eaebf3;
+    box-shadow: 0px 0px 8px 4px #00000038;
+}

@@ -1,12 +1,26 @@
 <?php
-
 include("config.php");
 session_start();
 
-//ambil id dari query string
-$id = $_GET['id'];
+// Check if the user is logged in
+$is_logged_in = isset($_SESSION['username']);
+$namaos = $is_logged_in ? $_SESSION['username'] : null;
+$nameos = '';
+$balance = 0;
+$role = '';
 
-// buat query untuk ambil data dari database
+// If user is logged in, retrieve user information
+if ($is_logged_in) {
+    $sql = "SELECT * FROM users WHERE username='$namaos'";
+    $query = mysqli_query($koneksi, $sql);
+    $user_info = mysqli_fetch_assoc($query);
+    $nameos = $user_info['name'];
+    $balance = $user_info['balance'];
+    $role = $user_info['role'];
+}
+
+// Retrieve product information from query string
+$id = $_GET['id'];
 $sql = "SELECT * FROM menu WHERE id = '$id'";
 $query = mysqli_query($koneksi, $sql);
 $menu = mysqli_fetch_assoc($query);
@@ -17,13 +31,14 @@ $nama_produk = $menu['nama_produk'];
 $sukses = "";
 $error = "";
 
-$nama = $_SESSION['username'];
-$sql2 = "SELECT * FROM users WHERE username = '$nama'";
-$query2 = mysqli_query($koneksi, $sql2);
-while ($user = mysqli_fetch_assoc($query2)) {
-    $namaa      = $user['name'];
-    $balance    = $user['balance'];
-    $role       = $user['role'];
+if ($is_logged_in) {
+    $nama = $_SESSION['username'];
+    $sql2 = "SELECT * FROM users WHERE username = '$nama'";
+    $query2 = mysqli_query($koneksi, $sql2);
+    $user = mysqli_fetch_assoc($query2);
+    $namaa = $user['name'];
+    $balance = $user['balance'];
+    $role = $user['role'];
 }
 
 if (isset($_POST['beli'])) {
@@ -73,7 +88,6 @@ if (isset($_POST['ulas'])) {
         $sukses = "Terima Kasih sudah makan di kantin kami :)";
     }
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -84,29 +98,29 @@ if (isset($_POST['ulas'])) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-uWxY/CJNBR+1zjPWmfnSnVxwRheevXITnMqoEIeG1LJrdI0GlVs/9cVSyPYXdcSF" crossorigin="anonymous">
-    <link rel="stylesheet" href="style2.css">
+    <link rel="stylesheet" href="style2.css?v=<?php echo time(); ?>">
     <link href="https://fonts.googleapis.com/css2?family=Palanquin+Dark&display=swap" rel="stylesheet">
     <title>Halaman Transaksi</title>
 </head>
 
 <body>
     <header>
-        <a href="index.php" class="logo">Kantin Online</a>
+        <a href="index.php"><img src="image/logo-putih.png" class="upn"></a>
         <ul class="navigasi">
-            <?php
-            if ($role == 'admin') {
-            ?>
+            <?php if ($role == 'admin') { ?>
                 <li><a class="nav-item nav-link active" href="output-menu.php">Edit Produk</a></li>
                 <li><a class="nav-item nav-link active" href="tambah-produk.php">Tambah Produk</a></li>
                 <li><a class="nav-item nav-link active" href="tambah-user.php">Tambah User</a></li>
                 <li><a class="nav-item nav-link active" href="user-edit.php">Edit User</a></li>
-            <?php
-            } else { ?>
+            <?php } else { ?>
                 <li><a class="nav-item nav-link active" href="index.php" style="color: white;">Beranda</a></li>
-            <?php
-            }
-            ?>
-            <li><a class="nav-item nav-link active" href="logout.php">Logout</a></li>
+            <?php } ?>
+            <?php if ($is_logged_in) { ?>
+                <li><a class="nav-item nav-link active" href="logout.php">Logout</a></li>
+            <?php } else { ?>
+                <li><a class="nav-item nav-link active" href="login.php">Login</a></li>
+                <li><a class="nav-item nav-link active" href="register.php">Register</a></li>
+            <?php } ?>
         </ul>
     </header>
     <div class="banner">
@@ -116,24 +130,16 @@ if (isset($_POST['ulas'])) {
                 <div class="card-body">
                     <section class="container-fluid my-4">
                         <section class="justify-content-center">
-                            <?php
-                            if ($error) {
-                            ?>
+                            <?php if ($error) { ?>
                                 <div class="alert alert-danger" role="alert">
                                     <?php echo $error ?>
                                 </div>
-                            <?php
-                            }
-                            ?>
-                            <?php
-                            if ($sukses) {
-                            ?>
+                            <?php } ?>
+                            <?php if ($sukses) { ?>
                                 <div class="alert alert-success" role="alert">
                                     <?php echo $sukses ?>
                                 </div>
-                            <?php
-                            }
-                            ?>
+                            <?php } ?>
                             <form action="" method="POST">
                                 <img src="uploads/<?php echo $menu['gambar'] ?>" class="col-md-5 me-3 rounded float-sm-start img-thumbnail" style="width:400px" alt="...">
                                 <h1><?php echo $menu['nama_produk'] ?></h1>
@@ -141,16 +147,18 @@ if (isset($_POST['ulas'])) {
                                 <h4 style="color:darkgoldenrod">Harga: Rp.<?php echo number_format($menu['harga_produk'], 0, ',', '.'); ?></h4>
                                 <h4>Stok: <?php echo $menu['stok'] ?></h4>
                                 <br>
-                                <div class="col-sm-3 mt-5">
-                                    <input type="number" class="form-control" id="banyak" name="banyak" placeholder="Masukkan jumlah..">
-                                </div>
-                                <button type="submit" class="btn btn-primary px-4 my-2" id="beli" name="beli">Beli</button>
+                                <?php if ($is_logged_in) { ?>
+                                    <div class="col-sm-3 mt-5">
+                                        <input type="number" class="form-control" id="banyak" name="banyak" placeholder="Masukkan jumlah..">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary px-4 my-2" id="beli" name="beli">Beli</button>
+                                <?php } else { ?>
+                                    <p>Silakan <a href="login.php">login</a> untuk membeli produk ini.</p>
+                                <?php } ?>
                                 <a href="index.php"><button class="btn btn-outline-primary me-2 my-3" type="button">Kembali</button></a>
                             </form>
 
-                            <?php
-                            if ($sukses) {
-                            ?>
+                            <?php if ($sukses) { ?>
                                 <div class="mb-3 row">
                                     <form action="" method="POST">
                                         <label>Berikan Ulasan Anda</label>
@@ -161,6 +169,20 @@ if (isset($_POST['ulas'])) {
                                         <a href="beli-produk.php"><button class="btn btn-secondary px-3 my-3" type="button">Batal</button></a>
                                     </form>
                                 </div>
+                            <?php } ?>
+
+                            <h4 style="color:darkgoldenrod">Review:</h4>
+                            <?php
+                            $sql = "SELECT * FROM review WHERE menu = '$nama_produk'";
+                            $query = mysqli_query($koneksi, $sql);
+                            while ($row = mysqli_fetch_assoc($query)) {
+                            ?>
+                                <div class="card mt-3 mb-3">
+                                    <h6 class="card-header">Ulasan dari <?php echo $row['nama']; ?></h6>
+                                    <div class="card-body">
+                                        <p><?php echo $row['ulasan']; ?></p>
+                                    </div>
+                                </div>
                             <?php
                             }
                             ?>
@@ -169,28 +191,10 @@ if (isset($_POST['ulas'])) {
                 </div>
             </div>
         </div>
-
-        <div class="mx-auto" style="width: 1000px;">
-            <div class="card mt-3">
-                <h4 class="card-header">Ulasan Konsumen</h4>
-                <div class="card-body">
-                    <?php
-                    $sql = "SELECT * FROM review WHERE menu = '$nama_produk'";
-                    $query = mysqli_query($koneksi, $sql);
-                    while ($ulasan = mysqli_fetch_assoc($query)) {
-                        $nama_pelanggan = $ulasan['nama'];
-                        $ulas = $ulasan['ulasan'];
-                    ?>
-                        <h5><?php echo $nama_pelanggan ?></h5>
-                        <p><?php echo $ulas ?></p>
-                        <hr>
-                    <?php
-                    }
-                    ?>
-                </div>
-            </div>
-        </div>
     </div>
+    <footer class="footer">
+        <h6 class="mt-2" style="color:white">&copy; Kantin Fasilkom</h6>
+    </footer>
 </body>
 
 </html>

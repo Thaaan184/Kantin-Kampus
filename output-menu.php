@@ -1,11 +1,29 @@
 <?php
 include("config.php");
-include("foradmin.php");
+// include("foradmin.php");
 
-$gagalhapus = "Gagal Menghapus Data";
-$gagaledit = "Gagal Mengedit Data";
-$sukseshapus = "Berhasil Menghapus Data";
-$suksesedit = "Berhasil Mengedit Data";
+session_start();
+$is_logged_in = isset($_SESSION['username']);
+$role = '';
+
+if ($is_logged_in) {
+    $username = $_SESSION['username'];
+    $sql = "SELECT role FROM users WHERE username='$username'";
+    $query = mysqli_query($koneksi, $sql);
+    $user_info = mysqli_fetch_assoc($query);
+    $role = $user_info['role'];
+}
+
+// Jika user bukan admin atau seller, redirect ke halaman index
+if ($role !== 'admin') {
+    header("Location: index.php");
+    exit();
+}
+
+// Query untuk mengambil produk berdasarkan penjual
+$sql = "SELECT * FROM menu";
+$query = mysqli_query($koneksi, $sql);
+
 ?>
 
 <!DOCTYPE html>
@@ -15,124 +33,89 @@ $suksesedit = "Berhasil Mengedit Data";
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daftar Produk | Kantin Online</title>
+    <title>Edit Produk</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <link rel="stylesheet" href="style2.css">
+    <link rel="stylesheet" href="style2.css?v=<?php echo time(); ?>">
     <link href="https://fonts.googleapis.com/css2?family=Palanquin+Dark&display=swap" rel="stylesheet">
 </head>
 
 <body>
     <header>
-        <a href="index.php" class="logo">Kantin Online</a>
+        <a href="login.php"><img src="image/logo-putih.png" class="upn"></a>
         <ul class="navigasi">
-            <li><a class="nav-item nav-link active" href="output-menu.php" style="color: white; font-weight: 600;">Edit Produk</a></li>
-            <li><a class="nav-item nav-link active" href="tambah-produk.php">Tambah Produk</a></li>
-            <li><a class="nav-item nav-link active" href="tambah-user.php">Tambah User</a></li>
-            <li><a class="nav-item nav-link active" href="user-edit.php">Edit User</a></li>
+            <?php if ($role == 'admin' || $role == 'seller') { ?>
+                <li><a class="nav-item nav-link active" href="output-menu.php">Edit Produk</a></li>
+                <li><a class="nav-item nav-link active" href="tambah-produk.php">Tambah Produk</a></li>
+                <?php if ($role == 'admin') { ?>
+                    <li><a class="nav-item nav-link active" href="tambah-user.php">Tambah User</a></li>
+                    <li><a class="nav-item nav-link active" href="user-edit.php">Edit User</a></li>
+                <?php } ?>
+            <?php } ?>
             <li><a class="nav-item nav-link active" href="logout.php">Logout</a></li>
         </ul>
     </header>
     <div class="banner">
-        <div class="mx-auto" style="width: 1100px;">
+        <div class="mx-auto">
             <div class="card">
-                <h4 class="card-header text-white bg-secondary">Daftar Produk</h4>
+                <h4 class="card-header">Edit Produk</h4>
                 <div class="card-body">
-                    <nav>
-                        <a href="tambah-produk.php"><button class="btn btn-outline-success me-2 my-3" type="button">[+] Tambah Baru</button></a>
-                    </nav>
                     <?php if (isset($_GET['status'])) : ?>
                         <?php
-                        if ($_GET['status'] == 'gagalhapus') {
+                        if ($_GET['status'] == 'gagal') {
                         ?>
                             <div class="alert alert-danger" role="alert">
-                                <?php echo $gagalhapus ?>
+                                <label>Gagal menghapus produk</label>
                             </div>
                         <?php
                             header("refresh:3;url=output-menu.php");
                         }
                         ?>
                         <?php
-                        if ($_GET['status'] == 'gagaledit') {
-                        ?>
-                            <div class="alert alert-danger" role="alert">
-                                <?php echo $gagaledit ?>
-                            </div>
-                        <?php
-                            header("refresh:3;url=output-menu.php");
-                        }
-                        ?>
-                        <?php
-                        if ($_GET['status'] == 'sukseshapus') {
+                        if ($_GET['status'] == 'sukses') {
                         ?>
                             <div class="alert alert-success" role="alert">
-                                <?php echo $sukseshapus ?>
-                            </div>
-                        <?php
-                            header("refresh:3;url=output-menu.php");
-                        }
-                        ?>
-                        <?php
-                        if ($_GET['status'] == 'suksesedit') {
-                        ?>
-                            <div class="alert alert-success" role="alert">
-                                <?php echo $suksesedit ?>
+                                <label>Berhasil menghapus produk</label>
                             </div>
                         <?php
                             header("refresh:3;url=output-menu.php");
                         }
                         ?>
                     <?php endif; ?>
-                    <table class="table">
+                    <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Nama Menu</th>
+                                <th scope="col">Nama Produk</th>
+                                <th scope="col">Nama Seller</th>
                                 <th scope="col">Kategori</th>
                                 <th scope="col">Deskripsi</th>
                                 <th scope="col">Harga</th>
                                 <th scope="col">Stok</th>
                                 <th scope="col">Gambar</th>
-                                <th scope="col"> </th>
+                                <th scope="col">Aksi</th>
                             </tr>
+                        </thead>
                         <tbody>
-                            <?php
-                            $sql        = "SELECT * FROM menu";
-                            $query      = mysqli_query($koneksi, $sql);
-                            $urut       = 1;
-                            while ($menu = mysqli_fetch_assoc($query)) {
-                                $id                 = $menu['id'];
-                                $nama_produk        = $menu['nama_produk'];
-                                $kategori           = $menu['kategori'];
-                                $deskripsi_produk   = $menu['deskripsi_produk'];
-                                $harga_produk       = $menu['harga_produk'];
-                                $stok               = $menu['stok'];
-                                $gambar             = $menu['gambar'];
-                            ?>
+                            <?php while ($menu = mysqli_fetch_array($query)) { ?>
                                 <tr>
-                                    <th scope="row"><?php echo $urut++ ?></th>
-                                    <td scope="row"><?php echo $nama_produk ?></td>
-                                    <td scope="row"><?php echo $kategori ?></td>
-                                    <td scope="row"><?php echo $deskripsi_produk ?></td>
-                                    <td scope="row">Rp. <?php echo number_format($harga_produk, 0, ',', '.'); ?></td>
-                                    <td scope="row"><?php echo $stok ?></td>
-                                    <td style="text-align: center;"><img src="uploads/<?php echo $gambar ?>" style="width: 90px;"></td>
-                                    <td scope="row">
-                                        <a href="edit-menu.php?id=<?php echo $id ?>"><button type="button" class="btn btn-warning">Edit</button></a>
-                                        <a href="hapus-produk.php?id=<?php echo $id ?>" onclick="return confirm('Yakin mau delete data?')"><button type="button" class="btn btn-danger ms-1">Delete</button></a>
+                                    <td><?php echo $menu['nama_produk']; ?></td>
+                                    <td><?php echo $menu['seller_username']; ?></td>
+                                    <td><?php echo $menu['kategori']; ?></td>
+                                    <td><?php echo $menu['deskripsi_produk']; ?></td>
+                                    <td><?php echo $menu['harga_produk']; ?></td>
+                                    <td><?php echo $menu['stok']; ?></td>
+                                    <td><img src="uploads/<?php echo $menu['gambar']; ?>" alt="<?php echo $menu['nama_produk']; ?>" width="100"></td>
+                                    <td>
+                                        <a href="edit-produk.php?id=<?php echo $menu['id']; ?>" class="btn btn-warning">Edit</a>
+                                        <a href="hapus-produk.php?id=<?php echo $menu['id']; ?>" class="btn btn-danger" onclick="return confirm('Apakah anda yakin ingin menghapus produk ini?')">Hapus</a>
                                     </td>
                                 </tr>
-                            <?php
-                            }
-                            ?>
-
+                            <?php } ?>
                         </tbody>
-                        </thead>
                     </table>
                 </div>
             </div>
         </div>
     </div>
-
 </body>
 
 </html>

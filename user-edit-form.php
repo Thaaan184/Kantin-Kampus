@@ -28,13 +28,13 @@ if ($user['role'] == 'admin') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Data User</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <link rel="stylesheet" href="style2.css">
+    <link rel="stylesheet" href="style2.css?v=<?php echo time(); ?>">
     <link href="https://fonts.googleapis.com/css2?family=Palanquin+Dark&display=swap" rel="stylesheet">
 </head>
 
 <body>
     <header>
-        <a href="index.php" class="logo">Kantin Online</a>
+        <a href="login.php"><img src="image/logo-putih.png" class="upn"></a>
         <ul class="navigasi">
             <li><a class="nav-item nav-link active" href="output-menu.php">Edit Menu</a></li>
             <li><a class="nav-item nav-link active" href="tambah-produk.php">Tambah menu</a></li>
@@ -104,6 +104,7 @@ if ($user['role'] == 'admin') {
                                 <select class="form-control" id="role" name="role">
                                     <option value="admin" <?php if ($user['role'] == "admin") echo "selected" ?>>Admin</option>
                                     <option value="user" <?php if ($user['role'] == "user") echo "selected" ?>>User</option>
+                                    <option value="seller" <?php if ($user['role'] == "seller") echo "selected" ?>>Seller</option>
                                 </select>
                             </div>
                         </div>

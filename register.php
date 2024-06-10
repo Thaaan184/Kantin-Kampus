@@ -46,7 +46,8 @@ if (isset($_POST['submit'])) {
     }
 }
 
-function cek_nama($username, $koneksi) {
+function cek_nama($username, $koneksi)
+{
     $username = mysqli_real_escape_string($koneksi, $username);
     $query = "SELECT * FROM users WHERE username = '$username'";
     $result = mysqli_query($koneksi, $query);
@@ -56,17 +57,19 @@ function cek_nama($username, $koneksi) {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Register Page</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
-    <link rel="stylesheet" href="style2.css">
+    <link rel="stylesheet" href="style2.css?v=<?php echo time(); ?>">
     <link href="https://fonts.googleapis.com/css2?family=Palanquin+Dark&display=swap" rel="stylesheet">
 </head>
+
 <body>
     <header>
-        <a href="login.php" class="logo">Kantin Online</a>
+        <a href="index.php"><img src="image/logo-putih.png" class="upn"></a>
     </header>
     <div class="banner">
         <div class="mx-auto" style="width: 500px;">
@@ -75,12 +78,12 @@ function cek_nama($username, $koneksi) {
                     <div class="justify-content-center">
                         <form class="form-container" action="register.php" method="POST">
                             <h4 class="text-center font-weight-bold"> Registrasi </h4>
-                            <?php if ($error): ?>
+                            <?php if ($error) : ?>
                                 <div class="alert alert-danger" role="alert">
                                     <?= $error ?>
                                 </div>
                             <?php endif; ?>
-                            <?php if (isset($_GET['status']) && $_GET['status'] == 'sukses'): ?>
+                            <?php if (isset($_GET['status']) && $_GET['status'] == 'sukses') : ?>
                                 <div class="alert alert-success" role="alert">
                                     Registrasi Berhasil
                                 </div>
@@ -113,4 +116,5 @@ function cek_nama($username, $koneksi) {
         </div>
     </div>
 </body>
+
 </html>

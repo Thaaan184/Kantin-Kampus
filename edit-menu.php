@@ -20,13 +20,13 @@ $menu = mysqli_fetch_assoc($query);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Menu</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <link rel="stylesheet" href="style2.css">
+    <link rel="stylesheet" href="style2.css?v=<?php echo time(); ?>">
     <link href="https://fonts.googleapis.com/css2?family=Palanquin+Dark&display=swap" rel="stylesheet">
 </head>
 
 <body>
     <header>
-        <a href="index.php" class="logo">Kantin Online</a>
+        <a href="login.php"><img src="image/logo-putih.png" class="upn"></a>
         <ul class="navigasi">
             <li><a class="nav-item nav-link active" href="output-menu.php">Edit Produk</a></li>
             <li><a class="nav-item nav-link active" href="tambah-produk.php">Tambah Produk</a></li>
@@ -36,7 +36,7 @@ $menu = mysqli_fetch_assoc($query);
         </ul>
     </header>
     <div class="banner">
-        <div class="mx-auto" style="width: 1000px;">
+        <div class="mx-auto" style="width: 1080px;">
             <div class="card">
                 <h4 class="card-header">Edit Data</h4>
                 <div class="card-body">

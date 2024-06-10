@@ -21,11 +21,12 @@ if (isset($_POST['simpan'])) {
   $harga_produk       = $_POST['harga_produk'];
   $stok               = $_POST['stok'];
   $gambar             = strval(htmlspecialchars(basename($_FILES["gambar"]["name"])));
+  $seller_username    = $_POST['seller_username']; // Dapatkan seller_username dari form
+
   // buat query
-  $sql = "insert into menu(id,nama_produk,kategori,deskripsi_produk,harga_produk,stok,gambar) values ('$id','$nama_produk','$kategori','$deskripsi_produk','$harga_produk','$stok','$gambar')";
+  $sql = "INSERT INTO menu (nama_produk, kategori, deskripsi_produk, harga_produk, stok, gambar, seller_username) VALUES ('$nama_produk', '$kategori', '$deskripsi_produk', '$harga_produk', '$stok', '$gambar', '$seller_username')";
   $query = mysqli_query($koneksi, $sql);
 }
-// apakah query simpan berhasil?
 
 // Check if $uploadOk is set to 0 by an error
 if ($uploadOk == 0) {

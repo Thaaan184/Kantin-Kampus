@@ -16,13 +16,13 @@ $sukses = '';
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Tambah User</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <link rel="stylesheet" href="style2.css">
+    <link rel="stylesheet" href="style2.css?v=<?php echo time(); ?>">
     <link href="https://fonts.googleapis.com/css2?family=Palanquin+Dark&display=swap" rel="stylesheet">
 </head>
 
 <body>
     <header>
-        <a href="index.php" class="logo">Kantin Online</a>
+        <a href="login.php"><img src="image/logo-putih.png" class="upn"></a>
         <ul class="navigasi">
             <li><a class="nav-item nav-link active" href="output-menu.php">Edit Produk</a></li>
             <li><a class="nav-item nav-link active" href="tambah-produk.php">Tambah Produk</a></li>
@@ -85,6 +85,7 @@ $sukses = '';
                                     <option value="">- Role -</option>
                                     <option value="admin" name="role">Admin</option>
                                     <option value="user" name="role">User</option>
+                                    <option value="seller" name="role">Seller</option>
                                 </select>
                             </div>
                             <button type="submit" name="submit" class="btn btn-primary btn-block">Tambah</button>

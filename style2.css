@@ -17,21 +17,40 @@ header {
     align-items: center;
     padding: 10 px 100px;
     z-index: 10;
-    background: #04344c;
+    background: linear-gradient(60deg, #19bb77f9 40%,#64CF6C,#D19100);
 }
+
+.upn{ 
+    width: 28%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10 px 100px;
+    margin-left: 5%;
+    z-index: 10;
+    transition: all 0.3s ease-in;
+}
+
+.upn:hover {
+    width: 30%;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10 px 100px;
+    margin-left: 5%;
+    z-index: 10;
+    filter: invert();
+    height: auto;
+}
+
 
 .logo {
     position: relative;
     right: 60px;
     font-size: 2em;
-    color: #fff;
     text-decoration: none;
     font-weight: 600;
     padding-left: 100px;
-}
-
-.logo:hover {
-    color: #c4cfd4;
+    transition: ease-in 0.2s all;
 }
 
 .navigasi {
@@ -47,7 +66,7 @@ header {
 }
 
 .navigasi li a {
-    color: #b5b8d1;
+    color: #cc8d4a;
     font-size: 1.1em;
     text-decoration: none;
     font-weight: 500;
@@ -65,7 +84,9 @@ header {
 }
 
 .banner {
-    background: #c4cfd4;
+    background-image: url(image/background.png);
+    background-size: cover;
+    /* background: red; */
     padding: 100px 100px 50px;
     min-height: 100vh;
 }
@@ -94,6 +115,12 @@ h3 {
     min-height: 450px;
     border-radius: 8px;
     padding: 15px;
-    background-color: #eaebf3;
+    background-color: #2034c9;
     box-shadow: 0px 0px 8px 4px #00000038;
+}
+body{
+    z-index: -0,9;
+    background-size: cover;
+    background-image: url(image\background.png)
+    
 }

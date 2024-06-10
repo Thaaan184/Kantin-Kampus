@@ -40,31 +40,38 @@ if (isset($_POST['submit'])) {
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Page</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="style2.css">
+    <link rel="stylesheet" href="style2.css ?v=<?php echo time(); ?>">
     <link href="https://fonts.googleapis.com/css2?family=Palanquin+Dark&display=swap" rel="stylesheet">
+
 </head>
+
 <body>
+
     <header>
-        <a href="login.php" class="logo">Kantin Online</a>
+        <a href="index.php"><img src="image/logo-putih.png" alt="logo" class="upn"></a>
     </header>
+
     <div class="banner">
         <div class="mx-auto" style="width: 500px; height: auto;">
+
             <div class="card">
                 <div class="card-body">
                     <section class="container-fluid mb-4">
                         <section class="justify-content-center">
                             <form class="form-container" action="login.php" method="POST">
                                 <h4 class="text-center font-weight-bold"> Sign-In </h4>
-                                <?php if ($error): ?>
+                                <?php if ($error) : ?>
                                     <div class="alert alert-danger" role="alert">
                                         <?= $error ?>
                                     </div>
                                 <?php endif; ?>
+
                                 <div class="form-group my-2">
                                     <label for="username">Username</label>
                                     <input type="text" class="form-control" id="username" name="username" placeholder="Masukkan username">
@@ -85,4 +92,5 @@ if (isset($_POST['submit'])) {
         </div>
     </div>
 </body>
+
 </html>

@@ -2,7 +2,27 @@
 <html lang="en">
 <?php
 include("config.php");
-include("foradmin.php");
+// include("foradmin.php");
+
+session_start();
+
+// Cek apakah user sudah login
+$is_logged_in = isset($_SESSION['username']);
+$role = '';
+
+if ($is_logged_in) {
+    $username = $_SESSION['username'];
+    $sql = "SELECT role FROM users WHERE username='$username'";
+    $query = mysqli_query($koneksi, $sql);
+    $user_info = mysqli_fetch_assoc($query);
+    $role = $user_info['role'];
+}
+
+// Jika user bukan admin atau seller, redirect ke halaman index
+if ($role !== 'admin' && $role !== 'seller') {
+    header("Location: index.php");
+    exit();
+}
 ?>
 
 <head>
@@ -11,18 +31,23 @@ include("foradmin.php");
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tambah Menu</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <link rel="stylesheet" href="style2.css">
+    <link rel="stylesheet" href="style2.css?v=<?php echo time(); ?>">
     <link href="https://fonts.googleapis.com/css2?family=Palanquin+Dark&display=swap" rel="stylesheet">
 </head>
 
 <body>
     <header>
-        <a href="index.php" class="logo">Kantin Online</a>
+        <a href="login.php"><img src="image/logo-putih.png" class="upn"></a>
         <ul class="navigasi">
-            <li><a class="nav-item nav-link active" href="output-menu.php">Edit Produk</a></li>
-            <li><a class="nav-item nav-link active" href="tambah-produk.php" style="color: white; font-weight: 600;">Tambah Produk</a></li>
-            <li><a class="nav-item nav-link active" href="tambah-user.php">Tambah User</a></li>
-            <li><a class="nav-item nav-link active" href="user-edit.php">Edit user</a></li>
+            <?php if ($role == 'admin' || $role == 'seller') { ?>
+                <li><a class="nav-item nav-link active" href="toko.php" style="color: white;">Toko Saya</a></li>
+                <li><a class="nav-item nav-link active" href="tambah-produk.php" style="color: white; font-weight: 600;">Tambah Produk</a></li>
+                <?php if ($role == 'admin') { ?>
+                    <li><a class="nav-item nav-link active" href="output-menu.php">Edit Produk</a></li>
+                    <li><a class="nav-item nav-link active" href="tambah-user.php">Tambah User</a></li>
+                    <li><a class="nav-item nav-link active" href="user-edit.php">Edit User</a></li>
+                <?php } ?>
+            <?php } ?>
             <li><a class="nav-item nav-link active" href="logout.php">Logout</a></li>
         </ul>
     </header>
@@ -95,6 +120,9 @@ include("foradmin.php");
                                 <input type="file" class="form-control" name="gambar">
                             </div>
                         </div>
+
+                        <!-- Input hidden untuk seller_username -->
+                        <input type="hidden" name="seller_username" value="<?php echo $username; ?>">
 
                         <span>
                             <input type="submit" name="simpan" value="Simpan Data" class="btn btn-primary">

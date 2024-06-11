@@ -77,7 +77,7 @@ if ($is_logged_in) {
                     </div>
                     <hr>
                 <?php } ?>
-                <?php if ($role == 'user' || $role == 'seller') { ?>
+                <?php if ($role == 'user') { ?>
                     <div class="alert alert-info" role="alert">
                         Punya toko? <a href="kontak-admin.php">Kontak admin</a>
                     </div>

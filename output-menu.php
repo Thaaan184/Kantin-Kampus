@@ -14,15 +14,18 @@ if ($is_logged_in) {
 }
 
 // Jika user bukan admin atau seller, redirect ke halaman index
-if ($role !== 'admin') {
+if ($role !== 'admin' && $role !== 'seller') {
     header("Location: index.php");
     exit();
 }
 
-// Query untuk mengambil produk berdasarkan penjual
-$sql = "SELECT * FROM menu";
+// Query untuk mengambil produk berdasarkan penjual jika seller
+if ($role == 'seller') {
+    $sql = "SELECT * FROM menu WHERE seller_username='$username'";
+} else {
+    $sql = "SELECT * FROM menu";
+}
 $query = mysqli_query($koneksi, $sql);
-
 ?>
 
 <!DOCTYPE html>
@@ -59,26 +62,18 @@ $query = mysqli_query($koneksi, $sql);
                 <h4 class="card-header">Edit Produk</h4>
                 <div class="card-body">
                     <?php if (isset($_GET['status'])) : ?>
-                        <?php
-                        if ($_GET['status'] == 'gagal') {
-                        ?>
+                        <?php if ($_GET['status'] == 'gagal') { ?>
                             <div class="alert alert-danger" role="alert">
                                 <label>Gagal menghapus produk</label>
                             </div>
-                        <?php
-                            header("refresh:3;url=output-menu.php");
-                        }
-                        ?>
-                        <?php
-                        if ($_GET['status'] == 'sukses') {
-                        ?>
+                            <?php header("refresh:3;url=output-menu.php"); ?>
+                        <?php } ?>
+                        <?php if ($_GET['status'] == 'sukses') { ?>
                             <div class="alert alert-success" role="alert">
                                 <label>Berhasil menghapus produk</label>
                             </div>
-                        <?php
-                            header("refresh:3;url=output-menu.php");
-                        }
-                        ?>
+                            <?php header("refresh:3;url=output-menu.php"); ?>
+                        <?php } ?>
                     <?php endif; ?>
                     <table class="table table-striped">
                         <thead>

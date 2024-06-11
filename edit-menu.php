@@ -32,12 +32,6 @@ if ($is_logged_in) {
     $role = $user_info['role'];
 }
 
-// // Check if user is admin
-// if ($role != 'admin' || $role != 'seller') {
-//     echo "Access denied. You do not have permission to access this page.";
-//     exit;
-// }
-// 
 ?>
 
 <!DOCTYPE html>

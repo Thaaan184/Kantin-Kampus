@@ -6,7 +6,6 @@ session_start();
 $is_logged_in = isset($_SESSION['username']);
 $namaos = $is_logged_in ? $_SESSION['username'] : null;
 $nameos = '';
-$balance = 0;
 $role = '';
 
 // Jika user sudah login, ambil informasi user
@@ -15,7 +14,6 @@ if ($is_logged_in) {
     $query = mysqli_query($koneksi, $sql);
     $user_info = mysqli_fetch_assoc($query);
     $nameos = $user_info['name'];
-    $balance = $user_info['balance'];
     $role = $user_info['role'];
 }
 ?>
@@ -76,12 +74,6 @@ if ($is_logged_in) {
                 <?php if ($is_logged_in) { ?>
                     <div class="d-flex justify-content-between align-items-center">
                         <h2>Selamat datang, <?php echo $nameos; ?></h2>
-                        <div>
-                            <span>
-                                Saldo: <?php echo 'Rp. ' . number_format((int)$balance, 2, ",", "."); ?>
-                                <a href="user-edit.php" class="btn btn-outline-success mx-2 pt-0 pb-1 px-3"> + </a>
-                            </span>
-                        </div>
                     </div>
                     <hr>
                 <?php } ?>

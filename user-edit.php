@@ -1,5 +1,27 @@
-<?php include("config.php");
-include("foradmin.php");
+<?php
+include("config.php");
+session_start();
+$namaos = strval($_SESSION['username']);
+
+
+if (!isset($_SESSION['username'])) {
+    $_SESSION['msg'] = 'anda harus login untuk mengakses halaman ini';
+    header('Location: login.php');
+}
+$sql = "SELECT * FROM users where username='$namaos'";
+$query = mysqli_query($koneksi, $sql);
+//mengecek apakah ada error ketika menjalankan query
+$no = 1;
+while ($ingfos = mysqli_fetch_assoc($query)) {
+    $role               = $ingfos['role'];
+}
+if ($role == "admin") {
+    echo "";
+} else {
+    header('Location: index.php?status=notadmin');
+}
+
+
 $gagalhapus = "Gagal Menghapus Data";
 $gagaledit = "Gagal Mengedit Data";
 $sukseshapus = "Berhasil Menghapus Data";
@@ -22,7 +44,7 @@ $suksesedit = "Berhasil Mengedit Data";
 
 <body>
     <header>
-         <a href="login.php" ><img  src="image/logo-putih.png" class="upn"></a>
+        <a href="login.php"><img src="image/logo-putih.png" class="upn"></a>
         <ul class="navigasi">
             <li><a class="nav-item nav-link active" href="output-menu.php">Edit Produk</a></li>
             <li><a class="nav-item nav-link active" href="tambah-produk.php">Tambah Produk</a></li>

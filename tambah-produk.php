@@ -2,7 +2,6 @@
 <html lang="en">
 <?php
 include("config.php");
-// include("foradmin.php");
 
 session_start();
 
@@ -39,14 +38,15 @@ if ($role !== 'admin' && $role !== 'seller') {
     <header>
         <a href="login.php"><img src="image/logo-putih.png" class="upn"></a>
         <ul class="navigasi">
-            <?php if ($role == 'admin' || $role == 'seller') { ?>
+            <?php if ($role == 'admin') { ?>
+                <li><a class="nav-item nav-link active" href="output-menu.php">Edit Produk</a></li>
+                <li><a class="nav-item nav-link active" href="tambah-produk.php" style="color: white; font-weight: 600;">Tambah Produk</a></li>
+                <li><a class="nav-item nav-link active" href="tambah-user.php">Tambah User</a></li>
+                <li><a class="nav-item nav-link active" href="user-edit.php">Edit User</a></li>
+            <?php } ?>
+            <?php if ($role == 'seller') { ?>
                 <li><a class="nav-item nav-link active" href="toko.php" style="color: white;">Toko Saya</a></li>
                 <li><a class="nav-item nav-link active" href="tambah-produk.php" style="color: white; font-weight: 600;">Tambah Produk</a></li>
-                <?php if ($role == 'admin') { ?>
-                    <li><a class="nav-item nav-link active" href="output-menu.php">Edit Produk</a></li>
-                    <li><a class="nav-item nav-link active" href="tambah-user.php">Tambah User</a></li>
-                    <li><a class="nav-item nav-link active" href="user-edit.php">Edit User</a></li>
-                <?php } ?>
             <?php } ?>
             <li><a class="nav-item nav-link active" href="logout.php">Logout</a></li>
         </ul>

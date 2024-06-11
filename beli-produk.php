@@ -6,7 +6,6 @@ session_start();
 $is_logged_in = isset($_SESSION['username']);
 $namaos = $is_logged_in ? $_SESSION['username'] : null;
 $nameos = '';
-$balance = 0;
 $role = '';
 
 // If user is logged in, retrieve user information
@@ -15,78 +14,64 @@ if ($is_logged_in) {
     $query = mysqli_query($koneksi, $sql);
     $user_info = mysqli_fetch_assoc($query);
     $nameos = $user_info['name'];
-    $balance = $user_info['balance'];
     $role = $user_info['role'];
 }
 
 // Retrieve product information from query string
 $id = $_GET['id'];
-$sql = "SELECT * FROM menu WHERE id = '$id'";
+$sql = "SELECT m.*, u.qris_image 
+        FROM menu m 
+        JOIN users u ON m.seller_username = u.username 
+        WHERE m.id = '$id'";
 $query = mysqli_query($koneksi, $sql);
 $menu = mysqli_fetch_assoc($query);
+
 $harga = $menu['harga_produk'];
 $kategori = $menu['kategori'];
 $nama_produk = $menu['nama_produk'];
+$qris_image = $menu['qris_image'];
 
 $sukses = "";
 $error = "";
 
-if ($is_logged_in) {
-    $nama = $_SESSION['username'];
-    $sql2 = "SELECT * FROM users WHERE username = '$nama'";
-    $query2 = mysqli_query($koneksi, $sql2);
-    $user = mysqli_fetch_assoc($query2);
-    $namaa = $user['name'];
-    $balance = $user['balance'];
-    $role = $user['role'];
-}
-
-if (isset($_POST['beli'])) {
+if (isset($_POST['beli']) && $is_logged_in) {
     $banyak = $_POST['banyak'];
-    if ($banyak == "") {
-        $banyak = 0;
-    }
-    $setok = $menu['stok'];
-    if ($setok == 0) {
-        $error = "Maaf, Stok " . $menu['nama_produk'] . " habis, silakan memilih menu lain";
-    } else {
-        if ($setok < $banyak) {
-            $error = "Maaf, Hanya bisa beli " . $setok . " " . $menu['nama_produk'];
-        } else {
-            $bayar = $harga * $banyak;
-            $saldo = $balance - $bayar;
-            $stok = $setok - $banyak;
-            if ($balance < $bayar) {
-                $p = $harga;
-                $b = 0;
-                while ($p < $balance) {
-                    $p = $p + $harga;
-                    $b = $b + 1;
-                }
-                $error = "Saldo Anda tidak cukup, Hanya bisa beli " . $b . " " . $menu['nama_produk'];
-            } else {
-                $sql3 = "UPDATE users SET balance = '$saldo' WHERE username = '$nama'";
-                $query1 = mysqli_query($koneksi, $sql3);
-                $sql4 = "UPDATE menu SET stok = '$stok' WHERE id = $id";
-                $query4 = mysqli_query($koneksi, $sql4);
+    $total_price = $harga * $banyak;
 
-                if ($query1) {
-                    $sukses = "Berhasil membeli " . $banyak . " " . $menu['nama_produk'];
-                } else {
-                    $error = "Transaksi gagal";
-                }
-            }
+    // Check stock
+    if ($menu['stok'] == 0) {
+        $error = "Maaf, Stok " . $menu['nama_produk'] . " habis, silakan memilih menu lain";
+    } elseif ($menu['stok'] < $banyak) {
+        $error = "Maaf, Hanya bisa beli " . $menu['stok'] . " " . $menu['nama_produk'];
+    } else {
+        // Save transaction
+        $sql = "INSERT INTO transactions (user_id, menu_id, quantity, total_price) VALUES ('$user_info[id]', '$menu[id]', '$banyak', '$total_price')";
+        if (mysqli_query($koneksi, $sql)) {
+            $transaction_id = mysqli_insert_id($koneksi);
+            $sukses = "Berhasil memilih $banyak $menu[nama_produk]. Silakan upload bukti pembayaran.";
+        } else {
+            $error = "Terjadi kesalahan. Silakan coba lagi.";
         }
     }
+} elseif (isset($_POST['beli'])) {
+    $error = "Anda harus login untuk membeli produk.";
 }
 
-if (isset($_POST['ulas'])) {
-    $ulasan = $_POST['ulasan'];
-    $sql = "INSERT INTO review (nama, menu, ulasan) VALUES ('$namaa', '$nama_produk', '$ulasan')";
-    $query = mysqli_query($koneksi, $sql);
-    if ($query) {
-        $sukses = "Terima Kasih sudah makan di kantin kami :)";
+if (isset($_POST['upload_bukti']) && $is_logged_in) {
+    $transaction_id = $_POST['transaction_id'];
+    $payment_proof = $_FILES['payment_proof']['name'];
+    $target_dir = "uploads/bukti/";
+    $target_file = $target_dir . basename($payment_proof);
+
+    if (move_uploaded_file($_FILES['payment_proof']['tmp_name'], $target_file)) {
+        $sql = "UPDATE transactions SET payment_proof = '$payment_proof', status = 'waiting' WHERE id = '$transaction_id'";
+        mysqli_query($koneksi, $sql);
+        $sukses = "Bukti pembayaran berhasil diupload. Menunggu konfirmasi.";
+    } else {
+        $error = "Terjadi kesalahan saat mengupload bukti pembayaran.";
     }
+} elseif (isset($_POST['upload_bukti'])) {
+    $error = "Anda harus login untuk mengupload bukti pembayaran.";
 }
 ?>
 
@@ -97,103 +82,95 @@ if (isset($_POST['ulas'])) {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-uWxY/CJNBR+1zjPWmfnSnVxwRheevXITnMqoEIeG1LJrdI0GlVs/9cVSyPYXdcSF" crossorigin="anonymous">
+    <title>Beli Produk | Kantin Online</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="style2.css?v=<?php echo time(); ?>">
     <link href="https://fonts.googleapis.com/css2?family=Palanquin+Dark&display=swap" rel="stylesheet">
-    <title>Halaman Transaksi</title>
 </head>
 
 <body>
     <header>
         <a href="index.php"><img src="image/logo-putih.png" class="upn"></a>
         <ul class="navigasi">
-            <?php if ($role == 'admin') { ?>
-                <li><a class="nav-item nav-link active" href="output-menu.php">Edit Produk</a></li>
-                <li><a class="nav-item nav-link active" href="tambah-produk.php">Tambah Produk</a></li>
-                <li><a class="nav-item nav-link active" href="tambah-user.php">Tambah User</a></li>
-                <li><a class="nav-item nav-link active" href="user-edit.php">Edit User</a></li>
-            <?php } else { ?>
-                <li><a class="nav-item nav-link active" href="index.php" style="color: white;">Beranda</a></li>
-            <?php } ?>
+            <li><a class="nav-item nav-link active" href="index.php" style="color: white;">Home</a></li>
             <?php if ($is_logged_in) { ?>
                 <li><a class="nav-item nav-link active" href="logout.php">Logout</a></li>
             <?php } else { ?>
                 <li><a class="nav-item nav-link active" href="login.php">Login</a></li>
-                <li><a class="nav-item nav-link active" href="register.php">Register</a></li>
             <?php } ?>
         </ul>
     </header>
     <div class="banner">
-        <div class="mx-auto" style="width: 1000px;">
-            <div class="card">
-                <h4 class="card-header">Halaman Transaksi</h4>
-                <div class="card-body">
-                    <section class="container-fluid my-4">
-                        <section class="justify-content-center">
-                            <?php if ($error) { ?>
-                                <div class="alert alert-danger" role="alert">
-                                    <?php echo $error ?>
-                                </div>
+        <div class="album py-5 bg-light">
+            <div class="container">
+                <h2>Beli Produk: <?php echo $nama_produk; ?></h2>
+                <hr>
+                <?php if ($sukses) { ?>
+                    <div class="alert alert-success"><?php echo $sukses; ?></div>
+                <?php } elseif ($error) { ?>
+                    <div class="alert alert-danger"><?php echo $error; ?></div>
+                <?php } ?>
+                <div class="row">
+                    <div class="col-md-6">
+                        <img src="uploads/<?php echo $menu['gambar']; ?>" class="img-fluid">
+                    </div>
+                    <div class="col-md-6">
+                        <h3>Harga: Rp. <?php echo number_format($harga, 0, ',', '.'); ?></h3>
+                        <h4>Kategori: <?php echo $kategori; ?></h4>
+                        <h5>Deskripsi:</h5>
+                        <p><?php echo $menu['deskripsi_produk']; ?></p>
+                        <form action="beli-produk.php?id=<?php echo $menu['id']; ?>" method="post">
+                            <div class="form-group">
+                                <label for="banyak">Jumlah:</label>
+                                <input type="number" class="form-control" name="banyak" id="banyak" min="1" max="<?php echo $menu['stok']; ?>" required>
+                            </div>
+                            <?php if ($is_logged_in) { ?>
+                                <button type="submit" name="beli" class="btn btn-primary">Beli</button>
+                            <?php } else { ?>
+                                <a href="login.php" class="btn btn-primary">Login untuk Beli</a>
                             <?php } ?>
-                            <?php if ($sukses) { ?>
-                                <div class="alert alert-success" role="alert">
-                                    <?php echo $sukses ?>
-                                </div>
-                            <?php } ?>
-                            <form action="" method="POST">
-                                <img src="uploads/<?php echo $menu['gambar'] ?>" class="col-md-5 me-3 rounded float-sm-start img-thumbnail" style="width:400px" alt="...">
-                                <h1><?php echo $menu['nama_produk'] ?></h1>
-                                <p><?php echo $menu['deskripsi_produk'] ?></p>
-                                <h4 style="color:darkgoldenrod">Harga: Rp.<?php echo number_format($menu['harga_produk'], 0, ',', '.'); ?></h4>
-                                <h4>Stok: <?php echo $menu['stok'] ?></h4>
-                                <br>
-                                <?php if ($is_logged_in) { ?>
-                                    <div class="col-sm-3 mt-5">
-                                        <input type="number" class="form-control" id="banyak" name="banyak" placeholder="Masukkan jumlah..">
-                                    </div>
-                                    <button type="submit" class="btn btn-primary px-4 my-2" id="beli" name="beli">Beli</button>
-                                <?php } else { ?>
-                                    <p>Silakan <a href="login.php">login</a> untuk membeli produk ini.</p>
-                                <?php } ?>
-                                <a href="index.php"><button class="btn btn-outline-primary me-2 my-3" type="button">Kembali</button></a>
-                            </form>
-
-                            <?php if ($sukses) { ?>
-                                <div class="mb-3 row">
-                                    <form action="" method="POST">
-                                        <label>Berikan Ulasan Anda</label>
-                                        <div class="col-sm-6">
-                                            <textarea class="form-control" id="ulasan" name="ulasan" placeholder="Tambahkan ulasan.."></textarea>
-                                        </div>
-                                        <button class="btn btn-success px-3 my-3" id="ulas" name="ulas">Submit</button>
-                                        <a href="beli-produk.php"><button class="btn btn-secondary px-3 my-3" type="button">Batal</button></a>
-                                    </form>
-                                </div>
-                            <?php } ?>
-
-                            <h4 style="color:darkgoldenrod">Review:</h4>
-                            <?php
-                            $sql = "SELECT * FROM review WHERE menu = '$nama_produk'";
-                            $query = mysqli_query($koneksi, $sql);
-                            while ($row = mysqli_fetch_assoc($query)) {
-                            ?>
-                                <div class="card mt-3 mb-3">
-                                    <h6 class="card-header">Ulasan dari <?php echo $row['nama']; ?></h6>
-                                    <div class="card-body">
-                                        <p><?php echo $row['ulasan']; ?></p>
-                                    </div>
-                                </div>
-                            <?php
-                            }
-                            ?>
-                        </section>
-                    </section>
+                        </form>
+                    </div>
                 </div>
+
+                <?php if ($sukses && isset($transaction_id)) { ?>
+                    <form action="beli-produk.php?id=<?php echo $menu['id']; ?>" method="post" enctype="multipart/form-data">
+                        <input type="hidden" name="transaction_id" value="<?php echo $transaction_id; ?>">
+                        <label for="payment_proof">Upload Bukti Pembayaran:</label>
+                        <input type="file" name="payment_proof" id="payment_proof" required>
+                        <button type="submit" name="upload_bukti" class="btn btn-primary">Upload</button>
+                    </form>
+                    <!-- Display QRIS Image -->
+                    <h2>QRIS Pembayaran</h2>
+                    <?php if ($qris_image) { ?>
+                        <img src="uploads/qris/<?php echo $qris_image; ?>" class="img-fluid" alt="QRIS Payment">
+                    <?php } else { ?>
+                        <div class="alert alert-warning">QRIS tidak tersedia untuk produk ini.</div>
+                    <?php } ?>
+                <?php } ?>
+
+                <!-- Notifikasi Status Pembayaran -->
+                <?php if ($is_logged_in) { ?>
+                    <h2>Status Pembayaran</h2>
+                    <?php
+                    $sql = "SELECT t.*, m.nama_produk 
+                            FROM transactions t
+                            JOIN menu m ON t.menu_id = m.id
+                            WHERE t.user_id = '$user_info[id]' AND t.status = 'waiting'";
+                    $query = mysqli_query($koneksi, $sql);
+                    while ($transaction = mysqli_fetch_assoc($query)) {
+                        echo "<div class='alert alert-info'>
+                                Transaksi untuk produk {$transaction['nama_produk']} sejumlah {$transaction['quantity']} sedang menunggu konfirmasi penjual.
+                              </div>";
+                    }
+                    ?>
+                <?php } ?>
             </div>
         </div>
     </div>
-    <footer class="footer">
-        <h6 class="mt-2" style="color:white">&copy; Kantin Fasilkom</h6>
+    <footer>
+        <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
     </footer>
 </body>
 

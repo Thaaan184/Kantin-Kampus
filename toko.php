@@ -6,7 +6,6 @@ session_start();
 $is_logged_in = isset($_SESSION['username']);
 $namaos = $is_logged_in ? $_SESSION['username'] : null;
 $nameos = '';
-$balance = 0;
 $role = '';
 
 // Jika user sudah login, ambil informasi user
@@ -15,13 +14,33 @@ if ($is_logged_in) {
     $query = mysqli_query($koneksi, $sql);
     $user_info = mysqli_fetch_assoc($query);
     $nameos = $user_info['name'];
-    $balance = $user_info['balance'];
     $role = $user_info['role'];
+    $qris_image = $user_info['qris_image'];
 }
 
 // Jika user bukan seller, redirect ke halaman index
 if ($role !== 'seller') {
     header("Location: index.php");
+    exit();
+}
+
+// Upload QRIS
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['qris_image'])) {
+    $qris_image = $_FILES['qris_image']['name'];
+    $target_dir = "uploads/qris/";
+    $target_file = $target_dir . basename($qris_image);
+
+    if ($_FILES['qris_image']['size'] > 500000) {
+        $error = "Sorry, your file is too large.";
+    } elseif (move_uploaded_file($_FILES['qris_image']['tmp_name'], $target_file)) {
+        $sql = "UPDATE users SET qris_image = '$qris_image' WHERE username = '$namaos'";
+        mysqli_query($koneksi, $sql);
+    } else {
+        $error = "Sorry, there was an error uploading your file.";
+    }
+
+    // Refresh the page to show the updated QRIS image
+    header("Location: toko.php");
     exit();
 }
 ?>
@@ -54,15 +73,27 @@ if ($role !== 'seller') {
                 <?php if ($is_logged_in) { ?>
                     <div class="d-flex justify-content-between align-items-center">
                         <h2>Toko Saya - Selamat datang, <?php echo $nameos; ?></h2>
-                        <div>
-                            <span>
-                                Saldo: <?php echo 'Rp. ' . number_format((int)$balance, 2, ",", "."); ?>
-                                <a href="user-edit.php" class="btn btn-outline-success mx-2 pt-0 pb-1 px-3"> + </a>
-                            </span>
-                        </div>
                     </div>
                     <hr>
                 <?php } ?>
+
+                <!-- Upload QRIS Section -->
+                <h3>QRIS Saya</h3>
+                <?php if (isset($error)) { ?>
+                    <div class="alert alert-danger"><?php echo $error; ?></div>
+                <?php } ?>
+                <?php if (!empty($qris_image)) { ?>
+                    <div class="mb-3">
+                        <img src="uploads/qris/<?php echo $qris_image; ?>" alt="QRIS" style="max-width: 200px;">
+                    </div>
+                <?php } ?>
+                <form action="toko.php" method="post" enctype="multipart/form-data">
+                    <label for="qris_image"><?php echo !empty($qris_image) ? 'Ganti QRIS:' : 'Upload QRIS:'; ?></label>
+                    <input type="file" name="qris_image" id="qris_image" required>
+                    <button type="submit" class="btn btn-primary"><?php echo !empty($qris_image) ? 'Ganti QRIS' : 'Upload'; ?></button>
+                </form>
+                <hr>
+
                 <!-- Produk Saya Section -->
                 <h2 class="ms-4">Produk Saya</h2>
                 <hr>
@@ -97,6 +128,23 @@ if ($role !== 'seller') {
                         </div>
                     <?php } ?>
                 </div>
+
+                <!-- Notifikasi Pesanan Baru -->
+                <h2>Notifikasi Pesanan Baru</h2>
+                <?php
+                $sql = "SELECT t.*, u.name, m.nama_produk 
+                        FROM transactions t
+                        JOIN users u ON t.user_id = u.id
+                        JOIN menu m ON t.menu_id = m.id
+                        WHERE m.seller_username = '$namaos' AND t.status = 'waiting'";
+                $query = mysqli_query($koneksi, $sql);
+                while ($transaction = mysqli_fetch_assoc($query)) {
+                    echo "<div class='alert alert-info'>
+                            Pesanan baru dari {$transaction['name']} untuk produk {$transaction['nama_produk']} sejumlah {$transaction['quantity']} menunggu konfirmasi.
+                            <a href='proses-pesanan.php?id={$transaction['id']}' class='btn btn-primary'>Proses</a>
+                          </div>";
+                }
+                ?>
             </div>
         </div>
     </div>

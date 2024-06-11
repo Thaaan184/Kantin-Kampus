@@ -110,11 +110,7 @@ $suksesedit = "Berhasil Mengedit Data";
                                     <td scope="row"><?php echo $nama ?></td>
                                     <td scope="row"><?php echo $email ?></td>
                                     <td scope="row"><?php echo $balance ?></td>
-                                    <td scope="row"><?php if ($role != 'admin') {
-                                                        echo 'user';
-                                                    } else {
-                                                        echo 'admin';
-                                                    } ?></td>
+                                    <td scope="row"><?php echo $role ?></td>
                                     <td scope="row">
                                         <a href="user-edit-form.php?id=<?php echo $id ?>"><button type="button" class="btn btn-warning">Edit</button></a>
                                         <a href="hapus.php?id=<?php echo $id ?>" onclick="return confirm('Yakin mau delete data?')"><button type="button" class="btn btn-danger ms-1">Delete</button></a>

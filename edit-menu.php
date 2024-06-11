@@ -1,14 +1,43 @@
 <?php
-
 include("config.php");
 
-// ambil id dari query string
-$id = $_GET['id'];
+// Start session
+session_start();
 
-$sql = "SELECT * FROM menu WHERE id=$id";
-$query = mysqli_query($koneksi, $sql);
+// Fetch id from query string
+$id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+$is_logged_in = isset($_SESSION['username']);
+$namaos = $is_logged_in ? $_SESSION['username'] : null;
+$nameos = '';
+$role = '';
+
+// Fetch menu information
+$sql = "SELECT * FROM menu WHERE id = ?";
+$stmt = mysqli_prepare($koneksi, $sql);
+mysqli_stmt_bind_param($stmt, 'i', $id);
+mysqli_stmt_execute($stmt);
+$query = mysqli_stmt_get_result($stmt);
 $menu = mysqli_fetch_assoc($query);
 
+// If user is logged in, fetch user information
+if ($is_logged_in) {
+    $sql = "SELECT * FROM users WHERE username = ?";
+    $stmt = mysqli_prepare($koneksi, $sql);
+    mysqli_stmt_bind_param($stmt, 's', $namaos);
+    mysqli_stmt_execute($stmt);
+    $query = mysqli_stmt_get_result($stmt);
+    $user_info = mysqli_fetch_assoc($query);
+    $nameos = $user_info['name'];
+    $balance = $user_info['balance'];
+    $role = $user_info['role'];
+}
+
+// // Check if user is admin
+// if ($role != 'admin' || $role != 'seller') {
+//     echo "Access denied. You do not have permission to access this page.";
+//     exit;
+// }
+// 
 ?>
 
 <!DOCTYPE html>
@@ -28,10 +57,15 @@ $menu = mysqli_fetch_assoc($query);
     <header>
         <a href="login.php"><img src="image/logo-putih.png" class="upn"></a>
         <ul class="navigasi">
-            <li><a class="nav-item nav-link active" href="output-menu.php">Edit Produk</a></li>
-            <li><a class="nav-item nav-link active" href="tambah-produk.php">Tambah Produk</a></li>
-            <li><a class="nav-item nav-link active" href="tambah-user.php">Tambah User</a></li>
-            <li><a class="nav-item nav-link active" href="user-edit.php">Edit User</a></li>
+            <?php if ($role == 'admin') { ?>
+                <li><a class="nav-item nav-link active" href="output-menu.php">Edit Produk</a></li>
+                <li><a class="nav-item nav-link active" href="tambah-produk.php">Tambah Produk</a></li>
+                <li><a class="nav-item nav-link active" href="tambah-user.php">Tambah User</a></li>
+                <li><a class="nav-item nav-link active" href="user-edit.php">Edit User</a></li>
+            <?php } elseif ($role == 'seller') { ?>
+                <li><a class="nav-item nav-link active" href="toko.php">Toko Saya</a></li>
+                <li><a class="nav-item nav-link active" href="tambah-produk.php">Tambah Produk</a></li>
+            <?php } ?>
             <li><a class="nav-item nav-link active" href="logout.php">Logout</a></li>
         </ul>
     </header>

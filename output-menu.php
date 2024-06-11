@@ -105,7 +105,7 @@ $query = mysqli_query($koneksi, $sql);
                                     <td><?php echo $menu['stok']; ?></td>
                                     <td><img src="uploads/<?php echo $menu['gambar']; ?>" alt="<?php echo $menu['nama_produk']; ?>" width="100"></td>
                                     <td>
-                                        <a href="edit-produk.php?id=<?php echo $menu['id']; ?>" class="btn btn-warning">Edit</a>
+                                        <a href="edit-menu.php?id=<?php echo $menu['id']; ?>" class="btn btn-warning">Edit</a>
                                         <a href="hapus-produk.php?id=<?php echo $menu['id']; ?>" class="btn btn-danger" onclick="return confirm('Apakah anda yakin ingin menghapus produk ini?')">Hapus</a>
                                     </td>
                                 </tr>

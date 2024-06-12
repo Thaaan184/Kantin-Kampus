@@ -43,7 +43,7 @@ $query = mysqli_query($koneksi, $sql);
 
 <body>
     <header>
-        <a href="login.php"><img src="image/logo-putih.png" class="upn"></a>
+        <a href="login.php"><img src="image\logopolos.png" class="upn"></a>
         <ul class="navigasi">
             <?php if ($role == 'admin' || $role == 'seller') { ?>
                 <li><a class="nav-item nav-link active" href="output-menu.php">Edit Produk</a></li>

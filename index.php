@@ -59,6 +59,7 @@ if ($is_logged_in) {
                 <li><a class="nav-item nav-link active" href="tambah-produk.php">Tambah Produk</a></li>
             <?php } else { ?>
                 <li><a class="nav-item nav-link active" href="index.php" style="color: white;">Beranda</a></li>
+                <li><a class="nav-item nav-link active" href="payment-status.php">Status Pembayaran</a></li>
             <?php } ?>
             <?php if ($is_logged_in) { ?>
                 <li><a class="nav-item nav-link active" href="logout.php">Logout</a></li>

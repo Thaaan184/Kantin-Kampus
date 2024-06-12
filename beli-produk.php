@@ -45,7 +45,7 @@ if (isset($_POST['beli']) && $is_logged_in) {
         $error = "Maaf, Hanya bisa beli " . $menu['stok'] . " " . $menu['nama_produk'];
     } else {
         // Save transaction
-        $sql = "INSERT INTO transactions (user_id, menu_id, quantity, total_price) VALUES ('$user_info[id]', '$menu[id]', '$banyak', '$total_price')";
+        $sql = "INSERT INTO transactions (user_id, menu_id, quantity, total_price, status) VALUES ('$user_info[id]', '$menu[id]', '$banyak', '$total_price', 'pending')";
         if (mysqli_query($koneksi, $sql)) {
             $transaction_id = mysqli_insert_id($koneksi);
             $sukses = "Berhasil memilih $banyak $menu[nama_produk]. Silakan upload bukti pembayaran.";
@@ -65,8 +65,13 @@ if (isset($_POST['upload_bukti']) && $is_logged_in) {
 
     if (move_uploaded_file($_FILES['payment_proof']['tmp_name'], $target_file)) {
         $sql = "UPDATE transactions SET payment_proof = '$payment_proof', status = 'waiting' WHERE id = '$transaction_id'";
-        mysqli_query($koneksi, $sql);
-        $sukses = "Bukti pembayaran berhasil diupload. Menunggu konfirmasi.";
+        if (mysqli_query($koneksi, $sql)) {
+            $sukses = "Bukti pembayaran berhasil diupload. Menunggu konfirmasi.";
+            header("Location: payment-status.php");
+            exit();
+        } else {
+            $error = "Terjadi kesalahan saat mengupload bukti pembayaran.";
+        }
     } else {
         $error = "Terjadi kesalahan saat mengupload bukti pembayaran.";
     }
@@ -92,8 +97,9 @@ if (isset($_POST['upload_bukti']) && $is_logged_in) {
     <header>
         <a href="index.php"><img src="image/logo-putih.png" class="upn"></a>
         <ul class="navigasi">
-            <li><a class="nav-item nav-link active" href="index.php" style="color: white;">Home</a></li>
+            <li><a class="nav-item nav-link active" href="index.php" style="color: white;">Beranda</a></li>
             <?php if ($is_logged_in) { ?>
+                <li><a class="nav-item nav-link active" href="payment-status.php">Status Pembayaran</a></li>
                 <li><a class="nav-item nav-link active" href="logout.php">Logout</a></li>
             <?php } else { ?>
                 <li><a class="nav-item nav-link active" href="login.php">Login</a></li>
@@ -137,7 +143,7 @@ if (isset($_POST['upload_bukti']) && $is_logged_in) {
                     <form action="beli-produk.php?id=<?php echo $menu['id']; ?>" method="post" enctype="multipart/form-data">
                         <input type="hidden" name="transaction_id" value="<?php echo $transaction_id; ?>">
                         <label for="payment_proof">Upload Bukti Pembayaran:</label>
-                        <input type="file" name="payment_proof" id="payment_proof" required>
+                        <input type="file" name="payment_proof" id="payment_proof" accept="image" required>
                         <button type="submit" name="upload_bukti" class="btn btn-primary">Upload</button>
                     </form>
                     <!-- Display QRIS Image -->
@@ -147,23 +153,6 @@ if (isset($_POST['upload_bukti']) && $is_logged_in) {
                     <?php } else { ?>
                         <div class="alert alert-warning">QRIS tidak tersedia untuk produk ini.</div>
                     <?php } ?>
-                <?php } ?>
-
-                <!-- Notifikasi Status Pembayaran -->
-                <?php if ($is_logged_in) { ?>
-                    <h2>Status Pembayaran</h2>
-                    <?php
-                    $sql = "SELECT t.*, m.nama_produk 
-                            FROM transactions t
-                            JOIN menu m ON t.menu_id = m.id
-                            WHERE t.user_id = '$user_info[id]' AND t.status = 'waiting'";
-                    $query = mysqli_query($koneksi, $sql);
-                    while ($transaction = mysqli_fetch_assoc($query)) {
-                        echo "<div class='alert alert-info'>
-                                Transaksi untuk produk {$transaction['nama_produk']} sejumlah {$transaction['quantity']} sedang menunggu konfirmasi penjual.
-                              </div>";
-                    }
-                    ?>
                 <?php } ?>
             </div>
         </div>

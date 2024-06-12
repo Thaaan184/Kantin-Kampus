@@ -2,13 +2,14 @@
 include("config.php");
 session_start();
 
-// Mengecek apakah user sudah login
+// Check if the user is logged in
 $is_logged_in = isset($_SESSION['username']);
 $namaos = $is_logged_in ? $_SESSION['username'] : null;
 $nameos = '';
 $role = '';
+$qris_image = '';
 
-// Jika user sudah login, ambil informasi user
+// If user is logged in, retrieve user information
 if ($is_logged_in) {
     $sql = "SELECT * FROM users WHERE username='$namaos'";
     $query = mysqli_query($koneksi, $sql);
@@ -18,7 +19,7 @@ if ($is_logged_in) {
     $qris_image = $user_info['qris_image'];
 }
 
-// Jika user bukan seller, redirect ke halaman index
+// If user is not a seller, redirect to index page
 if ($role !== 'seller') {
     header("Location: index.php");
     exit();
@@ -40,6 +41,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['qris_image'])) {
     }
 
     // Refresh the page to show the updated QRIS image
+    header("Location: toko.php");
+    exit();
+}
+
+// Process Orders
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action'])) {
+    $transaction_id = $_POST['transaction_id'];
+    if ($_POST['action'] == 'konfirmasi') {
+        $sql = "UPDATE transactions SET status = 'processing' WHERE id = '$transaction_id'";
+        mysqli_query($koneksi, $sql);
+    } elseif ($_POST['action'] == 'batal') {
+        $sql = "UPDATE transactions SET status = 'canceled' WHERE id = '$transaction_id'";
+        mysqli_query($koneksi, $sql);
+    } elseif ($_POST['action'] == 'selesai') {
+        $sql = "UPDATE transactions SET status = 'ready' WHERE id = '$transaction_id'";
+        mysqli_query($koneksi, $sql);
+    }
+
+    // Refresh the page to show updated orders
     header("Location: toko.php");
     exit();
 }
@@ -132,19 +152,51 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['qris_image'])) {
                 <!-- Notifikasi Pesanan Baru -->
                 <h2>Notifikasi Pesanan Baru</h2>
                 <?php
-                $sql = "SELECT t.*, u.name, m.nama_produk 
+                $sql = "SELECT t.*, u.name, m.nama_produk, t.total_price 
                         FROM transactions t
                         JOIN users u ON t.user_id = u.id
                         JOIN menu m ON t.menu_id = m.id
-                        WHERE m.seller_username = '$namaos' AND t.status = 'waiting'";
+                        WHERE m.seller_username = '$namaos' AND t.status IN ('waiting', 'processing', 'ready')";
                 $query = mysqli_query($koneksi, $sql);
                 while ($transaction = mysqli_fetch_assoc($query)) {
-                    echo "<div class='alert alert-info'>
-                            Pesanan baru dari {$transaction['name']} untuk produk {$transaction['nama_produk']} sejumlah {$transaction['quantity']} menunggu konfirmasi.
-                            <a href='proses-pesanan.php?id={$transaction['id']}' class='btn btn-primary'>Proses</a>
-                          </div>";
-                }
+                    $action_buttons = '';
+                    if ($transaction['status'] == 'waiting') {
+                        $action_buttons = "
+                            <form action='toko.php' method='post'>
+                                <input type='hidden' name='transaction_id' value='{$transaction['id']}'><br>
+                                <button type='submit' name='action' value='konfirmasi' class='btn btn-success'>Konfirmasi</button>  
+                                <button type='submit' name='action' value='batal' class='btn btn-danger'>Batal</button>
+                            </form>
+                        ";
+                    } elseif ($transaction['status'] == 'processing') {
+                        $action_buttons = "
+                            <form action='toko.php' method='post'>
+                                <input type='hidden' name='transaction_id' value='{$transaction['id']}'><br>
+                                <button type='submit' name='action' value='selesai' class='btn btn-primary'>Selesai</button>
+                            </form>
+                        ";
+                    } elseif ($transaction['status'] == 'ready') {
+                        $action_buttons = "
+                            <p>Menunggu konfirmasi dari pembeli</p>
+                        ";
+                    }
                 ?>
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">Pesanan dari: <?php echo $transaction['name']; ?></h5>
+                            <p class="card-text">Produk: <?php echo $transaction['nama_produk']; ?></p>
+                            <p class="card-text">Jumlah: <?php echo $transaction['quantity']; ?></p>
+                            <p class="card-text">Total Harga: Rp. <?php echo number_format($transaction['total_price'], 0, ',', '.'); ?></p>
+                            <p class="card-text">Status: <?php echo $transaction['status']; ?></p>
+                            <!-- Display payment proof if available -->
+                            <?php if (!empty($transaction['payment_proof'])) { ?>
+                                <p class="card-text">Bukti Pembayaran:</p>
+                                <img src="uploads/bukti/<?php echo $transaction['payment_proof']; ?>" alt="Bukti Pembayaran" style="max-width: 200px;">
+                            <?php } ?>
+                            <?php echo $action_buttons; ?>
+                        </div>
+                    </div>
+                <?php } ?>
             </div>
         </div>
     </div>
@@ -152,6 +204,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['qris_image'])) {
         <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
         <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
     </footer>
+
 </body>
 
 </html>

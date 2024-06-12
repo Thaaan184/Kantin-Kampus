@@ -151,13 +151,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action'])) {
                 </div>
 
                 <!-- Notifikasi Pesanan Baru -->
-                <h2>Notifikasi Pesanan Baru</h2>
+                <h2>Histori Pesanan</h2>
                 <?php
                 $sql = "SELECT t.*, u.name, m.nama_produk, t.total_price 
                         FROM transactions t
                         JOIN users u ON t.user_id = u.id
                         JOIN menu m ON t.menu_id = m.id
-                        WHERE m.seller_username = '$namaos' AND t.status IN ('waiting', 'processing', 'ready')";
+                        WHERE m.seller_username = '$namaos' AND t.status IN ('canceled', 'finished')";
                 $query = mysqli_query($koneksi, $sql);
                 while ($transaction = mysqli_fetch_assoc($query)) {
                     $action_buttons = '';

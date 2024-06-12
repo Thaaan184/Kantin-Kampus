@@ -43,7 +43,7 @@ $query = mysqli_query($koneksi, $sql);
 
 <body>
     <header>
-        <a href="login.php"><img src="image/logo-putih.png" class="upn"></a>
+        <a href="login.php"><img src="image\logopolos.png" class="upn"></a>
         <ul class="navigasi">
             <?php if ($role == 'admin' || $role == 'seller') { ?>
                 <li><a class="nav-item nav-link active" href="output-menu.php">Edit Produk</a></li>
@@ -110,6 +110,19 @@ $query = mysqli_query($koneksi, $sql);
             </div>
         </div>
     </div>
+     <!-- Isi halaman -->
+     <footer>
+        <div class="container">
+            <p>&copy; 2024 Kantin Online. All rights reserved.</p>
+            <p>
+                <a href="#">Privacy Policy</a> |
+                <a href="#">Terms of Service</a> |
+                <a href="#">Contact Us</a>
+            </p>
+        </div>
+    </footer>
+    <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 </body>
 
 </html>

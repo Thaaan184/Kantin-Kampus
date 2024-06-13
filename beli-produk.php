@@ -66,9 +66,15 @@ if (isset($_POST['upload_bukti']) && $is_logged_in) {
     if (move_uploaded_file($_FILES['payment_proof']['tmp_name'], $target_file)) {
         $sql = "UPDATE transactions SET payment_proof = '$payment_proof', status = 'waiting' WHERE id = '$transaction_id'";
         if (mysqli_query($koneksi, $sql)) {
-            $sukses = "Bukti pembayaran berhasil diupload. Menunggu konfirmasi.";
-            header("Location: payment-status.php");
-            exit();
+            // Reduce stock
+            $sql = "UPDATE menu SET stok = stok - (SELECT quantity FROM transactions WHERE id = '$transaction_id') WHERE id = '$menu[id]'";
+            if (mysqli_query($koneksi, $sql)) {
+                $sukses = "Bukti pembayaran berhasil diupload. Menunggu konfirmasi.";
+                header("Location: payment-status.php");
+                exit();
+            } else {
+                $error = "Terjadi kesalahan saat mengurangi stok.";
+            }
         } else {
             $error = "Terjadi kesalahan saat mengupload bukti pembayaran.";
         }
@@ -88,13 +94,13 @@ if (isset($_POST['upload_bukti']) && $is_logged_in) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Beli Produk | Kantin Online</title>
-                       <!-- CSS -->
+    <!-- CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="style2.css?v=<?php echo time(); ?>">
     <link href="https://fonts.googleapis.com/css2?family=Palanquin+Dark&display=swap" rel="stylesheet">
 
-      <!-- JAVA SCRIPT -->
-      <script src="js\script.js"></script>
+    <!-- JAVA SCRIPT -->
+    <script src="js\script.js"></script>
 </head>
 
 <body>
@@ -147,7 +153,7 @@ if (isset($_POST['upload_bukti']) && $is_logged_in) {
                     <form action="beli-produk.php?id=<?php echo $menu['id']; ?>" method="post" enctype="multipart/form-data">
                         <input type="hidden" name="transaction_id" value="<?php echo $transaction_id; ?>">
                         <label for="payment_proof">Upload Bukti Pembayaran:</label>
-                        <input type="file" name="payment_proof" id="payment_proof" accept="image" required>
+                        <input type="file" name="payment_proof" id="payment_proof" accept="image/*" required>
                         <button type="submit" name="upload_bukti" class="btn btn-primary">Upload</button>
                     </form>
                     <!-- Display QRIS Image -->
@@ -161,18 +167,8 @@ if (isset($_POST['upload_bukti']) && $is_logged_in) {
             </div>
         </div>
     </div>
-     <!-- Isi halaman -->
-     <footer>
-        <div class="container">
-            <p>&copy; 2024 Kantin Online. All rights reserved.</p>
-            <p>
-                <a href="#">Privacy Policy</a> |
-                <a href="#">Terms of Service</a> |
-                <a href="#">Contact Us</a>
-            </p>
-        </div>
-     <!-- Isi halaman -->
-     <footer>
+    <!-- Isi halaman -->
+    <footer>
         <div class="container">
             <p>&copy; 2024 Kantin Online. All rights reserved.</p>
             <p>

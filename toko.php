@@ -52,8 +52,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action'])) {
         $sql = "UPDATE transactions SET status = 'processing' WHERE id = '$transaction_id'";
         mysqli_query($koneksi, $sql);
     } elseif ($_POST['action'] == 'batal') {
+        // Update transaction status to canceled
         $sql = "UPDATE transactions SET status = 'canceled' WHERE id = '$transaction_id'";
-        mysqli_query($koneksi, $sql);
+        if (mysqli_query($koneksi, $sql)) {
+            // Retrieve the transaction details
+            $sql = "SELECT menu_id, quantity FROM transactions WHERE id = '$transaction_id'";
+            $result = mysqli_query($koneksi, $sql);
+            $transaction = mysqli_fetch_assoc($result);
+
+            // Return the stock
+            $menu_id = $transaction['menu_id'];
+            $quantity = $transaction['quantity'];
+            $sql = "UPDATE menu SET stok = stok + $quantity WHERE id = '$menu_id'";
+            mysqli_query($koneksi, $sql);
+        }
     } elseif ($_POST['action'] == 'selesai') {
         $sql = "UPDATE transactions SET status = 'ready' WHERE id = '$transaction_id'";
         mysqli_query($koneksi, $sql);
@@ -73,13 +85,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action'])) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Toko Saya | Kantin Online</title>
-                        <!-- CSS -->
-                        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-                        <link rel="stylesheet" href="style2.css?v=<?php echo time(); ?>">
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="style2.css?v=<?php echo time(); ?>">
     <link href="https://fonts.googleapis.com/css2?family=Palanquin+Dark&display=swap" rel="stylesheet">
 
-      <!-- JAVA SCRIPT -->
-      <script src="js\script.js"></script>
+    <!-- JAVA SCRIPT -->
+    <script src="js\script.js"></script>
 </head>
 
 <body>
@@ -205,8 +217,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action'])) {
             </div>
         </div>
     </div>
-   <!-- Isi halaman -->
-   <footer>
+    <!-- Isi halaman -->
+    <footer>
         <div class="container">
             <p>&copy; 2024 Kantin Online. All rights reserved.</p>
             <p>

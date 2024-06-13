@@ -1,6 +1,6 @@
 .mx-auto {
     width: 1000px !important;
-    
+
 }
 
 .card {
@@ -19,13 +19,14 @@
     width: 500px;
 }
 
-.testimonial{
+.testimonial {
     position: relative;
     height: 750px;
     max-width: 750px;
     padding: 30px 0;
 }
-.kontener{
+
+.kontener {
     height: 100%;
     width: 100%;
     display: flex;
@@ -34,7 +35,7 @@
     border-radius: 2rem;
 }
 
-.testimonial .slide{ 
+.testimonial .slide {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -65,16 +66,16 @@ header {
     align-items: center;
     padding: 10 px 100px;
     z-index: 10;
-    background: linear-gradient(60deg, #19bb77f9 40%,#64CF6C,#D19100);
+    background: linear-gradient(60deg, #19bb77f9 40%, #64CF6C, #D19100);
 }
 
-.upn{ 
+.upn {
     width: 34%;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 10 px 100px;
-    margin-left: 5%;
+    margin-left: -2%;
     z-index: 10;
     transition: all 0.3s ease-in;
 }
@@ -84,11 +85,11 @@ header {
     justify-content: space-between;
     align-items: center;
     padding: 10 px 100px;
-    margin-left: 5%;
+    margin-left: 0%;
     z-index: 10;
     filter: invert();
     height: auto;
-    
+
 }
 
 .card {
@@ -167,8 +168,10 @@ header {
     margin-bottom: 30px;
 }
 
-.sabil{width: 30%;
-height: 30%;}
+.sabil {
+    width: 30%;
+    height: 30%;
+}
 
 h3 {
     text-align: center;
@@ -188,43 +191,60 @@ h3 {
 /* Styling untuk elemen footer */
 footer {
     background-image: url(image\gelombang.png);
-    background:linear-gradient(60deg, #0e5f14 40%,#4b5f0e,#5d491d);; /* Warna latar belakang gelap */
-    color: white; /* Warna teks putih */
-    text-align: center; /* Teks rata tengah */
-    padding: 20px 0; /* Padding atas dan bawah */
-    margin-top: 20px; /* Jarak dari elemen sebelumnya */
+    background: linear-gradient(60deg, #0e5f14 40%, #4b5f0e, #5d491d);
+    ;
+    /* Warna latar belakang gelap */
+    color: white;
+    /* Warna teks putih */
+    text-align: center;
+    /* Teks rata tengah */
+    padding: 20px 0;
+    /* Padding atas dan bawah */
+    margin-top: 20px;
+    /* Jarak dari elemen sebelumnya */
 }
 
 footer p {
-    margin: 0; /* Hilangkan margin default */
-    padding: 5px 0; /* Padding atas dan bawah pada paragraf */
+    margin: 0;
+    /* Hilangkan margin default */
+    padding: 5px 0;
+    /* Padding atas dan bawah pada paragraf */
 }
 
 footer a {
-    color: white; /* Warna tautan putih */
-    text-decoration: none; /* Hilangkan garis bawah pada tautan */
-    margin: 0 10px; /* Jarak horizontal antara tautan */
+    color: white;
+    /* Warna tautan putih */
+    text-decoration: none;
+    /* Hilangkan garis bawah pada tautan */
+    margin: 0 10px;
+    /* Jarak horizontal antara tautan */
 }
 
 footer a:hover {
-    text-decoration: underline; /* Garis bawah pada tautan saat di-hover */
+    text-decoration: underline;
+    /* Garis bawah pada tautan saat di-hover */
 }
 
 /* Styling untuk container di dalam footer */
 footer .container {
-    max-width: 1170px; /* Lebar maksimum */
-    margin: 0 auto; /* Tengah halaman */
+    max-width: 1170px;
+    /* Lebar maksimum */
+    margin: 0 auto;
+    /* Tengah halaman */
 }
 
 /* Responsive styling */
 @media (max-width: 768px) {
     footer {
-        padding: 10px 0; /* Kurangi padding atas dan bawah */
+        padding: 10px 0;
+        /* Kurangi padding atas dan bawah */
     }
 
     footer p,
     footer a {
-        padding: 5px; /* Kurangi padding pada paragraf dan tautan */
-        display: block; /* Tampilkan elemen sebagai blok */
+        padding: 5px;
+        /* Kurangi padding pada paragraf dan tautan */
+        display: block;
+        /* Tampilkan elemen sebagai blok */
     }
 }

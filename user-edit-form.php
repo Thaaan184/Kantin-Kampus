@@ -3,35 +3,86 @@ include("config.php");
 session_start();
 $namaos = strval($_SESSION['username']);
 
-
 if (!isset($_SESSION['username'])) {
     $_SESSION['msg'] = 'anda harus login untuk mengakses halaman ini';
     header('Location: login.php');
+    exit();
 }
-$sql = "SELECT * FROM users where username='$namaos'";
-$query = mysqli_query($koneksi, $sql);
-//mengecek apakah ada error ketika menjalankan query
-$no = 1;
-while ($ingfos = mysqli_fetch_assoc($query)) {
-    $role               = $ingfos['role'];
-}
-if ($role == "admin") {
-    echo "";
-} else {
-    header('Location: index.php?status=notadmin');
-}
-//ambil id dari query string
-$id = $_GET['id'];
 
-// buat query untuk ambil data dari database
+$sql = "SELECT * FROM users WHERE username='$namaos'";
+$query = mysqli_query($koneksi, $sql);
+
+while ($ingfos = mysqli_fetch_assoc($query)) {
+    $role = $ingfos['role'];
+}
+
+if ($role != "admin") {
+    header('Location: index.php?status=notadmin');
+    exit();
+}
+
+$id = $_GET['id'];
 $sql = "SELECT * FROM users WHERE id=$id";
 $query = mysqli_query($koneksi, $sql);
 $user = mysqli_fetch_assoc($query);
 
-if ($user['role'] == 'admin') {
-    $role = 'Admin';
-} else {
-    $role = 'User';
+$error = '';
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $id = intval($_POST['id']);
+    $username = mysqli_real_escape_string($koneksi, $_POST['username']);
+    $name = mysqli_real_escape_string($koneksi, $_POST['name']);
+    $email = mysqli_real_escape_string($koneksi, $_POST['email']);
+    $role = mysqli_real_escape_string($koneksi, $_POST['role']);
+    $password = mysqli_real_escape_string($koneksi, $_POST['password']);
+    $confirm_password = mysqli_real_escape_string($koneksi, $_POST['confirm_password']);
+
+    // Validate email format
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $error = 'Email tidak valid';
+    }
+
+    // Validate password length
+    if (!empty($password) && strlen($password) < 8) {
+        $error = 'Password harus minimal 8 karakter';
+    }
+
+    // Check if username or email already exists in the database, except for the current user
+    $sql_check = "SELECT * FROM users WHERE (username='$username' OR email='$email') AND id != $id";
+    $result_check = mysqli_query($koneksi, $sql_check);
+    if (mysqli_num_rows($result_check) > 0) {
+        $error = 'Username atau Email sudah terdaftar';
+    }
+
+    if (!empty($password) && $password !== $confirm_password) {
+        $error = 'Password dan Konfirmasi Password tidak sama';
+    }
+
+    if (empty($error)) {
+        if (!empty($password)) {
+            $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+            $sql = "UPDATE users SET 
+                    username='$username', 
+                    name='$name', 
+                    email='$email', 
+                    role='$role', 
+                    password='$hashed_password' 
+                    WHERE id=$id";
+        } else {
+            $sql = "UPDATE users SET 
+                    username='$username', 
+                    name='$name', 
+                    email='$email', 
+                    role='$role' 
+                    WHERE id=$id";
+        }
+
+        if (mysqli_query($koneksi, $sql)) {
+            header('Location: user-edit.php?id=' . $id . '&status=sukses');
+        } else {
+            $error = 'Gagal mengedit data';
+        }
+    }
 }
 
 ?>
@@ -63,8 +114,7 @@ if ($user['role'] == 'admin') {
             <li><a class="nav-item nav-link active" href="user-edit.php" style="color: white; font-weight: 600;">Edit user</a></li>
             <li><a class="nav-item nav-link active" href="report-review.php">Report Review</a></li>
             <li><a class="nav-item nav-link active" href="logout.php">Logout</a></li>
-
-    </header>
+        </ul>
     </header>
     <div class="banner">
         <div class="mx-auto">
@@ -72,16 +122,6 @@ if ($user['role'] == 'admin') {
                 <h4 class="card-header">Edit Data</h4>
                 <div class="card-body">
                     <?php if (isset($_GET['status'])) : ?>
-                        <?php
-                        if ($_GET['status'] == 'gagal') {
-                        ?>
-                            <div class="alert alert-danger" role="alert">
-                                <label>Gagal mengedit data</label>
-                            </div>
-                        <?php
-                            header("refresh:3;url=index.php");
-                        }
-                        ?>
                         <?php
                         if ($_GET['status'] == 'sukses') {
                         ?>
@@ -93,7 +133,12 @@ if ($user['role'] == 'admin') {
                         }
                         ?>
                     <?php endif; ?>
-                    <form action="proses-edit.php" method="POST">
+                    <?php if (!empty($error)) : ?>
+                        <div class="alert alert-danger" role="alert">
+                            <label><?php echo $error; ?></label>
+                        </div>
+                    <?php endif; ?>
+                    <form action="" method="POST">
                         <input type="hidden" name="id" value="<?php echo $user['id'] ?>" />
                         <div class="mb-3 row">
                             <label for="username" class="col-sm-2 col-form-label">Username</label>
@@ -123,7 +168,18 @@ if ($user['role'] == 'admin') {
                                 </select>
                             </div>
                         </div>
-
+                        <div class="mb-3 row">
+                            <label for="password" class="col-sm-2 col-form-label">Password</label>
+                            <div class="col-sm-10">
+                                <input type="password" class="form-control" id="password" name="password">
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="confirm_password" class="col-sm-2 col-form-label">Confirm Password</label>
+                            <div class="col-sm-10">
+                                <input type="password" class="form-control" id="confirm_password" name="confirm_password">
+                            </div>
+                        </div>
                         <span>
                             <input type="submit" name="simpan" value="Simpan Data" class="btn btn-primary">
                             <a href="user-edit.php"><input type="button" value="Kembali" class="btn btn-danger"></a>
@@ -131,10 +187,8 @@ if ($user['role'] == 'admin') {
                     </form>
                 </div>
             </div>
-
         </div>
     </div>
-    <!-- Isi halaman -->
     <footer>
         <div class="container">
             <p>&copy; 2024 Kantin Online. All rights reserved.</p>

@@ -13,6 +13,8 @@ if (isset($_POST['submit'])) {
     $email = mysqli_real_escape_string($koneksi, $email);
     $password = stripslashes($_POST['password']);
     $password = mysqli_real_escape_string($koneksi, $password);
+    $confirm_password = stripslashes($_POST['confirm_password']);
+    $confirm_password = mysqli_real_escape_string($koneksi, $confirm_password);
     $role = 'user';
 
     // Validate email format
@@ -25,7 +27,12 @@ if (isset($_POST['submit'])) {
         $error = 'Password harus lebih dari 8 karakter';
     }
 
-    if (!$error && !empty(trim($name)) && !empty(trim($username)) && !empty(trim($email)) && !empty(trim($password))) {
+    // Check if passwords match
+    if ($password !== $confirm_password) {
+        $error = 'Password dan konfirmasi password tidak cocok';
+    }
+
+    if (!$error && !empty(trim($name)) && !empty(trim($username)) && !empty(trim($email)) && !empty(trim($password)) && !empty(trim($confirm_password))) {
         if (cek_nama($username, $koneksi) == 0 && cek_email($email, $koneksi) == 0) {
             $pass = password_hash($password, PASSWORD_DEFAULT);
             $query = "INSERT INTO users (username, name, email, password, role) VALUES ('$username', '$name', '$email', '$pass', '$role')";
@@ -113,6 +120,10 @@ function cek_email($email, $koneksi)
                             <div class="form-group">
                                 <label for="InputPassword">Password</label>
                                 <input type="password" class="form-control" id="InputPassword" name="password" placeholder="Password">
+                            </div>
+                            <div class="form-group">
+                                <label for="ConfirmPassword">Konfirmasi Password</label>
+                                <input type="password" class="form-control" id="ConfirmPassword" name="confirm_password" placeholder="Konfirmasi Password">
                             </div>
                             <button type="submit" name="submit" class="btn btn-primary btn-block">Register</button>
                             <div class="form-footer mt-2">

@@ -26,16 +26,16 @@ if ($is_logged_in) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Halaman Depan | Kantin Online</title>
 
-                        <!-- CSS -->
+    <!-- CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="style2.css?v=<?php echo time(); ?>">
     <link href="https://fonts.googleapis.com/css2?family=Palanquin+Dark&display=swap" rel="stylesheet">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
-      <!-- JAVA SCRIPT -->
-      <script src="js\script.js"></script>
+    <!-- JAVA SCRIPT -->
+    <script src="js\script.js"></script>
     <script src="js\swiper-bundle.min.js"></script>
-   
+
     <style>
         .bd-placeholder-img {
             font-size: 1.125rem;
@@ -62,6 +62,7 @@ if ($is_logged_in) {
                 <li><a class="nav-item nav-link active" href="tambah-produk.php">Tambah Produk</a></li>
                 <li><a class="nav-item nav-link active" href="tambah-user.php">Tambah User</a></li>
                 <li><a class="nav-item nav-link active" href="user-edit.php">Edit User</a></li>
+                <li><a class="nav-item nav-link active" href="report-review.php">Report Review</a></li>
             <?php } elseif ($role == 'seller') { ?>
                 <li><a class="nav-item nav-link active" href="toko.php">Toko Saya</a></li>
                 <li><a class="nav-item nav-link active" href="tambah-produk.php">Tambah Produk</a></li>
@@ -193,8 +194,8 @@ if ($is_logged_in) {
             </div>
         </div>
     </div>
-     <!-- Isi halaman -->
-     <footer>
+    <!-- Isi halaman -->
+    <footer>
         <div class="container">
             <p>&copy; 2024 Kantin Online. All rights reserved.</p>
             <p>
@@ -206,6 +207,6 @@ if ($is_logged_in) {
     </footer>
     <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
-   </body>
+</body>
 
 </html>

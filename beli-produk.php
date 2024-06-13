@@ -107,7 +107,7 @@ if (isset($_POST['upload_bukti']) && $is_logged_in) {
     <header>
         <a href="index.php"><img src="image\logopolos.png" class="upn"></a>
         <ul class="navigasi">
-            <li><a class="nav-item nav-link active" href="index.php" style="color: white;">Beranda</a></li>
+            <li><a class="nav-item nav-link active" href="index.php">Beranda</a></li>
             <?php if ($is_logged_in) { ?>
                 <li><a class="nav-item nav-link active" href="payment-status.php">Status Pembayaran</a></li>
                 <li><a class="nav-item nav-link active" href="logout.php">Logout</a></li>

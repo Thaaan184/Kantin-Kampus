@@ -64,10 +64,12 @@ if ($is_logged_in) {
                 <li><a class="nav-item nav-link active" href="user-edit.php">Edit User</a></li>
                 <li><a class="nav-item nav-link active" href="report-review.php">Report Review</a></li>
             <?php } elseif ($role == 'seller') { ?>
+                <li><a class="nav-item nav-link active" href="index.php" style="color: white; font-weight: 600;">Beranda</a></li>
                 <li><a class="nav-item nav-link active" href="toko.php">Toko Saya</a></li>
                 <li><a class="nav-item nav-link active" href="tambah-produk.php">Tambah Produk</a></li>
+                <li><a class="nav-item nav-link active" href="histori-transaksi.php">Histori Transaksi</a></li>
             <?php } else { ?>
-                <li><a class="nav-item nav-link active" href="index.php" style="color: white;">Beranda</a></li>
+                <li><a class="nav-item nav-link active" href="index.php" style="color: white; font-weight: 600;">Beranda</a></li>
                 <li><a class="nav-item nav-link active" href="payment-status.php">Status Pembayaran</a></li>
             <?php } ?>
             <?php if ($is_logged_in) { ?>

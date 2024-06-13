@@ -104,9 +104,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete_transaction_id'
     <header>
         <a href="index.php"><img src="image\logopolos.png" class="upn"></a>
         <ul class="navigasi">
-            <li><a class="nav-item nav-link active" href="index.php" style="color: white;">Beranda</a></li>
+            <li><a class="nav-item nav-link active" href="index.php">Beranda</a></li>
             <?php if ($is_logged_in) { ?>
-                <li><a class="nav-item nav-link active" href="payment-status.php">Status Pembayaran</a></li>
+                <li><a class="nav-item nav-link active" href="payment-status.php" style="color: white; font-weight: 600;">Status Pembayaran</a></li>
                 <li><a class="nav-item nav-link active" href="logout.php">Logout</a></li>
             <?php } else { ?>
                 <li><a class="nav-item nav-link active" href="login.php">Login</a></li>
@@ -123,7 +123,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete_transaction_id'
                     $sql = "SELECT t.*, m.nama_produk 
                             FROM transactions t
                             JOIN menu m ON t.menu_id = m.id
-                            WHERE t.user_id = '$user_info[id]' AND (t.status = 'pending' OR t.status = 'waiting' OR t.status = 'processing' OR t.status = 'ready' OR t.status = 'canceled' OR t.status = 'reported')";
+                            LEFT JOIN reports r ON t.id = r.transaction_id
+                            WHERE t.user_id = '$user_info[id]' AND (t.status IN ('pending', 'waiting', 'processing', 'ready', 'canceled', 'reported')) AND (r.status IS NULL OR r.status NOT IN ('spam', 'finished'))";
                     $query = mysqli_query($koneksi, $sql);
                     while ($transaction = mysqli_fetch_assoc($query)) {
                         $status_message = '';
@@ -140,6 +141,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete_transaction_id'
                         } elseif ($transaction['status'] == 'reported') {
                             $status_message = 'Laporan kamu sudah diterima dan sedang diproses.';
                         }
+
                         $alert_class = $transaction['status'] == 'canceled' ? 'alert-danger' : 'alert-info';
                         echo "<div class='alert $alert_class'>
                                 <p>Transaksi untuk produk {$transaction['nama_produk']} sejumlah {$transaction['quantity']} sedang $status_message.</p>

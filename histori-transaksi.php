@@ -73,22 +73,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action'])) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Toko Saya | Kantin Online</title>
-                        <!-- CSS -->
+    <!-- CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="style2.css?v=<?php echo time(); ?>">
     <link href="https://fonts.googleapis.com/css2?family=Palanquin+Dark&display=swap" rel="stylesheet">
 
-      <!-- JAVA SCRIPT -->
-      <script src="js\script.js"></script>
+    <!-- JAVA SCRIPT -->
+    <script src="js\script.js"></script>
 </head>
 
 <body>
     <header>
         <a href="index.php"><img src="image\logopolos.png" class="upn"></a>
         <ul class="navigasi">
-            <li><a class="nav-item nav-link active" href="toko.php" style="color: white;">Toko Saya</a></li>
+            <li><a class="nav-item nav-link active" href="index.php">Beranda</a></li>
+            <li><a class="nav-item nav-link active" href="toko.php">Toko Saya</a></li>
             <li><a class="nav-item nav-link active" href="tambah-produk.php">Tambah Produk</a></li>
-            <li><a class="nav-item nav-link active" href="histori-transaksi.php">Histori Transaksi</a></li>
+            <li><a class="nav-item nav-link active" href="histori-transaksi.php" style="color: white; font-weight: 600;">Histori Transaksi</a></li>
             <li><a class="nav-item nav-link active" href="logout.php">Logout</a></li>
         </ul>
     </header>
@@ -119,40 +120,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action'])) {
                 </form>
                 <hr>
 
-                <!-- Produk Saya Section -->
-                <h2 class="ms-4">Produk Saya</h2>
-                <hr>
-                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-                    <?php
-                    $sql = "SELECT * FROM menu WHERE seller_username='$namaos'";
-                    $query = mysqli_query($koneksi, $sql);
-                    while ($menu = mysqli_fetch_assoc($query)) {
-                        $id = $menu['id'];
-                        $nama_produk = $menu['nama_produk'];
-                        $harga_produk = $menu['harga_produk'];
-                        $deskripsi_produk = $menu['deskripsi_produk'];
-                        $stok = $menu['stok'];
-                        $gambar = $menu['gambar'];
-                    ?>
-                        <div class="col ms-4 my-3" style="width: 300px;">
-                            <div class="card shadow-sm">
-                                <img src="uploads/<?php echo $gambar ?>" height="200px">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <h4><?php echo $nama_produk ?></h4>
-                                        <h4>Rp. <?php echo number_format($harga_produk, 0, ',', '.'); ?></h4>
-                                    </div>
-                                    <p class="card-text"><?php echo substr($deskripsi_produk, 0, 20); ?>... </p>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <a href="hapus-produk.php?id=<?php echo $menu['id']; ?>" class="btn btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus produk ini?')">Hapus</a>
-                                        <a href="edit-menu.php?id=<?php echo $menu['id']; ?>" class="btn btn-primary">Edit</a>
-                                        <small class="text-muted">Stok: <?php echo $stok ?></small>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    <?php } ?>
-                </div>
 
                 <!-- Notifikasi Pesanan Baru -->
                 <h2>Histori Pesanan</h2>

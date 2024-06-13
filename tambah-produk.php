@@ -50,10 +50,12 @@ if ($role !== 'admin' && $role !== 'seller') {
                 <li><a class="nav-item nav-link active" href="report-review.php">Report Review</a></li>
             <?php } ?>
             <?php if ($role == 'seller') { ?>
-                <li><a class="nav-item nav-link active" href="toko.php" style="color: white;">Toko Saya</a></li>
+                <li><a class="nav-item nav-link active" href="index.php">Beranda</a></li>
+                <li><a class="nav-item nav-link active" href="toko.php">Toko Saya</a></li>
                 <li><a class="nav-item nav-link active" href="tambah-produk.php" style="color: white; font-weight: 600;">Tambah Produk</a></li>
+                <li><a class="nav-item nav-link active" href="histori-transaksi.php">Histori Transaksi</a></li>
             <?php } ?>
-            <li><a class="nav-item nav-link active" href="image\logopolos.png">Logout</a></li>
+            <li><a class="nav-item nav-link active" href="logout.php">Logout</a></li>
         </ul>
     </header>
     <div class="banner">

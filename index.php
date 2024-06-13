@@ -67,10 +67,11 @@ if ($is_logged_in) {
                 <li><a class="nav-item nav-link active" href="index.php" style="color: white; font-weight: 600;">Beranda</a></li>
                 <li><a class="nav-item nav-link active" href="toko.php">Toko Saya</a></li>
                 <li><a class="nav-item nav-link active" href="tambah-produk.php">Tambah Produk</a></li>
+                <li><a class="nav-item nav-link active" href="output-menu.php">Edit Produk</a></li>
                 <li><a class="nav-item nav-link active" href="histori-transaksi.php">Histori Transaksi</a></li>
             <?php } else { ?>
                 <li><a class="nav-item nav-link active" href="index.php" style="color: white; font-weight: 600;">Beranda</a></li>
-                <li><a class="nav-item nav-link active" href="payment-status.php">Status Pembayaran</a></li>
+                <li><a class="nav-item nav-link active" href="payment-status.php">Status Pembayaran</a></li> <!-- ganti logo aja nanti ya guys -->
             <?php } ?>
             <?php if ($is_logged_in) { ?>
                 <li><a class="nav-item nav-link active" href="logout.php">Logout</a></li>

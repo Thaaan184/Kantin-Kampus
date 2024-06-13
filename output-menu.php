@@ -51,10 +51,14 @@ $query = mysqli_query($koneksi, $sql);
                 <li><a class="nav-item nav-link active" href="tambah-user.php">Tambah User</a></li>
                 <li><a class="nav-item nav-link active" href="user-edit.php">Edit User</a></li>
                 <li><a class="nav-item nav-link active" href="report-review.php">Report Review</a></li>
-                <li><a class="nav-item nav-link active" href="logout.php">Logout</a></li>
             <?php } else { ?>
-                <li><a class="nav-item nav-link active" href="login.php">Login</a></li>
+                <li><a class="nav-item nav-link active" href="index.php">Beranda</a></li>
+                <li><a class="nav-item nav-link active" href="toko.php">Toko Saya</a></li>
+                <li><a class="nav-item nav-link active" href="tambah-produk.php">Tambah Produk</a></li>
+                <li><a class="nav-item nav-link active" href="output-menu.php" style="color: white; font-weight: 600;">Edit Produk</a></li>
+                <li><a class="nav-item nav-link active" href="histori-transaksi.php">Histori Transaksi</a></li>
             <?php } ?>
+            <li><a class="nav-item nav-link active" href="logout.php">Logout</a></li>
         </ul>
     </header>
     <div class="banner">

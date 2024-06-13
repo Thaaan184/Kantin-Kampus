@@ -89,6 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action'])) {
             <li><a class="nav-item nav-link active" href="index.php">Beranda</a></li>
             <li><a class="nav-item nav-link active" href="toko.php">Toko Saya</a></li>
             <li><a class="nav-item nav-link active" href="tambah-produk.php">Tambah Produk</a></li>
+            <li><a class="nav-item nav-link active" href="output-menu.php">Edit Produk</a></li>
             <li><a class="nav-item nav-link active" href="histori-transaksi.php" style="color: white; font-weight: 600;">Histori Transaksi</a></li>
             <li><a class="nav-item nav-link active" href="logout.php">Logout</a></li>
         </ul>

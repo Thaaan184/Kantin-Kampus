@@ -149,7 +149,6 @@ header {
 .banner {
     background-image: url(image/background.png);
     background-size: cover;
-    /* background: red; */
     padding: 100px 100px 50px;
     min-height: 100vh;
 }

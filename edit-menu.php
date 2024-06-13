@@ -28,10 +28,35 @@ if ($is_logged_in) {
     $query = mysqli_stmt_get_result($stmt);
     $user_info = mysqli_fetch_assoc($query);
     $nameos = $user_info['name'];
-    $balance = $user_info['balance'];
     $role = $user_info['role'];
 }
 
+// Proses update produk
+if (isset($_POST['update'])) {
+    $nama_produk = $_POST['nama_produk'];
+    $kategori = $_POST['kategori'];
+    $deskripsi_produk = $_POST['deskripsi_produk'];
+    $harga_produk = $_POST['harga_produk'];
+    $stok = $_POST['stok'];
+    $gambar = $_FILES['gambar']['name'];
+
+    if ($gambar) {
+        $target_dir = "uploads/";
+        $target_file = $target_dir . basename($gambar);
+        move_uploaded_file($_FILES['gambar']['tmp_name'], $target_file);
+        $sql = "UPDATE menu SET nama_produk='$nama_produk', kategori='$kategori', deskripsi_produk='$deskripsi_produk', harga_produk='$harga_produk', stok='$stok', gambar='$gambar' WHERE id='$id'";
+    } else {
+        $sql = "UPDATE menu SET nama_produk='$nama_produk', kategori='$kategori', deskripsi_produk='$deskripsi_produk', harga_produk='$harga_produk', stok='$stok' WHERE id='$id'";
+    }
+
+    $query = mysqli_query($koneksi, $sql);
+
+    if ($query) {
+        header('Location: output-menu.php?status=sukses');
+    } else {
+        header('Location: output-menu.php?status=gagal');
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -42,13 +67,13 @@ if ($is_logged_in) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Menu</title>
-                    <!-- CSS -->
+    <!-- CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="style2.css?v=<?php echo time(); ?>">
     <link href="https://fonts.googleapis.com/css2?family=Palanquin+Dark&display=swap" rel="stylesheet">
 
-      <!-- JAVA SCRIPT -->
-      <script src="js\script.js"></script>    
+    <!-- JAVA SCRIPT -->
+    <script src="js\script.js"></script>
 </head>
 
 <body>
@@ -61,8 +86,11 @@ if ($is_logged_in) {
                 <li><a class="nav-item nav-link active" href="tambah-user.php">Tambah User</a></li>
                 <li><a class="nav-item nav-link active" href="user-edit.php">Edit User</a></li>
             <?php } elseif ($role == 'seller') { ?>
+                <li><a class="nav-item nav-link active" href="index.php">Beranda</a></li>
                 <li><a class="nav-item nav-link active" href="toko.php">Toko Saya</a></li>
                 <li><a class="nav-item nav-link active" href="tambah-produk.php">Tambah Produk</a></li>
+                <li><a class="nav-item nav-link active" href="output-menu.php" style="color: white; font-weight: 600;">Edit Produk</a></li>
+                <li><a class="nav-item nav-link active" href="histori-transaksi.php">Histori Transaksi</a></li>
             <?php } ?>
             <li><a class="nav-item nav-link active" href="logout.php">Logout</a></li>
         </ul>
@@ -94,7 +122,7 @@ if ($is_logged_in) {
                         }
                         ?>
                     <?php endif; ?>
-                    <form action="proses-edit-produk.php" method="POST" enctype="multipart/form-data">
+                    <form action="edit-menu.php?id=<?php echo $id; ?>" method="POST" enctype="multipart/form-data">
                         <input type="hidden" name="id" value="<?php echo $menu['id'] ?>">
 
                         <div class="mb-3 row">
@@ -143,15 +171,15 @@ if ($is_logged_in) {
                                 <input type="file" class="form-control" id="gambar" name="gambar">
                             </div>
                         </div>
-                        <button type="submit" name="simpan" id="simpan" class="btn btn-primary px-4 py-2 me-3">Simpan</button>
+                        <button type="submit" name="update" id="update" class="btn btn-primary px-4 py-2 me-3">Simpan</button>
                         <a href="output-menu.php"><button class="btn btn-outline-secondary me-2 my-3 px-4" type="button">Batal</button></a>
                     </form>
                 </div>
             </div>
         </div>
     </div>
-     <!-- Isi halaman -->
-     <footer>
+    <!-- Isi halaman -->
+    <footer>
         <div class="container">
             <p>&copy; 2024 Kantin Online. All rights reserved.</p>
             <p>

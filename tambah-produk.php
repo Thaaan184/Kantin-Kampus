@@ -22,6 +22,16 @@ if ($role !== 'admin' && $role !== 'seller') {
     header("Location: index.php");
     exit();
 }
+
+// Ambil data username seller dari database
+$sellers = [];
+if ($role == 'admin') {
+    $sql_sellers = "SELECT username FROM users WHERE role='seller'";
+    $query_sellers = mysqli_query($koneksi, $sql_sellers);
+    while ($row = mysqli_fetch_assoc($query_sellers)) {
+        $sellers[] = $row['username'];
+    }
+}
 ?>
 
 <head>
@@ -53,6 +63,7 @@ if ($role !== 'admin' && $role !== 'seller') {
                 <li><a class="nav-item nav-link active" href="index.php">Beranda</a></li>
                 <li><a class="nav-item nav-link active" href="toko.php">Toko Saya</a></li>
                 <li><a class="nav-item nav-link active" href="tambah-produk.php" style="color: white; font-weight: 600;">Tambah Produk</a></li>
+                <li><a class="nav-item nav-link active" href="output-menu.php">Edit Produk</a></li>
                 <li><a class="nav-item nav-link active" href="histori-transaksi.php">Histori Transaksi</a></li>
             <?php } ?>
             <li><a class="nav-item nav-link active" href="logout.php">Logout</a></li>
@@ -128,8 +139,22 @@ if ($role !== 'admin' && $role !== 'seller') {
                             </div>
                         </div>
 
-                        <!-- Input hidden untuk seller_username -->
-                        <input type="hidden" name="seller_username" value="<?php echo $username; ?>">
+                        <?php if ($role == 'admin') { ?>
+                            <div class="mb-3 row">
+                                <label for="seller_username" class="col-sm-2 col-form-label">Seller Username</label>
+                                <div class="col-sm-10">
+                                    <select class="form-control" id="seller_username" name="seller_username">
+                                        <option value="">- Pilih Seller -</option>
+                                        <?php foreach ($sellers as $seller) { ?>
+                                            <option value="<?php echo $seller; ?>"><?php echo $seller; ?></option>
+                                        <?php } ?>
+                                    </select>
+                                </div>
+                            </div>
+                        <?php } else { ?>
+                            <!-- Input hidden untuk seller_username -->
+                            <input type="hidden" name="seller_username" value="<?php echo $username; ?>">
+                        <?php } ?>
 
                         <span>
                             <input type="submit" name="simpan" value="Simpan Data" class="btn btn-primary">

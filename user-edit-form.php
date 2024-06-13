@@ -57,12 +57,12 @@ if ($user['role'] == 'admin') {
     <header>
         <a href="login.php"><img src="image\logopolos.png" class="upn"></a>
         <ul class="navigasi">
-            <li><a class="nav-item nav-link active" href="output-menu.php">Edit Menu</a></li>
-            <li><a class="nav-item nav-link active" href="tambah-produk.php">Tambah menu</a></li>
+            <li><a class="nav-item nav-link active" href="output-menu.php">Edit Produk</a></li>
+            <li><a class="nav-item nav-link active" href="tambah-produk.php">Tambah Produk</a></li>
             <li><a class="nav-item nav-link active" href="tambah-user.php">Tambah User</a></li>
             <li><a class="nav-item nav-link active" href="user-edit.php" style="color: white; font-weight: 600;">Edit user</a></li>
+            <li><a class="nav-item nav-link active" href="report-review.php">Report Review</a></li>
             <li><a class="nav-item nav-link active" href="logout.php">Logout</a></li>
-        </ul>
 
     </header>
     </header>

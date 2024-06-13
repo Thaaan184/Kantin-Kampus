@@ -26,7 +26,7 @@ if (isset($_POST['submit'])) {
     }
 
     if (!$error && !empty(trim($name)) && !empty(trim($username)) && !empty(trim($email)) && !empty(trim($password))) {
-        if (cek_nama($username, $koneksi) == 0) {
+        if (cek_nama($username, $koneksi) == 0 && cek_email($email, $koneksi) == 0) {
             $pass = password_hash($password, PASSWORD_DEFAULT);
             $query = "INSERT INTO users (username, name, email, password, role) VALUES ('$username', '$name', '$email', '$pass', '$role')";
             $result = mysqli_query($koneksi, $query);
@@ -37,7 +37,7 @@ if (isset($_POST['submit'])) {
                 $error = 'Registrasi Gagal !!';
             }
         } else {
-            $error = 'Username sudah terdaftar !!';
+            $error = 'Username atau Email sudah terdaftar !!';
         }
     } else {
         if (!$error) {
@@ -53,6 +53,14 @@ function cek_nama($username, $koneksi)
     $result = mysqli_query($koneksi, $query);
     return mysqli_num_rows($result);
 }
+
+function cek_email($email, $koneksi)
+{
+    $email = mysqli_real_escape_string($koneksi, $email);
+    $query = "SELECT * FROM users WHERE email = '$email'";
+    $result = mysqli_query($koneksi, $query);
+    return mysqli_num_rows($result);
+}
 ?>
 
 <!DOCTYPE html>
@@ -62,18 +70,15 @@ function cek_nama($username, $koneksi)
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Register Page</title>
-                    <!-- CSS -->
-                    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-                    <link rel="stylesheet" href="style2.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="style2.css?v=<?php echo time(); ?>">
     <link href="https://fonts.googleapis.com/css2?family=Palanquin+Dark&display=swap" rel="stylesheet">
-
-      <!-- JAVA SCRIPT -->
-      <script src="js\script.js"></script>
+    <script src="js/script.js"></script>
 </head>
 
 <body>
     <header>
-        <a href="index.php"><img src="image\logopolos.png" class="upn"></a>
+        <a href="index.php"><img src="image/logopolos.png" class="upn"></a>
     </header>
     <div class="banner">
         <div class="mx-auto" style="width: 500px;">

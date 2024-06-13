@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 13, 2024 at 03:15 AM
+-- Generation Time: Jun 13, 2024 at 03:34 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.0.28
 
@@ -20,6 +20,100 @@ SET time_zone = "+00:00";
 --
 -- Database: `kantin`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `menu`
+--
+
+CREATE TABLE `menu` (
+  `id` int(11) NOT NULL,
+  `nama_produk` varchar(255) NOT NULL,
+  `kategori` varchar(255) NOT NULL,
+  `deskripsi_produk` varchar(255) NOT NULL,
+  `harga_produk` int(11) NOT NULL,
+  `stok` int(11) NOT NULL,
+  `gambar` varchar(255) NOT NULL,
+  `seller_username` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `menu`
+--
+
+INSERT INTO `menu` (`id`, `nama_produk`, `kategori`, `deskripsi_produk`, `harga_produk`, `stok`, `gambar`, `seller_username`) VALUES
+(33, 'Kopi', 'minuman', 'Enak kayak kopi rasanya', 100000, 3, 'Kopi.jpg', 'seller'),
+(34, 'Bakso', 'makanan_berat', 'Bola Daging Dengan Kuah Rempah Khas', 15000, 20, 'Bakso.jpg', 'seller');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `reports`
+--
+
+CREATE TABLE `reports` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `transaction_id` int(11) DEFAULT NULL,
+  `report_text` text DEFAULT NULL,
+  `status` varchar(50) DEFAULT 'pending',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `reports`
+--
+
+INSERT INTO `reports` (`id`, `user_id`, `transaction_id`, `report_text`, `status`, `created_at`) VALUES
+(2, 36, 26, 'penjual aneh banget ', 'pending', '2024-06-13 00:51:25');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `review`
+--
+
+CREATE TABLE `review` (
+  `id` int(11) NOT NULL,
+  `nama` varchar(255) NOT NULL,
+  `menu` varchar(255) NOT NULL,
+  `ulasan` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `review`
+--
+
+INSERT INTO `review` (`id`, `nama`, `menu`, `ulasan`) VALUES
+(24, 'aku adalah yin', '33', 'enak coy');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `transactions`
+--
+
+CREATE TABLE `transactions` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `menu_id` int(11) NOT NULL,
+  `quantity` int(11) NOT NULL,
+  `total_price` int(11) NOT NULL,
+  `payment_proof` varchar(255) DEFAULT NULL,
+  `status` varchar(50) DEFAULT 'pending',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `transactions`
+--
+
+INSERT INTO `transactions` (`id`, `user_id`, `menu_id`, `quantity`, `total_price`, `payment_proof`, `status`, `created_at`) VALUES
+(21, 36, 34, 2, 30000, 'buktiqris.png', 'finished', '2024-06-12 23:54:19'),
+(26, 36, 34, 5, 75000, 'buktiqris.png', 'reported', '2024-06-13 00:27:35'),
+(27, 36, 34, 2, 30000, 'buktiqris.png', 'waiting', '2024-06-13 00:29:56'),
+(28, 36, 34, 5, 75000, 'buktiqris.png', 'waiting', '2024-06-13 00:30:13');
 
 -- --------------------------------------------------------
 
@@ -58,6 +152,32 @@ INSERT INTO `users` (`id`, `role`, `name`, `username`, `email`, `password`, `qri
 --
 
 --
+-- Indexes for table `menu`
+--
+ALTER TABLE `menu`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `reports`
+--
+ALTER TABLE `reports`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `review`
+--
+ALTER TABLE `review`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `transactions`
+--
+ALTER TABLE `transactions`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `menu_id` (`menu_id`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -68,10 +188,45 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT for table `menu`
+--
+ALTER TABLE `menu`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+
+--
+-- AUTO_INCREMENT for table `reports`
+--
+ALTER TABLE `reports`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `review`
+--
+ALTER TABLE `review`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+
+--
+-- AUTO_INCREMENT for table `transactions`
+--
+ALTER TABLE `transactions`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+
+--
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `transactions`
+--
+ALTER TABLE `transactions`
+  ADD CONSTRAINT `transactions_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
+  ADD CONSTRAINT `transactions_ibfk_2` FOREIGN KEY (`menu_id`) REFERENCES `menu` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -17,12 +17,45 @@ if ($is_logged_in) {
 }
 
 // Handle 'Pesanan Selesai' button click
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['transaction_id'])) {
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['transaction_id']) && !isset($_FILES['payment_proof'])) {
     $transaction_id = $_POST['transaction_id'];
     $sql = "UPDATE transactions SET status='finished' WHERE id='$transaction_id'";
     mysqli_query($koneksi, $sql);
     header("Location: payment-status.php");
     exit();
+}
+
+// Handle upload payment proof
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['transaction_id']) && isset($_FILES['payment_proof'])) {
+    $transaction_id = $_POST['transaction_id'];
+    $payment_proof = $_FILES['payment_proof']['name'];
+    $target_dir = "uploads/bukti/";
+    $target_file = $target_dir . basename($payment_proof);
+
+    // Check file size and move uploaded file
+    if ($_FILES['payment_proof']['size'] > 500000) {
+        $error = "Sorry, your file is too large.";
+    } elseif (move_uploaded_file($_FILES['payment_proof']['tmp_name'], $target_file)) {
+        // Update transaction status and payment proof
+        $sql = "UPDATE transactions SET payment_proof = '$payment_proof', status='waiting' WHERE id = '$transaction_id'";
+        mysqli_query($koneksi, $sql);
+
+        // Reduce stock
+        $sql = "SELECT menu_id, quantity FROM transactions WHERE id = '$transaction_id'";
+        $query = mysqli_query($koneksi, $sql);
+        $transaction = mysqli_fetch_assoc($query);
+
+        $menu_id = $transaction['menu_id'];
+        $quantity = $transaction['quantity'];
+
+        $sql = "UPDATE menu SET stok = stok - $quantity WHERE id = '$menu_id'";
+        mysqli_query($koneksi, $sql);
+
+        header("Location: payment-status.php");
+        exit();
+    } else {
+        $error = "Sorry, there was an error uploading your file.";
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -33,13 +66,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['transaction_id'])) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Status Pembayaran | Kantin Online</title>
-                        <!-- CSS -->
+    <!-- CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="style2.css?v=<?php echo time(); ?>">
     <link href="https://fonts.googleapis.com/css2?family=Palanquin+Dark&display=swap" rel="stylesheet">
-
-      <!-- JAVA SCRIPT -->
-      <script src="js\script.js"></script>
+    <!-- JAVA SCRIPT -->
+    <script src="js\script.js"></script>
 </head>
 
 <body>
@@ -81,6 +113,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['transaction_id'])) {
                         echo "<div class='alert alert-info'>
                                 Transaksi untuk produk {$transaction['nama_produk']} sejumlah {$transaction['quantity']} sedang $status_message.
                               </div>";
+                        if ($transaction['status'] == 'pending') {
+                            echo "<form method='POST' action='' enctype='multipart/form-data'>
+                                    <input type='hidden' name='transaction_id' value='{$transaction['id']}'>
+                                    <div class='form-group'>
+                                        <label for='payment_proof'>Upload Bukti Pembayaran:</label>
+                                        <input type='file' class='form-control-file' id='payment_proof' name='payment_proof' required>
+                                    </div>
+                                    <button type='submit' class='btn btn-primary'>Upload</button>
+                                  </form>";
+                        }
                         if ($transaction['status'] == 'ready') {
                             echo "<form method='POST' action=''>
                                     <input type='hidden' name='transaction_id' value='{$transaction['id']}'>

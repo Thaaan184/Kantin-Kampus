@@ -36,13 +36,13 @@ $sukses = '';
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Tambah User</title>
-                        <!-- CSS -->
-                        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-                        <link rel="stylesheet" href="style2.css?v=<?php echo time(); ?>">
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="style2.css?v=<?php echo time(); ?>">
     <link href="https://fonts.googleapis.com/css2?family=Palanquin+Dark&display=swap" rel="stylesheet">
 
-      <!-- JAVA SCRIPT -->
-      <script src="js\script.js"></script>
+    <!-- JAVA SCRIPT -->
+    <script src="js\script.js"></script>
 </head>
 
 <body>
@@ -53,6 +53,7 @@ $sukses = '';
             <li><a class="nav-item nav-link active" href="tambah-produk.php">Tambah Produk</a></li>
             <li><a class="nav-item nav-link active" href="tambah-user.php" style="color: white; font-weight: 600;">Tambah User</a></li>
             <li><a class="nav-item nav-link active" href="user-edit.php">Edit user</a></li>
+            <li><a class="nav-item nav-link active" href="report-review.php">Report Review</a></li>
             <li><a class="nav-item nav-link active" href="logout.php">Logout</a></li>
         </ul>
 
@@ -101,10 +102,6 @@ $sukses = '';
                                 <input type="password" class="form-control" id="InputPassword" name="password" placeholder="Password">
                             </div>
                             <div class="form-group">
-                                <label for="InputPassword">Balance</label>
-                                <input type="number" class="form-control" id="balance" name="balance" placeholder="Balance">
-                            </div>
-                            <div class="form-group">
                                 <label for="role">Role</label>
                                 <select class="form-control" id="role" name="role">
                                     <option value="">- Role -</option>
@@ -122,17 +119,18 @@ $sukses = '';
         </div>
     </div>
 </body>
- <!-- Isi halaman -->
- <footer>
-        <div class="container">
-            <p>&copy; 2024 Kantin Online. All rights reserved.</p>
-            <p>
-                <a href="#">Privacy Policy</a> |
-                <a href="#">Terms of Service</a> |
-                <a href="#">Contact Us</a>
-            </p>
-        </div>
-    </footer>
-    <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
-    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+<!-- Isi halaman -->
+<footer>
+    <div class="container">
+        <p>&copy; 2024 Kantin Online. All rights reserved.</p>
+        <p>
+            <a href="#">Privacy Policy</a> |
+            <a href="#">Terms of Service</a> |
+            <a href="#">Contact Us</a>
+        </p>
+    </div>
+</footer>
+<script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+
 </html>

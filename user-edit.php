@@ -37,13 +37,13 @@ $suksesedit = "Berhasil Mengedit Data";
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Data Page</title>
-                    <!-- CSS -->
+    <!-- CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="style2.css?v=<?php echo time(); ?>">
     <link href="https://fonts.googleapis.com/css2?family=Palanquin+Dark&display=swap" rel="stylesheet">
 
-      <!-- JAVA SCRIPT -->
-      <script src="js\script.js"></script>
+    <!-- JAVA SCRIPT -->
+    <script src="js\script.js"></script>
 </head>
 
 <body>
@@ -54,6 +54,7 @@ $suksesedit = "Berhasil Mengedit Data";
             <li><a class="nav-item nav-link active" href="tambah-produk.php">Tambah Produk</a></li>
             <li><a class="nav-item nav-link active" href="tambah-user.php">Tambah User</a></li>
             <li><a class="nav-item nav-link active" href="user-edit.php" style="color: white; font-weight: 600;">Edit user</a></li>
+            <li><a class="nav-item nav-link active" href="report-review.php">Report Review</a></li>
             <li><a class="nav-item nav-link active" href="logout.php">Logout</a></li>
         </ul>
 
@@ -113,7 +114,6 @@ $suksesedit = "Berhasil Mengedit Data";
                                 <th scope="col">Username</th>
                                 <th scope="col">Nama</th>
                                 <th scope="col">Email</th>
-                                <th scope="col">Balance</th>
                                 <th scope="col">Role</th>
                                 <th scope="col"> </th>
                             </tr>
@@ -127,7 +127,6 @@ $suksesedit = "Berhasil Mengedit Data";
                                 $username   = $user['username'];
                                 $nama       = $user['name'];
                                 $email     = $user['email'];
-                                $balance    = $user['balance'];
                                 $role    = $user['role'];
                             ?>
                                 <tr>
@@ -135,7 +134,6 @@ $suksesedit = "Berhasil Mengedit Data";
                                     <td scope="row"><?php echo $username ?></td>
                                     <td scope="row"><?php echo $nama ?></td>
                                     <td scope="row"><?php echo $email ?></td>
-                                    <td scope="row"><?php echo $balance ?></td>
                                     <td scope="row"><?php echo $role ?></td>
                                     <td scope="row">
                                         <a href="user-edit-form.php?id=<?php echo $id ?>"><button type="button" class="btn btn-warning">Edit</button></a>
@@ -152,8 +150,8 @@ $suksesedit = "Berhasil Mengedit Data";
             </div>
         </div>
     </div>
- <!-- Isi halaman -->
- <footer>
+    <!-- Isi halaman -->
+    <footer>
         <div class="container">
             <p>&copy; 2024 Kantin Online. All rights reserved.</p>
             <p>

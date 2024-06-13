@@ -57,6 +57,32 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['transaction_id']) && i
         $error = "Sorry, there was an error uploading your file.";
     }
 }
+
+// Handle report submission
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['report_transaction_id'])) {
+    $transaction_id = $_POST['report_transaction_id'];
+    $report_text = mysqli_real_escape_string($koneksi, $_POST['report_text']);
+    $user_id = $user_info['id'];
+
+    $sql = "INSERT INTO reports (user_id, transaction_id, report_text) VALUES ('$user_id', '$transaction_id', '$report_text')";
+    mysqli_query($koneksi, $sql);
+
+    // Update the transaction status to 'reported'
+    $sql = "UPDATE transactions SET status='reported' WHERE id='$transaction_id'";
+    mysqli_query($koneksi, $sql);
+
+    header("Location: payment-status.php");
+    exit();
+}
+
+// Handle delete transaction
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete_transaction_id'])) {
+    $transaction_id = $_POST['delete_transaction_id'];
+    $sql = "DELETE FROM transactions WHERE id='$transaction_id'";
+    mysqli_query($koneksi, $sql);
+    header("Location: payment-status.php");
+    exit();
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -97,7 +123,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['transaction_id']) && i
                     $sql = "SELECT t.*, m.nama_produk 
                             FROM transactions t
                             JOIN menu m ON t.menu_id = m.id
-                            WHERE t.user_id = '$user_info[id]' AND (t.status = 'pending' OR t.status = 'waiting' OR t.status = 'processing' OR t.status = 'ready')";
+                            WHERE t.user_id = '$user_info[id]' AND (t.status = 'pending' OR t.status = 'waiting' OR t.status = 'processing' OR t.status = 'ready' OR t.status = 'canceled' OR t.status = 'reported')";
                     $query = mysqli_query($koneksi, $sql);
                     while ($transaction = mysqli_fetch_assoc($query)) {
                         $status_message = '';
@@ -109,9 +135,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['transaction_id']) && i
                             $status_message = 'Pesanan sudah di konfirmasi penjual mohon ditunggu.';
                         } elseif ($transaction['status'] == 'ready') {
                             $status_message = 'Pesanan sudah siap silahkan diambil.';
+                        } elseif ($transaction['status'] == 'canceled') {
+                            $status_message = 'Maaf pesanan kamu telah dibatalkan oleh penjual. Jika memiliki masalah lebih lanjut hubungi admin.';
+                        } elseif ($transaction['status'] == 'reported') {
+                            $status_message = 'Laporan kamu sudah diterima dan sedang diproses.';
                         }
-                        echo "<div class='alert alert-info'>
-                                Transaksi untuk produk {$transaction['nama_produk']} sejumlah {$transaction['quantity']} sedang $status_message.
+                        $alert_class = $transaction['status'] == 'canceled' ? 'alert-danger' : 'alert-info';
+                        echo "<div class='alert $alert_class'>
+                                <p>Transaksi untuk produk {$transaction['nama_produk']} sejumlah {$transaction['quantity']} sedang $status_message.</p>
                               </div>";
                         if ($transaction['status'] == 'pending') {
                             echo "<form method='POST' action='' enctype='multipart/form-data'>
@@ -127,6 +158,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['transaction_id']) && i
                             echo "<form method='POST' action=''>
                                     <input type='hidden' name='transaction_id' value='{$transaction['id']}'>
                                     <button type='submit' class='btn btn-success'>Pesanan Selesai</button>
+                                  </form>";
+                        }
+                        if ($transaction['status'] == 'canceled') {
+                            echo "<form method='POST' action=''>
+                                    <input type='hidden' name='report_transaction_id' value='{$transaction['id']}'>
+                                    <div class='form-group'>
+                                        <label for='report_text'>Buat Laporan:</label>
+                                        <textarea class='form-control' id='report_text' name='report_text' rows='3' required></textarea>
+                                    </div>
+                                    <button type='submit' class='btn btn-warning'>Buat Laporan</button>
+                                  </form>
+                                  <form method='POST' action=''>
+                                    <input type='hidden' name='delete_transaction_id' value='{$transaction['id']}'>
+                                    <button type='submit' class='btn btn-danger'>Abaikan</button>
                                   </form>";
                         }
                     }

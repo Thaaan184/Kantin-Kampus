@@ -45,15 +45,16 @@ $query = mysqli_query($koneksi, $sql);
     <header>
         <a href="login.php"><img src="image\logopolos.png" class="upn"></a>
         <ul class="navigasi">
-            <?php if ($role == 'admin' || $role == 'seller') { ?>
-                <li><a class="nav-item nav-link active" href="output-menu.php">Edit Produk</a></li>
+            <?php if ($role == 'admin') { ?>
+                <li><a class="nav-item nav-link active" href="output-menu.php" style="color: white; font-weight: 600;">Edit Produk</a></li>
                 <li><a class="nav-item nav-link active" href="tambah-produk.php">Tambah Produk</a></li>
-                <?php if ($role == 'admin') { ?>
-                    <li><a class="nav-item nav-link active" href="tambah-user.php">Tambah User</a></li>
-                    <li><a class="nav-item nav-link active" href="user-edit.php">Edit User</a></li>
-                <?php } ?>
+                <li><a class="nav-item nav-link active" href="tambah-user.php">Tambah User</a></li>
+                <li><a class="nav-item nav-link active" href="user-edit.php">Edit User</a></li>
+                <li><a class="nav-item nav-link active" href="report-review.php">Report Review</a></li>
+                <li><a class="nav-item nav-link active" href="logout.php">Logout</a></li>
+            <?php } else { ?>
+                <li><a class="nav-item nav-link active" href="login.php">Login</a></li>
             <?php } ?>
-            <li><a class="nav-item nav-link active" href="logout.php">Logout</a></li>
         </ul>
     </header>
     <div class="banner">
@@ -110,8 +111,8 @@ $query = mysqli_query($koneksi, $sql);
             </div>
         </div>
     </div>
-     <!-- Isi halaman -->
-     <footer>
+    <!-- Isi halaman -->
+    <footer>
         <div class="container">
             <p>&copy; 2024 Kantin Online. All rights reserved.</p>
             <p>

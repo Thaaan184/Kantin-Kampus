@@ -44,13 +44,13 @@ if ($user['role'] == 'admin') {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Data User</title>
-                    <!-- CSS -->
-     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-     <link rel="stylesheet" href="style2.css?v=<?php echo time(); ?>">
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="style2.css?v=<?php echo time(); ?>">
     <link href="https://fonts.googleapis.com/css2?family=Palanquin+Dark&display=swap" rel="stylesheet">
 
-      <!-- JAVA SCRIPT -->
-      <script src="js\script.js"></script>
+    <!-- JAVA SCRIPT -->
+    <script src="js\script.js"></script>
 </head>
 
 <body>
@@ -114,12 +114,6 @@ if ($user['role'] == 'admin') {
                             </div>
                         </div>
                         <div class="mb-3 row">
-                            <label for="balance" class="col-sm-2 col-form-label">Balance</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="balance" name="balance" value="<?php echo $user['balance'] ?>">
-                            </div>
-                        </div>
-                        <div class="mb-3 row">
                             <label for="role" class="col-sm-2 col-form-label">Role</label>
                             <div class="col-sm-10">
                                 <select class="form-control" id="role" name="role">
@@ -140,8 +134,8 @@ if ($user['role'] == 'admin') {
 
         </div>
     </div>
- <!-- Isi halaman -->
- <footer>
+    <!-- Isi halaman -->
+    <footer>
         <div class="container">
             <p>&copy; 2024 Kantin Online. All rights reserved.</p>
             <p>

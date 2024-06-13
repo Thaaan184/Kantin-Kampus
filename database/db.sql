@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 11, 2024 at 09:00 PM
+-- Generation Time: Jun 13, 2024 at 03:15 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.0.28
 
@@ -24,81 +24,12 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `menu`
---
-
-CREATE TABLE `menu` (
-  `id` int(11) NOT NULL,
-  `nama_produk` varchar(255) NOT NULL,
-  `kategori` varchar(255) NOT NULL,
-  `deskripsi_produk` varchar(255) NOT NULL,
-  `harga_produk` int(11) NOT NULL,
-  `stok` int(11) NOT NULL,
-  `gambar` varchar(255) NOT NULL,
-  `seller_username` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `menu`
---
-
-INSERT INTO `menu` (`id`, `nama_produk`, `kategori`, `deskripsi_produk`, `harga_produk`, `stok`, `gambar`, `seller_username`) VALUES
-(33, 'Kopi', 'minuman', 'Enak kayak kopi rasanya', 100000, 3, 'Kopi.jpg', 'seller');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `review`
---
-
-CREATE TABLE `review` (
-  `id` int(11) NOT NULL,
-  `nama` varchar(255) NOT NULL,
-  `menu` varchar(255) NOT NULL,
-  `ulasan` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `review`
---
-
-INSERT INTO `review` (`id`, `nama`, `menu`, `ulasan`) VALUES
-(24, 'aku adalah yin', '33', 'enak coy');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `transactions`
---
-
-CREATE TABLE `transactions` (
-  `id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `menu_id` int(11) NOT NULL,
-  `quantity` int(11) NOT NULL,
-  `total_price` int(11) NOT NULL,
-  `payment_proof` varchar(255) DEFAULT NULL,
-  `status` varchar(50) DEFAULT 'pending',
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `transactions`
---
-
-INSERT INTO `transactions` (`id`, `user_id`, `menu_id`, `quantity`, `total_price`, `payment_proof`, `status`, `created_at`) VALUES
-(11, 38, 33, 1, 100000, 'istockphoto-1422222698-612x612-removebg-preview.png', 'waiting', '2024-06-11 10:51:07');
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `users`
 --
 
 CREATE TABLE `users` (
   `id` int(11) NOT NULL,
   `role` varchar(70) NOT NULL,
-  `balance` int(11) NOT NULL,
   `name` varchar(40) NOT NULL,
   `username` varchar(50) NOT NULL,
   `email` varchar(50) NOT NULL,
@@ -110,40 +41,21 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `role`, `balance`, `name`, `username`, `email`, `password`, `qris_image`) VALUES
-(28, 'admin', 9537999, 'admin', 'admin', 'admin@admin.com', '$2y$10$/IMhrTs99bLR//TxbcwyWe1BZoiPIcj2/1flnqr1Qm/0PQT9TcJD2', NULL),
-(29, 'user', 57777, 'M Fathan A', 'patan', 'thaaan184@gmail.com', '$2y$10$rResex2MEhvUDqKZPm8yseHmKlzzV3q4bzz7vctBaetcMxaHAyFSe', NULL),
-(30, 'seller', 0, 'Dwikhi Deandra Purnianto', 'wikihow', 'gogogo@gmail.com', '$2y$10$adaRK/inpGjgBnNRM3K0CuWQuo/sPdb.u0B/mqmExenBkTdjwCB1G', NULL),
-(31, 'user', 5000, 'Sabil Aja', 'sabil', 'SABILSABOL@gmail.com', '$2y$10$Xymb.bymfQ3O05c1Np/J/.uu2Ijw7DLTAakvaF4og9Tc0s7fhxgU2', NULL),
-(32, 'user', 25000, 'rayen', 'rayenbejir', 'rayen@gmail.com', '$2y$10$JJKkx1cJpMrRzw.lcibfRefP5GV0/nHP9y42PURWJeiiveoos4tOS', NULL),
-(34, 'seller', 0, 'seller', 'seller', 'seller@seller.com', '$2y$10$P0VzoJFkMZJdDwxFJH5WG.b9l2GmtHBg86zk5rk3LPlO2bCDkMYfu', 'Seller1.png'),
-(36, 'user', 0, 'test1', 'test1', 'test@gmail.com', '$2y$10$LW8f6HNYmRHPU1k2NMp2fe4aDcL.NIPjikAzufRfmFvYoSlBnnYWa', NULL),
-(37, 'user', 0, 'test2', 'test2', 'test2@gmail.com', '$2y$10$IBi02fhOpXVmHHkeQQ87euO1i4vpSkSEr7iOIDq.h6aOpVndVqQcG', NULL),
-(38, 'user', 0, 'nabil', 'nabil', 'nabil@gmail.com', '$2y$10$WgR3eYchM.b1RWEVQnK6depEod4b1cozHp5yaNW/0UUserQLfpqIu', NULL);
+INSERT INTO `users` (`id`, `role`, `name`, `username`, `email`, `password`, `qris_image`) VALUES
+(28, 'admin', 'admin', 'admin', 'admin@admin.com', '$2y$10$/IMhrTs99bLR//TxbcwyWe1BZoiPIcj2/1flnqr1Qm/0PQT9TcJD2', NULL),
+(29, 'user', 'M Fathan A', 'patan', 'thaaan184@gmail.com', '$2y$10$rResex2MEhvUDqKZPm8yseHmKlzzV3q4bzz7vctBaetcMxaHAyFSe', NULL),
+(30, 'seller', 'Dwikhi Deandra Purnianto', 'wikihow', 'gogogo@gmail.com', '$2y$10$adaRK/inpGjgBnNRM3K0CuWQuo/sPdb.u0B/mqmExenBkTdjwCB1G', NULL),
+(31, 'user', 'Sabil Aja', 'sabil', 'SABILSABOL@gmail.com', '$2y$10$Xymb.bymfQ3O05c1Np/J/.uu2Ijw7DLTAakvaF4og9Tc0s7fhxgU2', NULL),
+(32, 'user', 'rayen', 'rayenbejir', 'rayen@gmail.com', '$2y$10$JJKkx1cJpMrRzw.lcibfRefP5GV0/nHP9y42PURWJeiiveoos4tOS', NULL),
+(34, 'seller', 'seller', 'seller', 'seller@seller.com', '$2y$10$P0VzoJFkMZJdDwxFJH5WG.b9l2GmtHBg86zk5rk3LPlO2bCDkMYfu', 'Seller1.png'),
+(36, 'user', 'test1', 'test1', 'test@gmail.com', '$2y$10$LW8f6HNYmRHPU1k2NMp2fe4aDcL.NIPjikAzufRfmFvYoSlBnnYWa', NULL),
+(37, 'user', 'test2', 'test2', 'test2@gmail.com', '$2y$10$IBi02fhOpXVmHHkeQQ87euO1i4vpSkSEr7iOIDq.h6aOpVndVqQcG', NULL),
+(38, 'user', 'nabil', 'nabil', 'nabil@gmail.com', '$2y$10$WgR3eYchM.b1RWEVQnK6depEod4b1cozHp5yaNW/0UUserQLfpqIu', NULL),
+(39, 'user', 'edwin', 'edwin', 'edwin@gmail.com', '$2y$10$xdveT8e5hG64zWjf25yprOW981k/VBkdCoXrincFn8zZ8qVUR/RgK', NULL);
 
 --
 -- Indexes for dumped tables
 --
-
---
--- Indexes for table `menu`
---
-ALTER TABLE `menu`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `review`
---
-ALTER TABLE `review`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `transactions`
---
-ALTER TABLE `transactions`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `user_id` (`user_id`),
-  ADD KEY `menu_id` (`menu_id`);
 
 --
 -- Indexes for table `users`
@@ -156,39 +68,10 @@ ALTER TABLE `users`
 --
 
 --
--- AUTO_INCREMENT for table `menu`
---
-ALTER TABLE `menu`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
-
---
--- AUTO_INCREMENT for table `review`
---
-ALTER TABLE `review`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
-
---
--- AUTO_INCREMENT for table `transactions`
---
-ALTER TABLE `transactions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
-
---
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
-
---
--- Constraints for dumped tables
---
-
---
--- Constraints for table `transactions`
---
-ALTER TABLE `transactions`
-  ADD CONSTRAINT `transactions_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
-  ADD CONSTRAINT `transactions_ibfk_2` FOREIGN KEY (`menu_id`) REFERENCES `menu` (`id`);
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

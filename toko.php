@@ -89,6 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action'])) {
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="style2.css?v=<?php echo time(); ?>">
     <link href="https://fonts.googleapis.com/css2?family=Palanquin+Dark&display=swap" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
     <!-- JAVA SCRIPT -->
     <script src="js\script.js"></script>
@@ -96,15 +97,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action'])) {
 
 <body>
     <header>
-        <a href="index.php"><img src="image\logopolos.png" class="upn"></a>
-        <ul class="navigasi">
-            <li><a class="nav-item nav-link active" href="index.php">Beranda</a></li>
-            <li><a class="nav-item nav-link active" href="toko.php" style="color: white; font-weight: 600;">Toko Saya</a></li>
-            <li><a class="nav-item nav-link active" href="tambah-produk.php">Tambah Produk</a></li>
-            <li><a class="nav-item nav-link active" href="output-menu.php">Edit Produk</a></li>
-            <li><a class="nav-item nav-link active" href="histori-transaksi.php">Histori Transaksi</a></li>
-            <li><a class="nav-item nav-link active" href="logout.php">Logout</a></li>
-        </ul>
+        <a href="index.php"><img src="image\logopolos.png"></a>
+        <div class="left-content">
+            <ul class="navigasi">
+                <li><a class="nav-item nav-link active" href="index.php">Beranda</a></li>
+                <li><a class="nav-item nav-link active" href="toko.php" style="color: white; font-weight: 600;">Toko Saya</a></li>
+                <li><a class="nav-item nav-link active" href="tambah-produk.php">Tambah Produk</a></li>
+                <li><a class="nav-item nav-link active" href="output-menu.php">Edit Produk</a></li>
+                <li><a class="nav-item nav-link active" href="histori-transaksi.php">Histori Transaksi</a></li>
+            </ul>
+        </div>
+        <div class="right-content">
+            <ul class="navigasi">
+                <li><a class="nav-item nav-link active" href="payment-status.php"><i class='bx bxs-bell' style="font-size: 2rem;"></i></a></li>
+                <li><a class="nav-item nav-link active" href="logout.php"><i class='bx bx-log-out' style="font-size: 2rem;"></i></a></li>
+            </ul>
+        </div>
     </header>
     <div class="banner">
         <div class="album py-5 bg-light">

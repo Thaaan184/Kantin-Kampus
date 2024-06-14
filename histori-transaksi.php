@@ -77,6 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action'])) {
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="style2.css?v=<?php echo time(); ?>">
     <link href="https://fonts.googleapis.com/css2?family=Palanquin+Dark&display=swap" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
     <!-- JAVA SCRIPT -->
     <script src="js\script.js"></script>
@@ -84,15 +85,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action'])) {
 
 <body>
     <header>
-        <a href="index.php"><img src="image\logopolos.png" class="upn"></a>
-        <ul class="navigasi">
-            <li><a class="nav-item nav-link active" href="index.php">Beranda</a></li>
-            <li><a class="nav-item nav-link active" href="toko.php">Toko Saya</a></li>
-            <li><a class="nav-item nav-link active" href="tambah-produk.php">Tambah Produk</a></li>
-            <li><a class="nav-item nav-link active" href="output-menu.php">Edit Produk</a></li>
-            <li><a class="nav-item nav-link active" href="histori-transaksi.php" style="color: white; font-weight: 600;">Histori Transaksi</a></li>
-            <li><a class="nav-item nav-link active" href="logout.php">Logout</a></li>
-        </ul>
+        <a href="index.php"><img src="image\logopolos.png"></a>
+        <div class="left-content">
+            <ul class="navigasi">
+                <li><a class="nav-item nav-link active" href="index.php">Beranda</a></li>
+                <li><a class="nav-item nav-link active" href="toko.php">Toko Saya</a></li>
+                <li><a class="nav-item nav-link active" href="tambah-produk.php">Tambah Produk</a></li>
+                <li><a class="nav-item nav-link active" href="output-menu.php">Edit Produk</a></li>
+                <li><a class="nav-item nav-link active" href="histori-transaksi.php" style="color: white; font-weight: 600;">Histori Transaksi</a></li>
+            </ul>
+        </div>
+        <div class="right-content">
+            <ul class="navigasi">
+                <li><a class="nav-item nav-link active" href="payment-status.php"><i class='bx bxs-bell' style="font-size: 2rem;"></i></a></li>
+                <li><a class="nav-item nav-link active" href="logout.php"><i class='bx bx-log-out' style="font-size: 2rem;"></i></a></li>
+            </ul>
+        </div>
     </header>
     <div class="banner">
         <div class="album py-5 bg-light">
@@ -103,23 +111,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action'])) {
                     </div>
                     <hr>
                 <?php } ?>
-
-                <!-- Upload QRIS Section -->
-                <h3>QRIS Saya</h3>
-                <?php if (isset($error)) { ?>
-                    <div class="alert alert-danger"><?php echo $error; ?></div>
-                <?php } ?>
-                <?php if (!empty($qris_image)) { ?>
-                    <div class="mb-3">
-                        <img src="uploads/qris/<?php echo $qris_image; ?>" alt="QRIS" style="max-width: 200px;">
-                    </div>
-                <?php } ?>
-                <form action="toko.php" method="post" enctype="multipart/form-data">
-                    <label for="qris_image"><?php echo !empty($qris_image) ? 'Ganti QRIS:' : 'Upload QRIS:'; ?></label>
-                    <input type="file" name="qris_image" id="qris_image" required>
-                    <button type="submit" class="btn btn-primary"><?php echo !empty($qris_image) ? 'Ganti QRIS' : 'Upload'; ?></button>
-                </form>
-                <hr>
 
 
                 <!-- Notifikasi Pesanan Baru -->

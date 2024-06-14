@@ -57,23 +57,30 @@ $query = $koneksi->query($sql);
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel="stylesheet" href="style2.css?v=<?php echo time(); ?>">
     <link href="https://fonts.googleapis.com/css2?family=Palanquin+Dark&display=swap" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 
 <body class="d-flex flex-column min-vh-100">
     <header>
-        <a href="login.php"><img src="image/logopolos.png" class="upn"></a>
-        <ul class="navigasi">
-            <?php if ($role == 'admin') { ?>
-                <li><a class="nav-item nav-link active" href="output-menu.php">Edit Produk</a></li>
-                <li><a class="nav-item nav-link active" href="tambah-produk.php">Tambah Produk</a></li>
-                <li><a class="nav-item nav-link active" href="tambah-user.php">Tambah User</a></li>
-                <li><a class="nav-item nav-link active" href="user-edit.php">Edit User</a></li>
-                <li><a class="nav-item nav-link active" href="report-review.php" style="color: white; font-weight: 600;">Report Review</a></li>
-                <li><a class="nav-item nav-link active" href="logout.php">Logout</a></li>
-            <?php } else { ?>
-                <li><a class="nav-item nav-link active" href="login.php">Login</a></li>
+        <a href="login.php"><img src="image/logopolos.png"></a>
+        <div class="left-content">
+            <ul class="navigasi">
+                <?php if ($role == 'admin') { ?>
+                    
+                    <li><a class="nav-item nav-link active" href="output-menu.php">Edit Produk</a></li>
+                    <li><a class="nav-item nav-link active" href="tambah-produk.php">Tambah Produk</a></li>
+                    <li><a class="nav-item nav-link active" href="tambah-user.php">Tambah User</a></li>
+                    <li><a class="nav-item nav-link active" href="user-edit.php">Edit User</a></li>
+                    <li><a class="nav-item nav-link active" href="report-review.php" style="color: white; font-weight: 600;">Report Review</a></li>
+            </ul>
+        </div>
+        <div class="right-content">
+            <ul class="navigasi">
+                <li><a class="nav-item nav-link active" href="payment-status.php"><i class='bx bxs-bell' style="font-size: 2rem;"></i></a></li>
+                <li><a class="nav-item nav-link active" href="logout.php"><i class='bx bx-log-out' style="font-size: 2rem;"></i></a></li>
             <?php } ?>
-        </ul>
+            </ul>
+        </div>
     </header>
     <div class="banner">
         <div class="container my-4 flex-grow-1">

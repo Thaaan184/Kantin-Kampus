@@ -80,12 +80,13 @@ function cek_email($email, $koneksi)
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" crossorigin="anonymous">
     <link rel="stylesheet" href="style2.css?v=<?php echo time(); ?>">
     <link href="https://fonts.googleapis.com/css2?family=Palanquin+Dark&display=swap" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <script src="js/script.js"></script>
 </head>
 
 <body>
     <header>
-        <a href="index.php"><img src="image/logopolos.png" class="upn"></a>
+        <a href="index.php"><img src="image/logopolos.png" ></a>
     </header>
     <div class="banner">
         <div class="mx-auto" style="width: 500px;">

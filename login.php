@@ -49,6 +49,7 @@ if (isset($_POST['submit'])) {
                        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
                        <link rel="stylesheet" href="style2.css?v=<?php echo time(); ?>">
     <link href="https://fonts.googleapis.com/css2?family=Palanquin+Dark&display=swap" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
       <!-- JAVA SCRIPT -->
       <script src="script.js"></script>
@@ -57,11 +58,11 @@ if (isset($_POST['submit'])) {
 <body>
 
     <header>
-        <a href="index.php"><img src="image\logopolos.png" alt="logo" class="upn"></a>
+        <a href="index.php"><img src="image\logopolos.png" alt="logo"></a>
     </header>
 
     <div class="banner">
-        <div class="mx-auto" style="width: 500px; height: auto;">
+        <div class="mx-auto" style="width: 500px; height: auto; ">
 
             <div class="card">
                 <div class="card-body">

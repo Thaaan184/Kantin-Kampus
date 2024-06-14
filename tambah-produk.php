@@ -43,31 +43,56 @@ if ($role == 'admin') {
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="style2.css?v=<?php echo time(); ?>">
     <link href="https://fonts.googleapis.com/css2?family=Palanquin+Dark&display=swap" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
-    <!-- JAVA SCRIPT -->
-    <script src="js\script.js"></script>
+    <script>
+        function previewImage(input) {
+            var file = input.files[0];
+            var reader = new FileReader();
+
+            reader.onload = function(e) {
+                document.getElementById('img-preview').src = e.target.result;
+                document.getElementById('img-preview').style.display = 'block';
+            };
+
+            reader.readAsDataURL(file);
+        }
+    </script>
+
 </head>
 
 <body>
     <header>
-        <a href="login.php"><img src="image\logopolos.png" class="upn"></a>
-        <ul class="navigasi">
-            <?php if ($role == 'admin') { ?>
-                <li><a class="nav-item nav-link active" href="output-menu.php">Edit Produk</a></li>
-                <li><a class="nav-item nav-link active" href="tambah-produk.php" style="color: white; font-weight: 600;">Tambah Produk</a></li>
-                <li><a class="nav-item nav-link active" href="tambah-user.php">Tambah User</a></li>
-                <li><a class="nav-item nav-link active" href="user-edit.php">Edit User</a></li>
-                <li><a class="nav-item nav-link active" href="report-review.php">Report Review</a></li>
-            <?php } ?>
-            <?php if ($role == 'seller') { ?>
-                <li><a class="nav-item nav-link active" href="index.php">Beranda</a></li>
-                <li><a class="nav-item nav-link active" href="toko.php">Toko Saya</a></li>
-                <li><a class="nav-item nav-link active" href="tambah-produk.php" style="color: white; font-weight: 600;">Tambah Produk</a></li>
-                <li><a class="nav-item nav-link active" href="output-menu.php">Edit Produk</a></li>
-                <li><a class="nav-item nav-link active" href="histori-transaksi.php">Histori Transaksi</a></li>
-            <?php } ?>
-            <li><a class="nav-item nav-link active" href="logout.php">Logout</a></li>
-        </ul>
+        <a href="login.php"><img src="image\logopolos.png"></a>
+        <div class="left-content">
+            <ul class="navigasi">
+                <?php if ($role == 'admin') { ?>
+                    <li><a class="nav-item nav-link active" href="output-menu.php">Edit Produk</a></li>
+                    <li><a class="nav-item nav-link active" href="tambah-produk.php" style="color: white; font-weight: 600;">Tambah Produk</a></li>
+                    <li><a class="nav-item nav-link active" href="tambah-user.php">Tambah User</a></li>
+                    <li><a class="nav-item nav-link active" href="user-edit.php">Edit User</a></li>
+                    <li><a class="nav-item nav-link active" href="report-review.php">Report Review</a></li>
+                <?php } ?>
+                <?php if ($role == 'seller') { ?>
+                    <li><a class="nav-item nav-link active" href="index.php">Beranda</a></li>
+                    <li><a class="nav-item nav-link active" href="toko.php">Toko Saya</a></li>
+                    <li><a class="nav-item nav-link active" href="tambah-produk.php" style="color: white; font-weight: 600;">Tambah Produk</a></li>
+                    <li><a class="nav-item nav-link active" href="output-menu.php">Edit Produk</a></li>
+                    <li><a class="nav-item nav-link active" href="histori-transaksi.php">Histori Transaksi</a></li>
+                <?php } ?>
+            </ul>
+        </div>
+        <div class="right-content">
+            <ul class="navigasi">
+                <?php if ($is_logged_in) { ?>
+                    <li><a class="nav-item nav-link active" href="payment-status.php"><i class='bx bxs-bell' style="font-size: 2rem;"></i></a></li>
+                    <li><a class="nav-item nav-link active" href="logout.php"><i class='bx bx-log-out' style="font-size: 2rem;"></i></a></li>
+                <?php } else { ?>
+                    <li><a class="nav-item nav-link active" href="login.php"><i class='bx bx-log-in' style="font-size: 2rem;"></i></a></li>
+                    <li><a class="nav-item nav-link active" href="register.php"><i class='bx bx-user-plus' style="font-size: 2rem;"></i></a></li>
+                <?php } ?>
+            </ul>
+        </div>
     </header>
     <div class="banner">
         <div class="mx-auto">
@@ -135,7 +160,12 @@ if ($role == 'admin') {
                         <div class="mb-3 row">
                             <label for="gambar" class="col-sm-2 col-form-label">Gambar</label>
                             <div class="col-sm-10">
-                                <input type="file" class="form-control" name="gambar">
+                                <div class="file-upload">
+                                    <button type="button" class="browse-button" onclick="document.getElementById('gambar').click();">Pilih Gambar</button>
+                                    <input type="file" id="gambar" name="gambar" style="display: none;" onchange="previewImage(this);">
+                                    <span id="file-name" class="ml-2"></span>
+                                </div>
+                                <img id="img-preview" src="#" alt="Preview" style="max-width: 200px; display: none; margin-top: 10px;">
                             </div>
                         </div>
 

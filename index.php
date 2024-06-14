@@ -36,53 +36,46 @@ if ($is_logged_in) {
     <script src="js\script.js"></script>
     <script src="js\swiper-bundle.min.js"></script>
 
-    <style>
-        .bd-placeholder-img {
-            font-size: 1.125rem;
-            text-anchor: middle;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            user-select: none;
-        }
-
-        @media (min-width: 768px) {
-            .bd-placeholder-img-lg {
-                font-size: 3.5rem;
-            }
-        }
-    </style>
 </head>
 
 <body>
     <header>
-        <a href="index.php"><img src="image/logopolos.png" class="upn"></a>
-        <ul class="navigasi">
-            <?php if ($role == 'admin') { ?>
-                <li><a class="nav-item nav-link active" href="output-menu.php">Edit Produk</a></li>
-                <li><a class="nav-item nav-link active" href="tambah-produk.php">Tambah Produk</a></li>
-                <li><a class="nav-item nav-link active" href="tambah-user.php">Tambah User</a></li>
-                <li><a class="nav-item nav-link active" href="user-edit.php">Edit User</a></li>
-                <li><a class="nav-item nav-link active" href="report-review.php">Report Review</a></li>
-            <?php } elseif ($role == 'seller') { ?>
-                <li><a class="nav-item nav-link active" href="index.php" style="color: white; font-weight: 600;">Beranda</a></li>
-                <li><a class="nav-item nav-link active" href="toko.php">Toko Saya</a></li>
-                <li><a class="nav-item nav-link active" href="tambah-produk.php">Tambah Produk</a></li>
-                <li><a class="nav-item nav-link active" href="output-menu.php">Edit Produk</a></li>
-                <li><a class="nav-item nav-link active" href="histori-transaksi.php">Histori Transaksi</a></li>
-            <?php } else { ?>
-                <li><a class="nav-item nav-link active" href="index.php" style="color: white; font-weight: 600;">Beranda</a></li>
-                <li><a class="nav-item nav-link active" href="payment-status.php">Status Pembayaran</a></li> <!-- ganti logo aja nanti ya guys -->
-            <?php } ?>
-            <?php if ($is_logged_in) { ?>
-                <li><a class="nav-item nav-link active" href="logout.php">Logout</a></li>
-            <?php } else { ?>
-                <li><a class="nav-item nav-link active" href="login.php">Login</a></li>
-                <li><a class="nav-item nav-link active" href="register.php">Register</a></li>
-            <?php } ?>
-        </ul>
+        <a href="index.php" style="padding: none;"><img src="image/logopolos.png"></a>
+        <div class="left-content">
+            <ul class="navigasi">
+                <?php if ($role == 'admin') { ?>
+                    <li><a class="nav-item nav-link active" href="output-menu.php">Edit Produk</a></li>
+                    <li><a class="nav-item nav-link active" href="tambah-produk.php"></i>Tambah Produk</a></li>
+                    <li><a class="nav-item nav-link active" href="tambah-user.php">Tambah User</a></li>
+                    <li><a class="nav-item nav-link active" href="user-edit.php">Edit User</a></li>
+                    <li><a class="nav-item nav-link active" href="report-review.php">Report Review</a></li>
+                <?php } elseif ($role == 'seller') { ?>
+                    <li><a class="nav-item nav-link active" href="index.php" style="color: white; font-weight: 600;"></i>Beranda</a></li>
+                    <li><a class="nav-item nav-link active" href="toko.php"></i>Toko Saya</a></li>
+                    <li><a class="nav-item nav-link active" href="tambah-produk.php">Tambah Produk</a></li>
+                    <li><a class="nav-item nav-link active" href="output-menu.php">Edit Produk</a></li>
+                    <li><a class="nav-item nav-link active" href="histori-transaksi.php"></i>Histori Transaksi</a></li>
+                <?php } else { ?>
+                    <li><a class="nav-item nav-link active" href="index.php" style="color: white; font-weight: 600;"></i>Beranda</a></li>
+                <?php } ?>
+            </ul>
+        </div>
+
+        <div class="right-content">
+            <ul class="navigasi">
+                <?php if ($is_logged_in) { ?>
+                    <li><a class="nav-item nav-link active" href="payment-status.php"><i class='bx bxs-bell' style="font-size: 2rem;"></i></a></li>
+                    <li><a class="nav-item nav-link active" href="logout.php"><i class='bx bx-log-out' style="font-size: 2rem;"></i></a></li>
+                <?php } else { ?>
+                    <li><a class="nav-item nav-link active" href="login.php"><i class='bx bx-log-in' style="font-size: 2rem;"></i></a></li>
+                    <li><a class="nav-item nav-link active" href="register.php"><i class='bx bx-user-plus' style="font-size: 2rem;"></i></a></li>
+                <?php } ?>
+            </ul>
+        </div>
     </header>
+
     <div class="banner">
-        <div class="album py-5 bg-light" style="border-radius: 2rem; ">
+        <div class="album" style="border-radius: 2rem;">
             <div class="container">
                 <?php if ($is_logged_in) { ?>
                     <div class="d-flex justify-content-between align-items-center">
@@ -95,6 +88,8 @@ if ($is_logged_in) {
                         Punya toko? <a href="kontak-admin.php">Kontak admin</a>
                     </div>
                 <?php } ?>
+
+
                 <!-- Makanan Berat Section -->
                 <h2 class="ms-4">Makanan Berat</h2>
                 <hr>
@@ -128,6 +123,7 @@ if ($is_logged_in) {
                         </div>
                     <?php } ?>
                 </div>
+
                 <!-- Makanan Ringan Section -->
                 <h2 class="ms-4">Makanan Ringan</h2>
                 <hr>
@@ -161,6 +157,7 @@ if ($is_logged_in) {
                         </div>
                     <?php } ?>
                 </div>
+
                 <!-- Minuman Section -->
                 <h2 class="ms-4">Minuman</h2>
                 <hr>
@@ -197,6 +194,7 @@ if ($is_logged_in) {
             </div>
         </div>
     </div>
+
     <!-- Isi halaman -->
     <footer>
         <div class="container">

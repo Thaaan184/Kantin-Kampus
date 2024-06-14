@@ -29,6 +29,7 @@ $menu = mysqli_fetch_assoc($query);
 $harga = $menu['harga_produk'];
 $kategori = $menu['kategori'];
 $nama_produk = $menu['nama_produk'];
+$stok = $menu['stok']; // Tambahkan ini untuk mendapatkan stok produk
 $qris_image = $menu['qris_image'];
 
 $sukses = "";
@@ -163,6 +164,7 @@ if (isset($_POST['upload_bukti']) && $is_logged_in) {
                     <div class="col-md-6">
                         <h3>Harga: Rp. <?php echo number_format($harga, 0, ',', '.'); ?></h3>
                         <h4>Kategori: <?php echo $kategori; ?></h4>
+                        <h4>Stok: <?php echo $stok; ?></h4> <!-- Tambahkan ini untuk menampilkan stok -->
                         <h5>Deskripsi:</h5>
                         <p><?php echo $menu['deskripsi_produk']; ?></p>
                         <form action="beli-produk.php?id=<?php echo $menu['id']; ?>" method="post">

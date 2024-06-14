@@ -249,7 +249,7 @@ hr {
     background-repeat: no-repeat; 
     background-position: center; 
     background-size: 40%; 
-    opacity: 0.3; 
+    opacity: 0.1; 
     border-radius: 15px;
     z-index: 1;
 }

@@ -1,54 +1,7 @@
-.mx-auto {
-    width: 1000px !important;
-
-}
-
-.card {
-    border-radius: 1rem !important;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1) !important;
-    transition: box-shadow 0.3s ease-in-out !important;
-}
-
-.card:hover {
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2) !important;
-}
-
-.testimonial .trivia {
-    object-fit: cover;
-    height: 500px;
-    width: 500px;
-}
-
-.testimonial {
-    position: relative;
-    height: 750px;
-    max-width: 750px;
-    padding: 30px 0;
-}
-
-.kontener {
-    height: 100%;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    background-color: aliceblue;
-    border-radius: 2rem;
-}
-
-.testimonial .slide {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    row-gap: 20px;
-    overflow: hidden;
-}
-
-.slide p {
-    text-align: center;
-    font-size: 16px;
-    color: #333;
-    font-weight: 500;
+/* Styling umum untuk halaman */
+body {
+    font-family: 'Palanquin Dark', sans-serif;
+    background-color: #f8f9fa;
 }
 
 * {
@@ -59,65 +12,52 @@
 }
 
 header {
-    position: absolute;
-    width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10 px 100px;
+    padding: 10px 10px;
     z-index: 10;
     background: linear-gradient(60deg, #19bb77f9 40%, #64CF6C, #D19100);
+    position: relative;
+    width: 100%;
 }
 
-.upn {
-    width: 34%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10 px 100px;
-    margin-left: -2%;
-    z-index: 10;
+header img {
+    height: 50px;
     transition: all 0.3s ease-in;
 }
 
-.upn:hover {
-    width: 38%;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10 px 100px;
-    margin-left: 0%;
-    z-index: 10;
-    filter: invert();
-    height: auto;
-
-}
-
-.card {
-    border-radius: 1rem;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-    transition: box-shadow 0.3s ease-in-out;
-}
-
-.card:hover {
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+header img:hover {
+    transform: scale(1.1);
+    filter: brightness(1.2);
+    filter: invert();   
 }
 
 
 .logo {
-    position: relative;
-    right: 60px;
     font-size: 2em;
     text-decoration: none;
     font-weight: 600;
-    padding-left: 100px;
     transition: ease-in 0.2s all;
 }
 
 .navigasi {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     flex-wrap: wrap;
-    margin: 10px 0;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.left-content {
+    display: flex;
+    margin-right: auto;
+}
+
+.right-content {
+    display: flex;
+    margin-left: auto;
 }
 
 .navigasi li {
@@ -134,16 +74,42 @@ header {
     transition: all 0.3s ease-in;
 }
 
-
 .navigasi li a:hover {
     color: #ffffff;
     font-weight: 600;
-    font-size: 1.9em;
+    font-size: 1.5em;
 }
 
 #hoper {
     color: #ffffff;
     font-weight: 600;
+}
+
+/* Tautan aksi pengguna (logout, dll) */
+.auth-links ul {
+    display: flex;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+/* Setiap item tautan aksi pengguna */
+.auth-links ul li {
+    margin-left: 20px; /* Jarak antar item */
+}
+
+/* Tautan aksi pengguna */
+.auth-links ul li a {
+    color: #ffffff; /* Warna teks putih */
+    text-decoration: none; /* Hilangkan garis bawah */
+    font-weight: 500; /* Ketebalan teks */
+    transition: all 0.3s ease-in-out; /* Transisi halus */
+}
+
+/* Efek hover pada tautan aksi pengguna */
+.auth-links ul li a:hover {
+    color: #ffffff; /* Warna teks putih tetap */
+    font-size: 1.1em; /* Perbesar ukuran teks */
 }
 
 .banner {
@@ -176,7 +142,6 @@ h3 {
     text-align: center;
 }
 
-
 #body_card {
     position: relative;
     width: 60vw;
@@ -187,63 +152,314 @@ h3 {
     box-shadow: 0px 0px 8px 4px #00000038;
 }
 
-/* Styling untuk elemen footer */
-footer {
-    background-image: url(image\gelombang.png);
-    background: linear-gradient(60deg, #0e5f14 40%, #4b5f0e, #5d491d);
-    ;
-    /* Warna latar belakang gelap */
+/* Styling khusus card */
+.card {
+    border-radius: 1rem;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+.card:hover {
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+}
+
+.card img {
+    border-bottom: 1px solid #eee;
+    width: 100%;
+    height: auto;
+}
+
+.card-body {
+    padding: 15px;
+}
+
+.card h4 {
+    font-size: 1.25rem;
+    margin: 0;
+}
+
+.card p {
+    font-size: 1rem;
+    color: #555;
+}
+
+.card .btn {
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.card .btn:hover {
+    background-color: #333;
     color: white;
-    /* Warna teks putih */
-    text-align: center;
-    /* Teks rata tengah */
-    padding: 20px 0;
-    /* Padding atas dan bawah */
+}
+
+.mx-auto {
+    width: 1000px !important;
+}
+
+
+
+
+/* Tambahan untuk styling lainnya */
+h2 {
     margin-top: 20px;
-    /* Jarak dari elemen sebelumnya */
+}
+
+hr {
+    border-top: 1px solid #ccc;
+}
+
+.alert {
+    margin: 20px 0;
+}
+
+.btn-outline-success {
+    border-color: #28a745;
+    color: #28a745;
+}
+
+.btn-outline-success:hover {
+    background-color: #28a745;
+    color: white;
+}
+
+.container {
+    margin-top: 20px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.album {
+    position: relative;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    opacity: 0.9;
+}
+
+.album::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('image/logo-hitam.png');
+    background-repeat: no-repeat; 
+    background-position: center; 
+    background-size: 20%; 
+    opacity: 0.5; 
+    border-radius: 15px;
+    z-index: 1;
+}
+
+.album > * {
+    position: relative;
+    z-index: 2;
+}
+
+
+.col {
+    display: flex;
+    justify-content: center;
+}
+
+/* Tambahan CSS untuk tombol dan label file upload */
+.browse-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    border: none;
+    outline: none;
+}
+
+.browse-button:hover {
+    background-color: #0056b3;
+}
+
+#file-name {
+    display: inline-block;
+    margin-left: 10px;
+    font-size: 1rem;
+}
+
+
+/* Footer styling */
+footer {
+    background-image: url(image/gelombang.png);
+    background: linear-gradient(60deg, #0e5f14 40%, #4b5f0e, #5d491d);
+    color: white;
+    text-align: center;
+    padding: 20px 0;
+    margin-top: 20px;
 }
 
 footer p {
     margin: 0;
-    /* Hilangkan margin default */
     padding: 5px 0;
-    /* Padding atas dan bawah pada paragraf */
 }
 
 footer a {
     color: white;
-    /* Warna tautan putih */
     text-decoration: none;
-    /* Hilangkan garis bawah pada tautan */
     margin: 0 10px;
-    /* Jarak horizontal antara tautan */
 }
 
 footer a:hover {
     text-decoration: underline;
-    /* Garis bawah pada tautan saat di-hover */
 }
 
 /* Styling untuk container di dalam footer */
 footer .container {
     max-width: 1170px;
-    /* Lebar maksimum */
     margin: 0 auto;
-    /* Tengah halaman */
+}
+
+/* Uplod Qris */
+.main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #d9d9d9;
+    background-image: linear-gradient(315deg, #d9d9d9 0%, #f6f2f2 74%);
+    width: 500px;
+    border-radius: 10px;
+    padding: 30px;
+}
+
+.file-upload-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.file-upload-container h1 {
+    font-size: 35px;
+    margin-bottom: 20px;
+}
+
+.file-upload-form {
+    width: fit-content;
+    height: fit-content;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.file-upload-label svg {
+    height: 50px;
+    fill: rgb(82, 82, 82);
+    margin-bottom: 20px;
+}
+.file-upload-label {
+    cursor: pointer;
+    background-color: #ffffff;
+    padding: 30px 100px;
+    border-radius: 20px;
+    border: 2px dashed rgb(82, 82, 82);
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+}
+.file-upload-design {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    font-size: 25px;
+}
+.browse-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.browse-button:hover {
+    background-color: #0056b3;
+}
+
+/* Additional styling if needed */
+.file-upload {
+    display: inline-block;
+    position: relative;
+}
+
+input[type="file"] {
+    display: none;
+}
+.files-uploaded {
+    margin-top: 20px;
+}
+
+.file {
+    display: flex;
+    align-items: center;
+    width: 370px;
+    padding: 10px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    margin: 10px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    font-size: 15px;
+}
+
+.file img {
+    width: 30px;
+    margin: 10px;
+}
+
+.uploaded {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+}
+
+.uploaded img {
+    width: 20px;
+    margin: 5px;
 }
 
 /* Responsive styling */
 @media (max-width: 768px) {
     footer {
         padding: 10px 0;
-        /* Kurangi padding atas dan bawah */
     }
 
     footer p,
     footer a {
         padding: 5px;
-        /* Kurangi padding pada paragraf dan tautan */
         display: block;
-        /* Tampilkan elemen sebagai blok */
     }
+
+    header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .navigasi {
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+    }
+
+    .left-content, .right-content {
+        flex-direction: column;
+        margin: 0;
+    }
+
+    .navigasi li {
+        margin: 5px 0;
+        
+    }
+
+
 }

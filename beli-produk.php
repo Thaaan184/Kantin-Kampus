@@ -98,23 +98,53 @@ if (isset($_POST['upload_bukti']) && $is_logged_in) {
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="style2.css?v=<?php echo time(); ?>">
     <link href="https://fonts.googleapis.com/css2?family=Palanquin+Dark&display=swap" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
-    <!-- JAVA SCRIPT -->
-    <script src="js\script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('select_picture').addEventListener('click', function() {
+                document.getElementById('payment_proof').click();
+            });
+        });
+    </script>
+
 </head>
 
 <body>
     <header>
-        <a href="index.php"><img src="image\logopolos.png" class="upn"></a>
-        <ul class="navigasi">
-            <li><a class="nav-item nav-link active" href="index.php">Beranda</a></li>
-            <?php if ($is_logged_in) { ?>
-                <li><a class="nav-item nav-link active" href="payment-status.php">Status Pembayaran</a></li>
-                <li><a class="nav-item nav-link active" href="logout.php">Logout</a></li>
-            <?php } else { ?>
-                <li><a class="nav-item nav-link active" href="login.php">Login</a></li>
-            <?php } ?>
-        </ul>
+        <a href="index.php" style="padding: none;"><img src="image/logopolos.png"></a>
+        <div class="left-content">
+            <ul class="navigasi">
+                <?php if ($role == 'admin') { ?>
+                    <li><a class="nav-item nav-link active" href="index.php"></i>Beranda</a></li>
+                    <li><a class="nav-item nav-link active" href="output-menu.php">Edit Produk</a></li>
+                    <li><a class="nav-item nav-link active" href="tambah-produk.php"></i>Tambah Produk</a></li>
+                    <li><a class="nav-item nav-link active" href="tambah-user.php">Tambah User</a></li>
+                    <li><a class="nav-item nav-link active" href="user-edit.php">Edit User</a></li>
+                    <li><a class="nav-item nav-link active" href="report-review.php">Report Review</a></li>
+                <?php } elseif ($role == 'seller') { ?>
+                    <li><a class="nav-item nav-link active" href="index.php"></i>Beranda</a></li>
+                    <li><a class="nav-item nav-link active" href="toko.php"></i>Toko Saya</a></li>
+                    <li><a class="nav-item nav-link active" href="tambah-produk.php">Tambah Produk</a></li>
+                    <li><a class="nav-item nav-link active" href="output-menu.php">Edit Produk</a></li>
+                    <li><a class="nav-item nav-link active" href="histori-transaksi.php"></i>Histori Transaksi</a></li>
+                <?php } else { ?>
+                    <li><a class="nav-item nav-link active" href="index.php"></i>Beranda</a></li>
+                <?php } ?>
+            </ul>
+        </div>
+
+        <div class="right-content">
+            <ul class="navigasi">
+                <?php if ($is_logged_in) { ?>
+                    <li><a class="nav-item nav-link active" href="payment-status.php"><i class='bx bxs-bell' style="font-size: 2rem;"></i></a></li>
+                    <li><a class="nav-item nav-link active" href="logout.php"><i class='bx bx-log-out' style="font-size: 2rem;"></i></a></li>
+                <?php } else { ?>
+                    <li><a class="nav-item nav-link active" href="login.php"><i class='bx bx-log-in' style="font-size: 2rem;"></i></a></li>
+                    <li><a class="nav-item nav-link active" href="register.php"><i class='bx bx-user-plus' style="font-size: 2rem;"></i></a></li>
+                <?php } ?>
+            </ul>
+        </div>
     </header>
     <div class="banner">
         <div class="album py-5 bg-light">
@@ -153,7 +183,13 @@ if (isset($_POST['upload_bukti']) && $is_logged_in) {
                     <form action="beli-produk.php?id=<?php echo $menu['id']; ?>" method="post" enctype="multipart/form-data">
                         <input type="hidden" name="transaction_id" value="<?php echo $transaction_id; ?>">
                         <label for="payment_proof">Upload Bukti Pembayaran:</label>
-                        <input type="file" name="payment_proof" id="payment_proof" accept="image/*" required>
+                        <div class="input-group mb-3">
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="payment_proof" name="payment_proof" accept="image/*" required>
+                                <label class="custom-file-label" for="payment_proof">Choose file</label>
+                            </div>
+
+                        </div>
                         <button type="submit" name="upload_bukti" class="btn btn-primary">Upload</button>
                     </form>
                     <!-- Display QRIS Image -->

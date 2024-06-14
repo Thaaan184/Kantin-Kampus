@@ -81,6 +81,7 @@ function cek_email($email, $koneksi)
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" crossorigin="anonymous">
     <link rel="stylesheet" href="style2.css?v=<?php echo time(); ?>">
     <link href="https://fonts.googleapis.com/css2?family=Palanquin+Dark&display=swap" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
     <!-- JAVA SCRIPT -->
     <script src="js/script.js"></script>
@@ -88,15 +89,22 @@ function cek_email($email, $koneksi)
 
 <body>
     <header>
-        <a href="login.php"><img src="image/logo-putih.png" class="upn"></a>
-        <ul class="navigasi">
-            <li><a class="nav-item nav-link active" href="output-menu.php">Edit Produk</a></li>
-            <li><a class="nav-item nav-link active" href="tambah-produk.php">Tambah Produk</a></li>
-            <li><a class="nav-item nav-link active" href="tambah-user.php" style="color: white; font-weight: 600;">Tambah User</a></li>
-            <li><a class="nav-item nav-link active" href="user-edit.php">Edit user</a></li>
-            <li><a class="nav-item nav-link active" href="report-review.php">Report Review</a></li>
-            <li><a class="nav-item nav-link active" href="logout.php">Logout</a></li>
-        </ul>
+        <a href="login.php"><img src="image\logopolos.png"></a>
+        <div class="left-content">
+            <ul class="navigasi">
+                <li><a class="nav-item nav-link active" href="output-menu.php">Edit Produk</a></li>
+                <li><a class="nav-item nav-link active" href="tambah-produk.php">Tambah Produk</a></li>
+                <li><a class="nav-item nav-link active" href="tambah-user.php" style="color: white; font-weight: 600;">Tambah User</a></li>
+                <li><a class="nav-item nav-link active" href="user-edit.php">Edit user</a></li>
+                <li><a class="nav-item nav-link active" href="report-review.php">Report Review</a></li>
+            </ul>
+        </div>
+        <div class="right-content">
+            <ul class="navigasi">
+                <li><a class="nav-item nav-link active" href="payment-status.php"><i class='bx bxs-bell' style="font-size: 2rem;"></i></a></li>
+                <li><a class="nav-item nav-link active" href="logout.php"><i class='bx bx-log-out' style="font-size: 2rem;"></i></a></li>
+            </ul>
+        </div>
     </header>
     <div class="banner">
         <div class="mx-auto" style="width: 500px;">

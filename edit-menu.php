@@ -52,7 +52,11 @@ if (isset($_POST['update'])) {
     $query = mysqli_query($koneksi, $sql);
 
     if ($query) {
-        header('Location: output-menu.php?status=sukses');
+        echo '<script>
+                alert("Produk berhasil ditambahkan");
+                window.location.href="output-menu.php";
+              </script>';
+        exit();
     } else {
         header('Location: output-menu.php?status=gagal');
     }
@@ -123,7 +127,7 @@ if (isset($_POST['update'])) {
                                 <label>Gagal mengedit data</label>
                             </div>
                         <?php
-                            header("refresh:3;url=index.php");
+                            header("refresh:3;url=output-menu.php");
                         }
                         ?>
                         <?php
@@ -133,7 +137,7 @@ if (isset($_POST['update'])) {
                                 <label>Berhasil mengedit data</label>
                             </div>
                         <?php
-                            header("refresh:3;url=index.php");
+                            header("refresh:3;url=output-menu.php");
                         }
                         ?>
                     <?php endif; ?>

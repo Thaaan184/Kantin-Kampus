@@ -30,9 +30,8 @@ header img {
 header img:hover {
     transform: scale(1.1);
     filter: brightness(1.2);
-    filter: invert();   
+    filter: invert();
 }
-
 
 .logo {
     font-size: 2em;
@@ -95,21 +94,28 @@ header img:hover {
 
 /* Setiap item tautan aksi pengguna */
 .auth-links ul li {
-    margin-left: 20px; /* Jarak antar item */
+    margin-left: 20px;
+    /* Jarak antar item */
 }
 
 /* Tautan aksi pengguna */
 .auth-links ul li a {
-    color: #ffffff; /* Warna teks putih */
-    text-decoration: none; /* Hilangkan garis bawah */
-    font-weight: 500; /* Ketebalan teks */
-    transition: all 0.3s ease-in-out; /* Transisi halus */
+    color: #ffffff;
+    /* Warna teks putih */
+    text-decoration: none;
+    /* Hilangkan garis bawah */
+    font-weight: 500;
+    /* Ketebalan teks */
+    transition: all 0.3s ease-in-out;
+    /* Transisi halus */
 }
 
 /* Efek hover pada tautan aksi pengguna */
 .auth-links ul li a:hover {
-    color: #ffffff; /* Warna teks putih tetap */
-    font-size: 1.1em; /* Perbesar ukuran teks */
+    color: #ffffff;
+    /* Warna teks putih tetap */
+    font-size: 1.1em;
+    /* Perbesar ukuran teks */
 }
 
 .banner {
@@ -147,7 +153,7 @@ h3 {
     width: 60vw;
     min-height: 450px;
     border-radius: 8px;
-    padding: 15px;
+    padding: 10px;
     background-color: #f10505;
     box-shadow: 0px 0px 8px 4px #00000038;
 }
@@ -157,6 +163,9 @@ h3 {
     border-radius: 1rem;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
     transition: box-shadow 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .card:hover {
@@ -166,11 +175,21 @@ h3 {
 .card img {
     border-bottom: 1px solid #eee;
     width: 100%;
-    height: auto;
+    height: 200px;
+    object-fit: cover;
+    object-position: center;
+    border-top-left-radius: 10px;
+    /* Sesuaikan radius jika diperlukan */
+    border-top-right-radius: 10px;
+    /* Sesuaikan radius jika diperlukan */
 }
 
 .card-body {
     padding: 15px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .card h4 {
@@ -195,9 +214,6 @@ h3 {
 .mx-auto {
     width: 1000px !important;
 }
-
-
-
 
 /* Tambahan untuk styling lainnya */
 h2 {
@@ -246,19 +262,18 @@ hr {
     width: 100%;
     height: 100%;
     background-image: url('image/logo-hitam.png');
-    background-repeat: no-repeat; 
-    background-position: center; 
-    background-size: 40%; 
-    opacity: 0.1; 
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 40%;
+    opacity: 0.1;
     border-radius: 15px;
     z-index: 1;
 }
 
-.album > * {
+.album>* {
     position: relative;
     z-index: 2;
 }
-
 
 .col {
     display: flex;
@@ -287,7 +302,6 @@ hr {
     margin-left: 10px;
     font-size: 1rem;
 }
-
 
 /* Footer styling */
 footer {
@@ -357,6 +371,7 @@ footer .container {
     fill: rgb(82, 82, 82);
     margin-bottom: 20px;
 }
+
 .file-upload-label {
     cursor: pointer;
     background-color: #ffffff;
@@ -365,6 +380,7 @@ footer .container {
     border: 2px dashed rgb(82, 82, 82);
     box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
 }
+
 .file-upload-design {
     display: flex;
     flex-direction: column;
@@ -373,6 +389,7 @@ footer .container {
     gap: 5px;
     font-size: 25px;
 }
+
 .browse-button {
     display: inline-block;
     padding: 10px 20px;
@@ -396,6 +413,7 @@ footer .container {
 input[type="file"] {
     display: none;
 }
+
 .files-uploaded {
     margin-top: 20px;
 }
@@ -451,15 +469,39 @@ input[type="file"] {
         width: 100%;
     }
 
-    .left-content, .right-content {
+    .left-content,
+    .right-content {
         flex-direction: column;
         margin: 0;
     }
 
     .navigasi li {
         margin: 5px 0;
-        
     }
+}
 
+.section-content {
+    display: none;
+}
 
+.minimized .section-content {
+    display: none;
+}
+
+.minimized .section-header::after {
+    content: "\25B6";
+    float: right;
+}
+
+.expanded .section-content {
+    display: block;
+}
+
+.expanded .section-header::after {
+    content: "\25BC";
+    float: right;
+}
+
+.section-header {
+    cursor: pointer;
 }

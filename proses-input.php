@@ -1,12 +1,16 @@
 <?php
 
 include("config.php");
+
+// Mulai output buffering untuk menangani masalah header
+ob_start();
+
 $target_dir = "uploads/";
 $target_file = $target_dir . basename($_FILES["gambar"]["name"]);
 $uploadOk = 1;
 $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 
-// cek apakah tombol daftar sudah diklik atau blum?
+// cek apakah tombol daftar sudah diklik atau belum?
 if (isset($_POST['simpan'])) {
   $check = getimagesize($_FILES["gambar"]["tmp_name"]);
   if ($check !== false) {
@@ -44,6 +48,10 @@ if ($query) {
   // kalau berhasil alihkan ke halaman index.php dengan status=sukses
   header('Location: tambah-produk.php?status=sukses');
 } else {
-  // kalau gagal alihkan ke halaman indek.php dengan status=gagal
+  // kalau gagal alihkan ke halaman index.php dengan status=gagal
   header('Location: tambah-produk.php?status=gagal');
 }
+
+// Akhiri output buffering dan kirim semua output
+ob_end_flush();
+?>

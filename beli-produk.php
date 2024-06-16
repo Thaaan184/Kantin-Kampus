@@ -131,6 +131,7 @@ if (isset($_POST['upload_bukti']) && $is_logged_in) {
                     <li><a class="nav-item nav-link active" href="histori-transaksi.php"></i>Histori Transaksi</a></li>
                 <?php } else { ?>
                     <li><a class="nav-item nav-link active" href="index.php"></i>Beranda</a></li>
+                    <li><a class="nav-item nav-link active" href="histori-transaksi.php">Histori Transaksi</a></li>
                 <?php } ?>
             </ul>
         </div>

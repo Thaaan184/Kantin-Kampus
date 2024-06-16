@@ -19,12 +19,6 @@ if ($is_logged_in) {
     $qris_image = $user_info['qris_image'];
 }
 
-// If user is not a seller, redirect to index page
-if ($role !== 'seller') {
-    header("Location: index.php");
-    exit();
-}
-
 // Upload QRIS
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['qris_image'])) {
     $qris_image = $_FILES['qris_image']['name'];
@@ -64,7 +58,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action'])) {
     exit();
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -78,20 +71,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action'])) {
     <link rel="stylesheet" href="style2.css?v=<?php echo time(); ?>">
     <link href="https://fonts.googleapis.com/css2?family=Palanquin+Dark&display=swap" rel="stylesheet">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-
-    <!-- JAVA SCRIPT -->
-    <script src="js\script.js"></script>
 </head>
 
 <body>
     <header>
-        <a href="index.php"><img src="image\logopolos.png"></a>
+        <a href="index.php"><img src="image/logopolos.png"></a>
         <div class="left-content">
             <ul class="navigasi">
                 <li><a class="nav-item nav-link active" href="index.php">Beranda</a></li>
-                <li><a class="nav-item nav-link active" href="toko.php">Toko Saya</a></li>
-                <li><a class="nav-item nav-link active" href="tambah-produk.php">Tambah Produk</a></li>
-                <li><a class="nav-item nav-link active" href="output-menu.php">Edit Produk</a></li>
+                <?php if ($role == 'seller') { ?>
+                    <li><a class="nav-item nav-link active" href="toko.php">Toko Saya</a></li>
+                    <li><a class="nav-item nav-link active" href="tambah-produk.php">Tambah Produk</a></li>
+                    <li><a class="nav-item nav-link active" href="output-menu.php">Edit Produk</a></li>
+                <?php } ?>
                 <li><a class="nav-item nav-link active" href="histori-transaksi.php" style="color: white; font-weight: 600;">Histori Transaksi</a></li>
             </ul>
         </div>
@@ -105,62 +97,57 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action'])) {
     <div class="banner">
         <div class="album py-5 bg-light">
             <div class="container">
-                <?php if ($is_logged_in) { ?>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <h2>Toko Saya - Selamat datang, <?php echo $nameos; ?></h2>
-                    </div>
-                    <hr>
-                <?php } ?>
-
-
-                <!-- Notifikasi Pesanan Baru -->
-                <h2>Histori Pesanan</h2>
-                <?php
-                $sql = "SELECT t.*, u.name, m.nama_produk, t.total_price 
-                        FROM transactions t
-                        JOIN users u ON t.user_id = u.id
-                        JOIN menu m ON t.menu_id = m.id
-                        WHERE m.seller_username = '$namaos' AND t.status IN ('canceled', 'finished')";
-                $query = mysqli_query($koneksi, $sql);
-                while ($transaction = mysqli_fetch_assoc($query)) {
-                    $action_buttons = '';
-                    if ($transaction['status'] == 'waiting') {
-                        $action_buttons = "
-                            <form action='toko.php' method='post'>
-                                <input type='hidden' name='transaction_id' value='{$transaction['id']}'><br>
-                                <button type='submit' name='action' value='konfirmasi' class='btn btn-success'>Konfirmasi</button>  
-                                <button type='submit' name='action' value='batal' class='btn btn-danger'>Batal</button>
-                            </form>
-                        ";
-                    } elseif ($transaction['status'] == 'processing') {
-                        $action_buttons = "
-                            <form action='toko.php' method='post'>
-                                <input type='hidden' name='transaction_id' value='{$transaction['id']}'><br>
-                                <button type='submit' name='action' value='selesai' class='btn btn-primary'>Selesai</button>
-                            </form>
-                        ";
-                    } elseif ($transaction['status'] == 'ready') {
-                        $action_buttons = "
-                            <p>Menunggu konfirmasi dari pembeli</p>
-                        ";
-                    }
-                ?>
-                    <div class="card mb-3">
-                        <div class="card-body">
-                            <h5 class="card-title">Pesanan dari: <?php echo $transaction['name']; ?></h5>
-                            <p class="card-text">Produk: <?php echo $transaction['nama_produk']; ?></p>
-                            <p class="card-text">Jumlah: <?php echo $transaction['quantity']; ?></p>
-                            <p class="card-text">Total Harga: Rp. <?php echo number_format($transaction['total_price'], 0, ',', '.'); ?></p>
-                            <p class="card-text">Status: <?php echo $transaction['status']; ?></p>
-                            <!-- Display payment proof if available -->
-                            <?php if (!empty($transaction['payment_proof'])) { ?>
-                                <p class="card-text">Bukti Pembayaran:</p>
-                                <img src="uploads/bukti/<?php echo $transaction['payment_proof']; ?>" alt="Bukti Pembayaran" style="max-width: 200px;">
-                            <?php } ?>
-                            <?php echo $action_buttons; ?>
-                        </div>
-                    </div>
-                <?php } ?>
+                <!-- Histori Transaksi -->
+                <h2>Histori Transaksi</h2>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>ID Transaksi</th>
+                                <th>Nama Pembeli</th>
+                                <th>Nama Produk</th>
+                                <th>Nama Penjual</th>
+                                <th>Total Beli</th>
+                                <th>Harga</th>
+                                <th>Waktu</th>
+                                <th>Bukti Transfer</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            if ($role == 'seller') {
+                                $sql = "SELECT t.id, u.name AS pembeli, m.nama_produk, m.seller_username AS penjual, t.quantity, m.harga_produk, t.created_at, t.payment_proof 
+                                        FROM transactions t
+                                        JOIN users u ON t.user_id = u.id
+                                        JOIN menu m ON t.menu_id = m.id
+                                        WHERE m.seller_username = '$namaos' AND t.status = 'finished'";
+                            } else {
+                                $sql = "SELECT t.id, u.name AS pembeli, m.nama_produk, m.seller_username AS penjual, t.quantity, m.harga_produk, t.created_at, t.payment_proof 
+                                        FROM transactions t
+                                        JOIN users u ON t.user_id = u.id
+                                        JOIN menu m ON t.menu_id = m.id
+                                        WHERE t.user_id = (SELECT id FROM users WHERE username = '$namaos') AND t.status = 'finished'";
+                            }
+                            $query = mysqli_query($koneksi, $sql);
+                            $no = 1; // Nomor urut
+                            while ($transaction = mysqli_fetch_assoc($query)) {
+                                echo "<tr>";
+                                echo "<td>" . $no++ . "</td>"; // Menampilkan nomor urut
+                                echo "<td>" . $transaction['id'] . "</td>";
+                                echo "<td>" . $transaction['pembeli'] . "</td>";
+                                echo "<td>" . $transaction['nama_produk'] . "</td>";
+                                echo "<td>" . $transaction['penjual'] . "</td>";
+                                echo "<td>" . $transaction['quantity'] . "</td>";
+                                echo "<td>Rp. " . number_format($transaction['harga_produk'], 0, ',', '.') . "</td>";
+                                echo "<td>" . $transaction['created_at'] . "</td>";
+                                echo "<td><img src='uploads/bukti/" . $transaction['payment_proof'] . "' alt='Bukti Pembayaran' style='max-width: 200px; max-height: 200px;'></td>";
+                                echo "</tr>";
+                            }
+                            ?>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
@@ -176,8 +163,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action'])) {
         </div>
     </footer>
     <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
-    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
-
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 </body>
 
 </html>

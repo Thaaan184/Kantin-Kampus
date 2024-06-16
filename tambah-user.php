@@ -72,7 +72,6 @@ function cek_email($email, $koneksi)
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -86,7 +85,6 @@ function cek_email($email, $koneksi)
     <!-- JAVA SCRIPT -->
     <script src="js/script.js"></script>
 </head>
-
 <body>
     <header>
         <a href="login.php"><img src="image\logopolos.png"></a>
@@ -119,10 +117,10 @@ function cek_email($email, $koneksi)
                                 </div>
                             <?php endif; ?>
                             <?php if (isset($_GET['status']) && $_GET['status'] == 'sukses') : ?>
-                                <div class="alert alert-success" role="alert">
-                                    Registrasi Berhasil
-                                </div>
-                                <?php header("refresh:3;url=tambah-user.php"); ?>
+                                <script>
+                                    alert('User berhasil ditambahkan');
+                                    window.location.href = 'user-edit.php';
+                                </script>
                             <?php endif; ?>
                             <div class="form-group">
                                 <label for="name">Nama</label>
@@ -169,5 +167,4 @@ function cek_email($email, $koneksi)
     <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 </body>
-
 </html>

@@ -45,18 +45,19 @@ if ($is_logged_in) {
             <ul class="navigasi">
                 <?php if ($role == 'admin') { ?>
                     <li><a class="nav-item nav-link active" href="output-menu.php">Edit Produk</a></li>
-                    <li><a class="nav-item nav-link active" href="tambah-produk.php"></i>Tambah Produk</a></li>
+                    <li><a class="nav-item nav-link active" href="tambah-produk.php">Tambah Produk</a></li>
                     <li><a class="nav-item nav-link active" href="tambah-user.php">Tambah User</a></li>
                     <li><a class="nav-item nav-link active" href="user-edit.php">Edit User</a></li>
                     <li><a class="nav-item nav-link active" href="report-review.php">Report Review</a></li>
                 <?php } elseif ($role == 'seller') { ?>
-                    <li><a class="nav-item nav-link active" href="index.php" style="color: white; font-weight: 600;"></i>Beranda</a></li>
-                    <li><a class="nav-item nav-link active" href="toko.php"></i>Toko Saya</a></li>
+                    <li><a class="nav-item nav-link active" href="index.php" style="color: white; font-weight: 600;">Beranda</a></li>
+                    <li><a class="nav-item nav-link active" href="toko.php">Toko Saya</a></li>
                     <li><a class="nav-item nav-link active" href="tambah-produk.php">Tambah Produk</a></li>
                     <li><a class="nav-item nav-link active" href="output-menu.php">Edit Produk</a></li>
-                    <li><a class="nav-item nav-link active" href="histori-transaksi.php"></i>Histori Transaksi</a></li>
+                    <li><a class="nav-item nav-link active" href="histori-transaksi.php">Histori Transaksi</a></li>
                 <?php } else { ?>
-                    <li><a class="nav-item nav-link active" href="index.php" style="color: white; font-weight: 600;"></i>Beranda</a></li>
+                    <li><a class="nav-item nav-link active" href="index.php" style="color: white; font-weight: 600;">Beranda</a></li>
+                    <li><a class="nav-item nav-link active" href="histori-transaksi.php">Histori Transaksi</a></li>
                 <?php } ?>
             </ul>
         </div>
@@ -89,7 +90,6 @@ if ($is_logged_in) {
                     </div>
                 <?php } ?>
 
-
                 <!-- Makanan Berat Section -->
                 <h2 class="ms-4">Makanan Berat</h2>
                 <hr>
@@ -107,7 +107,7 @@ if ($is_logged_in) {
                     ?>
                         <div class="col ms-4 my-3" style="width: 300px;">
                             <div class="card shadow-sm">
-                                <img src="uploads/<?php echo $gambar ?>" height="200px">
+                                <img src="uploads/<?php echo $gambar ?>" class="card-img" alt="Gambar produk">
                                 <div class="card-body">
                                     <div class="d-flex justify-content-between align-items-center">
                                         <h4><?php echo $nama_produk ?></h4>
@@ -115,7 +115,7 @@ if ($is_logged_in) {
                                     </div>
                                     <p class="card-text"><?php echo substr($deskripsi_produk, 0, 20); ?>... </p>
                                     <div class="d-flex justify-content-between align-items-center">
-                                        <a href="beli-produk.php?id=<?php echo $id ?>"><button type="button" class="btn btn-outline-success me-2 px-4">Detail</button></a>
+                                        <a href="beli-produk.php?id=<?php echo $id ?>"><button type="button" class="btn btn-outline-success me-2 px-4">Buy</button></a>
                                         <small class="text-muted">Stok: <?php echo $stok ?></small>
                                     </div>
                                 </div>
@@ -141,7 +141,7 @@ if ($is_logged_in) {
                     ?>
                         <div class="col ms-4 my-3" style="width: 300px;">
                             <div class="card shadow-sm">
-                                <img src="uploads/<?php echo $gambar ?>" height="200px">
+                                <img src="uploads/<?php echo $gambar ?>" class="card-img" alt="Gambar produk">
                                 <div class="card-body">
                                     <div class="d-flex justify-content-between align-items-center">
                                         <h4><?php echo $nama_produk ?></h4>
@@ -149,7 +149,7 @@ if ($is_logged_in) {
                                     </div>
                                     <p class="card-text"><?php echo substr($deskripsi_produk, 0, 20); ?>... </p>
                                     <div class="d-flex justify-content-between align-items-center">
-                                        <a href="beli-produk.php?id=<?php echo $id ?>"><button type="button" class="btn btn-outline-danger me-2 px-4">Detail</button></a>
+                                        <a href="beli-produk.php?id=<?php echo $id ?>"><button type="button" class="btn btn-outline-success me-2 px-4">Buy</button></a>
                                         <small class="text-muted">Stok: <?php echo $stok ?></small>
                                     </div>
                                 </div>
@@ -163,8 +163,8 @@ if ($is_logged_in) {
                 <hr>
                 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
                     <?php
-                    $sql = "SELECT * FROM menu WHERE kategori='minuman'";
-                    $query = mysqli_query($koneksi, $sql);
+                    $sql3 = "SELECT * FROM menu WHERE kategori='minuman'";
+                    $query = mysqli_query($koneksi, $sql3);
                     while ($menu = mysqli_fetch_assoc($query)) {
                         $id = $menu['id'];
                         $nama_produk = $menu['nama_produk'];
@@ -175,7 +175,7 @@ if ($is_logged_in) {
                     ?>
                         <div class="col ms-4 my-3" style="width: 300px;">
                             <div class="card shadow-sm">
-                                <img src="uploads/<?php echo $gambar ?>" height="200px">
+                                <img src="uploads/<?php echo $gambar ?>" class="card-img" alt="Gambar produk">
                                 <div class="card-body">
                                     <div class="d-flex justify-content-between align-items-center">
                                         <h4><?php echo $nama_produk ?></h4>
@@ -183,7 +183,7 @@ if ($is_logged_in) {
                                     </div>
                                     <p class="card-text"><?php echo substr($deskripsi_produk, 0, 20); ?>... </p>
                                     <div class="d-flex justify-content-between align-items-center">
-                                        <a href="beli-produk.php?id=<?php echo $id ?>"><button type="button" class="btn btn-outline-primary me-2 px-4">Detail</button></a>
+                                        <a href="beli-produk.php?id=<?php echo $id ?>"><button type="button" class="btn btn-outline-success me-2 px-4">Buy</button></a>
                                         <small class="text-muted">Stok: <?php echo $stok ?></small>
                                     </div>
                                 </div>
@@ -194,10 +194,9 @@ if ($is_logged_in) {
             </div>
         </div>
     </div>
-
     <!-- Isi halaman -->
     <footer>
-        <div class="container">
+        <div class="    ">
             <p>&copy; 2024 Kantin Online. All rights reserved.</p>
             <p>
                 <a href="#">Privacy Policy</a> |
@@ -206,8 +205,6 @@ if ($is_logged_in) {
             </p>
         </div>
     </footer>
-    <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
-    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 </body>
 
 </html>

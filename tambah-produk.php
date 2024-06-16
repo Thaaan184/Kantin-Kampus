@@ -1,5 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
 <?php
 include("config.php");
 
@@ -34,6 +32,8 @@ if ($role == 'admin') {
 }
 ?>
 
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -107,7 +107,6 @@ if ($role == 'admin') {
                                 <label>Gagal memasukkan data</label>
                             </div>
                         <?php
-                            header("refresh:3;url=index.php");
                         }
                         ?>
                         <?php
@@ -117,7 +116,6 @@ if ($role == 'admin') {
                                 <label>Berhasil memasukkan data baru</label>
                             </div>
                         <?php
-                            header("refresh:3;url=index.php");
                         }
                         ?>
                     <?php endif; ?>

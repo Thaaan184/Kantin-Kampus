@@ -1,33 +1,29 @@
 <?php
 include("config.php");
 session_start();
-$namaos = strval($_SESSION['username']);
-
 
 if (!isset($_SESSION['username'])) {
-    $_SESSION['msg'] = 'anda harus login untuk mengakses halaman ini';
+    $_SESSION['msg'] = 'Anda harus login untuk mengakses halaman ini';
     header('Location: login.php');
+    exit();
 }
-$sql = "SELECT * FROM users where username='$namaos'";
+
+$namaos = strval($_SESSION['username']);
+
+$sql = "SELECT * FROM users WHERE username='$namaos'";
 $query = mysqli_query($koneksi, $sql);
-//mengecek apakah ada error ketika menjalankan query
+// mengecek apakah ada error ketika menjalankan query
 $no = 1;
 while ($ingfos = mysqli_fetch_assoc($query)) {
-    $role               = $ingfos['role'];
+    $role = $ingfos['role'];
 }
 if ($role == "admin") {
     echo "";
 } else {
     header('Location: index.php?status=notadmin');
+    exit();
 }
-
-
-$gagalhapus = "Gagal Menghapus Data";
-$gagaledit = "Gagal Mengedit Data";
-$sukseshapus = "Berhasil Menghapus Data";
-$suksesedit = "Berhasil Mengedit Data";
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -44,18 +40,18 @@ $suksesedit = "Berhasil Mengedit Data";
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
     <!-- JAVA SCRIPT -->
-    <script src="js\script.js"></script>
+    <script src="js/script.js"></script>
 </head>
 
 <body>
     <header>
-        <a href="login.php"><img src="image\logopolos.png"></a>
+        <a href="login.php"><img src="image/logopolos.png"></a>
         <div class="left-content">
             <ul class="navigasi">
                 <li><a class="nav-item nav-link active" href="output-menu.php">Edit Produk</a></li>
                 <li><a class="nav-item nav-link active" href="tambah-produk.php">Tambah Produk</a></li>
                 <li><a class="nav-item nav-link active" href="tambah-user.php">Tambah User</a></li>
-                <li><a class="nav-item nav-link active" href="user-edit.php" style="color: white; font-weight: 600;">Edit user</a></li>
+                <li><a class="nav-item nav-link active" href="user-edit.php" style="color: white; font-weight: 600;">Edit User</a></li>
                 <li><a class="nav-item nav-link active" href="report-review.php">Report Review</a></li>
             </ul>
         </div>
@@ -65,98 +61,53 @@ $suksesedit = "Berhasil Mengedit Data";
                 <li><a class="nav-item nav-link active" href="logout.php"><i class='bx bx-log-out' style="font-size: 2rem;"></i></a></li>
             </ul>
         </div>
-
     </header>
     <div class="banner">
-        <div class="mx-auto">
-            <div class="card">
-                <h4 class="card-header text-white bg-secondary">Data User</h4>
-                <div class="card-body">
-
-                    <?php if (isset($_GET['status'])) : ?>
+        <div class="album py-5 bg-light">
+            <div class="container">
+                <h2>Data User</h2>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Username</th>
+                            <th scope="col">Nama</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Role</th>
+                            <th scope="col"> </th>
+                        </tr>
+                    </thead>
+                    <tbody>
                         <?php
-                        if ($_GET['status'] == 'gagalhapus') {
+                        $sql = "SELECT * FROM users";
+                        $query = mysqli_query($koneksi, $sql);
+                        $urut = 1;
+                        while ($user = mysqli_fetch_array($query)) {
+                            $id = $user['id'];
+                            $username = $user['username'];
+                            $nama = $user['name'];
+                            $email = $user['email'];
+                            $role = $user['role'];
                         ?>
-                            <div class="alert alert-danger" role="alert">
-                                <?php echo $gagalhapus ?>
-                            </div>
-                        <?php
-                            header("refresh:3;url=user-edit.php");
-                        }
-                        ?>
-                        <?php
-                        if ($_GET['status'] == 'gagaledit') {
-                        ?>
-                            <div class="alert alert-danger" role="alert">
-                                <?php echo $gagaledit ?>
-                            </div>
-                        <?php
-                            header("refresh:3;url=user-edit.php");
-                        }
-                        ?>
-                        <?php
-                        if ($_GET['status'] == 'sukseshapus') {
-                        ?>
-                            <div class="alert alert-success" role="alert">
-                                <?php echo $sukseshapus ?>
-                            </div>
-                        <?php
-                            header("refresh:3;url=user-edit.php");
-                        }
-                        ?>
-                        <?php
-                        if ($_GET['status'] == 'suksesedit') {
-                        ?>
-                            <div class="alert alert-success" role="alert">
-                                <?php echo $suksesedit ?>
-                            </div>
-                        <?php
-                            header("refresh:3;url=user-edit.php");
-                        }
-                        ?>
-                    <?php endif; ?>
-                    <table class="table">
-                        <thead>
                             <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Username</th>
-                                <th scope="col">Nama</th>
-                                <th scope="col">Email</th>
-                                <th scope="col">Role</th>
-                                <th scope="col"> </th>
+                                <th scope="row"><?php echo $urut++ ?></th>
+                                <td scope="row"><?php echo $username ?></td>
+                                <td scope="row"><?php echo $nama ?></td>
+                                <td scope="row"><?php echo $email ?></td>
+                                <td scope="row"><?php echo $role ?></td>
+                                <td scope="row">
+                                    <a href="user-edit-form.php?id=<?php echo $id ?>"><button type="button" class="btn btn-warning">Edit</button></a>
+                                    <a href="hapus.php?id=<?php echo $id ?>" onclick="return confirm('Yakin mau delete data?')"><button type="button" class="btn btn-danger ms-1">Delete</button></a>
+                                </td>
                             </tr>
-                        <tbody>
-                            <?php
-                            $sql        = "SELECT *FROM users";
-                            $query      = mysqli_query($koneksi, $sql);
-                            $urut       = 1;
-                            while ($user  = mysqli_fetch_array($query)) {
-                                $id         = $user['id'];
-                                $username   = $user['username'];
-                                $nama       = $user['name'];
-                                $email     = $user['email'];
-                                $role    = $user['role'];
-                            ?>
-                                <tr>
-                                    <th scope="row"><?php echo $urut++ ?></th>
-                                    <td scope="row"><?php echo $username ?></td>
-                                    <td scope="row"><?php echo $nama ?></td>
-                                    <td scope="row"><?php echo $email ?></td>
-                                    <td scope="row"><?php echo $role ?></td>
-                                    <td scope="row">
-                                        <a href="user-edit-form.php?id=<?php echo $id ?>"><button type="button" class="btn btn-warning">Edit</button></a>
-                                        <a href="hapus.php?id=<?php echo $id ?>" onclick="return confirm('Yakin mau delete data?')"><button type="button" class="btn btn-danger ms-1">Delete</button></a>
-                                    </td>
-                                </tr>
-                            <?php
-                            }
-                            ?>
-                        </tbody>
-                        </thead>
-                    </table>
-                </div>
+                        <?php
+                        }
+                        ?>
+                    </tbody>
+                </table>
             </div>
         </div>
+
     </div>
     <!-- Isi halaman -->
     <footer>

@@ -90,9 +90,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action'])) {
     <link rel="stylesheet" href="style2.css?v=<?php echo time(); ?>">
     <link href="https://fonts.googleapis.com/css2?family=Palanquin+Dark&display=swap" rel="stylesheet">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style>
 
-    <!-- JAVA SCRIPT -->
-    <script src="js\script.js"></script>
+    </style>
 </head>
 
 <body>
@@ -119,64 +119,39 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action'])) {
             <div class="container">
                 <?php if ($is_logged_in) { ?>
                     <div class="d-flex justify-content-between align-items-center">
-                        <h2>Toko Saya - Selamat datang, <?php echo $nameos; ?></h2>
+                        <h2>Kantin <?php echo $nameos; ?></h2>
                     </div>
+                    <!-- Di isi bagian insight penjualan ada graph penjualan dan top 3 produk terlaris -->
+
                     <hr>
                 <?php } ?>
 
                 <!-- Upload QRIS Section -->
-                <h3>QRIS Saya</h3>
-                <?php if (isset($error)) { ?>
-                    <div class="alert alert-danger"><?php echo $error; ?></div>
-                <?php } ?>
-                <?php if (!empty($qris_image)) { ?>
-                    <div class="mb-3">
-                        <img src="uploads/qris/<?php echo $qris_image; ?>" alt="QRIS" style="max-width: 200px;">
+                <div class="section minimized" id="qris-section">
+                    <div class="section-header">
+                        <h2>QRIS Saya</h2>
+                        <hr>
                     </div>
-                <?php } ?>
-                <form action="toko.php" method="post" enctype="multipart/form-data">
-                    <label for="qris_image"><?php echo !empty($qris_image) ? 'Ganti QRIS:' : 'Upload QRIS:'; ?></label>
-                    <input type="file" name="qris_image" id="qris_image" required>
-                    <button type="submit" class="btn btn-primary"><?php echo !empty($qris_image) ? 'Ganti QRIS' : 'Upload'; ?></button>
-                </form>
-                <hr>
-
-                <!-- Produk Saya Section -->
-                <h2 class="ms-4">Produk Saya</h2>
-                <hr>
-                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-                    <?php
-                    $sql = "SELECT * FROM menu WHERE seller_username='$namaos'";
-                    $query = mysqli_query($koneksi, $sql);
-                    while ($menu = mysqli_fetch_assoc($query)) {
-                        $id = $menu['id'];
-                        $nama_produk = $menu['nama_produk'];
-                        $harga_produk = $menu['harga_produk'];
-                        $deskripsi_produk = $menu['deskripsi_produk'];
-                        $stok = $menu['stok'];
-                        $gambar = $menu['gambar'];
-                    ?>
-                        <div class="col ms-4 my-3" style="width: 300px;">
-                            <div class="card shadow-sm">
-                                <img src="uploads/<?php echo $gambar ?>" height="200px">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <h4><?php echo $nama_produk ?></h4>
-                                        <h4>Rp. <?php echo number_format($harga_produk, 0, ',', '.'); ?></h4>
-                                    </div>
-                                    <p class="card-text"><?php echo substr($deskripsi_produk, 0, 20); ?>... </p>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <a href="hapus-produk.php?id=<?php echo $menu['id']; ?>" class="btn btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus produk ini?')">Hapus</a>
-                                        <a href="edit-menu.php?id=<?php echo $menu['id']; ?>" class="btn btn-primary">Edit</a>
-                                        <small class="text-muted">Stok: <?php echo $stok ?></small>
-                                    </div>
-                                </div>
+                    <div class="section-content">
+                        <?php if (isset($error)) { ?>
+                            <div class="alert alert-danger"><?php echo $error; ?></div>
+                        <?php } ?>
+                        <?php if (!empty($qris_image)) { ?>
+                            <div class="mb-3">
+                                <img src="uploads/qris/<?php echo $qris_image; ?>" alt="QRIS" style="max-width: 200px;">
                             </div>
-                        </div>
-                    <?php } ?>
+                        <?php } ?>
+                        <form action="toko.php" method="post" enctype="multipart/form-data">
+                            <label for="qris_image"><?php echo !empty($qris_image) ? 'Ganti QRIS:' : 'Upload QRIS:'; ?></label>
+                            <input type="file" name="qris_image" id="qris_image" required>
+                            <button type="submit" class="btn btn-primary"><?php echo !empty($qris_image) ? 'Ganti QRIS' : 'Upload'; ?></button>
+                        </form>
+                    </div>
                 </div>
 
                 <!-- Notifikasi Pesanan Baru -->
+                <br>
+                <hr>
                 <h2>Notifikasi Pesanan Baru</h2>
                 <?php
                 $sql = "SELECT t.*, u.name, m.nama_produk, t.total_price 
@@ -210,6 +185,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action'])) {
                 ?>
                     <div class="card mb-3">
                         <div class="card-body">
+                            <hr>
+
                             <h5 class="card-title">Pesanan dari: <?php echo $transaction['name']; ?></h5>
                             <p class="card-text">Produk: <?php echo $transaction['nama_produk']; ?></p>
                             <p class="card-text">Jumlah: <?php echo $transaction['quantity']; ?></p>
@@ -221,9 +198,54 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action'])) {
                                 <img src="uploads/bukti/<?php echo $transaction['payment_proof']; ?>" alt="Bukti Pembayaran" style="max-width: 200px;">
                             <?php } ?>
                             <?php echo $action_buttons; ?>
+                            <hr>
                         </div>
                     </div>
                 <?php } ?>
+
+                <!-- Produk Saya Section -->
+                <div class="section minimized" id="produk-section">
+                    <div class="section-header"> <br>
+
+                        <hr>
+                        <h2>Produk Saya</h3>
+                            <hr>
+
+                    </div>
+                    <div class="section-content">
+                        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                            <?php
+                            $sql = "SELECT * FROM menu WHERE seller_username='$namaos'";
+                            $query = mysqli_query($koneksi, $sql);
+                            while ($menu = mysqli_fetch_assoc($query)) {
+                                $id = $menu['id'];
+                                $nama_produk = $menu['nama_produk'];
+                                $harga_produk = $menu['harga_produk'];
+                                $deskripsi_produk = $menu['deskripsi_produk'];
+                                $stok = $menu['stok'];
+                                $gambar = $menu['gambar'];
+                            ?>
+                                <div class="col ms-4 my-3" style="width: 300px;">
+                                    <div class="card shadow-sm">
+                                        <img src="uploads/<?php echo $gambar ?>" height="200px">
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <h4><?php echo $nama_produk ?></h4>
+                                                <h4>Rp. <?php echo number_format($harga_produk, 0, ',', '.'); ?></h4>
+                                            </div>
+                                            <p class="card-text"><?php echo substr($deskripsi_produk, 0, 20); ?>... </p>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <a href="hapus-produk.php?id=<?php echo $menu['id']; ?>" class="btn btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus produk ini?')">Hapus</a>
+                                                <a href="edit-menu.php?id=<?php echo $menu['id']; ?>" class="btn btn-primary">Edit</a>
+                                                <small class="text-muted">Stok: <?php echo $stok ?></small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php } ?>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -240,7 +262,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action'])) {
     </footer>
     <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.querySelectorAll('.section-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const section = header.parentElement;
+                section.classList.toggle('expanded');
+                section.classList.toggle('minimized');
+            });
+        });
+    </script>
 </body>
 
 </html>

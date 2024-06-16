@@ -118,6 +118,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete_transaction_id'
                     <li><a class="nav-item nav-link active" href="histori-transaksi.php"></i>Histori Transaksi</a></li>
                 <?php } else { ?>
                     <li><a class="nav-item nav-link active" href="index.php"></i>Beranda</a></li>
+                    <li><a class="nav-item nav-link active" href="histori-transaksi.php">Histori Transaksi</a></li>
                 <?php } ?>
             </ul>
         </div>

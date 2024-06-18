@@ -58,6 +58,9 @@ $query = $koneksi->query($sql);
     <link rel="stylesheet" href="style2.css?v=<?php echo time(); ?>">
     <link href="https://fonts.googleapis.com/css2?family=Palanquin+Dark&display=swap" rel="stylesheet">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <script
+      src="https://kit.fontawesome.com/64d58efce2.js"
+      crossorigin="anonymous"></script>
 </head>
 
 <body class="d-flex flex-column min-vh-100">
@@ -128,17 +131,45 @@ $query = $koneksi->query($sql);
         </div>
     </div>
 
-    <footer class="mt-auto">
-        <div class="container">
-            <p>&copy; 2024 Kantin Online. All rights reserved.</p>
-            <p>
-                <a href="#">Privacy Policy</a> |
-                <a href="#">Terms of Service</a> |
-                <a href="#">Contact Us</a>
+    <footer>
+    <div class="">
+  <p>&copy; 2024 Kantin Online. All rights reserved.</p>
+  <div class="info">
+    <div class="information">
+    <i class='bx bx-map-alt' ></i>
+      <p> <a href="https://maps.app.goo.gl/JZ7MPhayRR5WoeFE9?g_st=ac"style="color: white; text-decoration: none;">Alamat</a></p>
+    </div>
+    <div class="information">
+    <i class='bx bx-envelope' ></i>
+      <p>Than184@gmail.com</p>
+    </div>
+    <div class="information">
+    <i class='bx bxs-phone' ></i> <span>+62 82123923909</span>
+    </div>
+  </div>
+</div>
+
+          <div class="social-media">
+            <p>Connect with us :</p>
+            <div class="social-icons">
+              <a href="https://www.facebook.com/medwinaldizar.najwali?mibextid=ZbWKwL">
+                <i class="fab fa-facebook-f"></i>
+              </a>
+              <a href="#">
+                <i class="fab fa-tiktok"></i>
+              </a>
+              <a href="https://www.instagram.com/mhmd_sabil26?igsh=cmNybWsyaG1zMjBz">
+                <i class="fab fa-instagram"></i>
+              </a>
+              <a href="https://www.linkedin.com/in/muhammad-edwin-aldizar-najwali-50a82824a/?original_referer=https%3A%2F%2Fwww%2Ebing%2Ecom%2F&originalSubdomain=id">
+                <i class="fab fa-linkedin-in"></i>
+              </a>
+            </div>
+          </div>
             </p>
         </div>
     </footer>
-    <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+    <script>"https://code.jquery.com/jquery-2.1.3.min.js"</script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 </body>
 

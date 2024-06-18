@@ -35,6 +35,9 @@ if ($is_logged_in) {
     <!-- JAVA SCRIPT -->
     <script src="js\script.js"></script>
     <script src="js\swiper-bundle.min.js"></script>
+    <script
+      src="https://kit.fontawesome.com/64d58efce2.js"
+      crossorigin="anonymous"></script>
 
 </head>
 
@@ -106,7 +109,7 @@ if ($is_logged_in) {
                         $gambar = $menu['gambar'];
                     ?>
                         <div class="col ms-4 my-3" style="width: 300px;">
-                            <div class="card shadow-sm">
+                            <div class="card card-makanan-berat shadow-sm">
                                 <img src="uploads/<?php echo $gambar ?>" class="card-img" alt="Gambar produk">
                                 <div class="card-body">
                                     <div class="d-flex justify-content-between align-items-center">
@@ -139,8 +142,8 @@ if ($is_logged_in) {
                         $stok = $menu['stok'];
                         $gambar = $menu['gambar'];
                     ?>
-                        <div class="col ms-4 my-3" style="width: 300px;">
-                            <div class="card shadow-sm">
+                          <div class="col ms-4 my-3" style="width: 300px;">
+                            <div class="card card-makanan-ringan shadow-sm">
                                 <img src="uploads/<?php echo $gambar ?>" class="card-img" alt="Gambar produk">
                                 <div class="card-body">
                                     <div class="d-flex justify-content-between align-items-center">
@@ -174,7 +177,7 @@ if ($is_logged_in) {
                         $gambar = $menu['gambar'];
                     ?>
                         <div class="col ms-4 my-3" style="width: 300px;">
-                            <div class="card shadow-sm">
+                            <div class="card card-minuman shadow-sm">
                                 <img src="uploads/<?php echo $gambar ?>" class="card-img" alt="Gambar produk">
                                 <div class="card-body">
                                     <div class="d-flex justify-content-between align-items-center">
@@ -196,12 +199,40 @@ if ($is_logged_in) {
     </div>
     <!-- Isi halaman -->
     <footer>
-        <div class="    ">
-            <p>&copy; 2024 Kantin Online. All rights reserved.</p>
-            <p>
-                <a href="#">Privacy Policy</a> |
-                <a href="#">Terms of Service</a> |
-                <a href="#">Contact Us</a>
+    <div class="">
+  <p>&copy; 2024 Kantin Online. All rights reserved.</p>
+  <div class="info">
+    <div class="information">
+    <i class='bx bx-map-alt' ></i>
+      <p> <a href="https://maps.app.goo.gl/JZ7MPhayRR5WoeFE9?g_st=ac"style="color: white; text-decoration: none;">Alamat</a></p>
+    </div>
+    <div class="information">
+    <i class='bx bx-envelope' ></i>
+      <p>Than184@gmail.com</p>
+    </div>
+    <div class="information">
+    <i class='bx bxs-phone' ></i> <span>+62 82123923909</span>
+    </div>
+  </div>
+</div>
+
+          <div class="social-media">
+            <p>Connect with us :</p>
+            <div class="social-icons">
+              <a href="https://www.facebook.com/medwinaldizar.najwali?mibextid=ZbWKwL">
+                <i class="fab fa-facebook-f"></i>
+              </a>
+              <a href="#">
+                <i class="fab fa-tiktok"></i>
+              </a>
+              <a href="https://www.instagram.com/mhmd_sabil26?igsh=cmNybWsyaG1zMjBz">
+                <i class="fab fa-instagram"></i>
+              </a>
+              <a href="https://www.linkedin.com/in/muhammad-edwin-aldizar-najwali-50a82824a/?original_referer=https%3A%2F%2Fwww%2Ebing%2Ecom%2F&originalSubdomain=id">
+                <i class="fab fa-linkedin-in"></i>
+              </a>
+            </div>
+          </div>
             </p>
         </div>
     </footer>
